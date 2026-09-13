@@ -1,276 +1,286 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Dopaminapp — Microaprendizaje Diario</title>
-  <meta name="description" content="Dopaminapp: dilemas históricos interactivos. Decide, descubre y aprende macroeconomía, filosofía y geopolítica en minutos al día." />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Dopaminapp Elite — Microaprendizaje Histórico</title>
+  <meta name="description" content="Dopaminapp Elite: 6 dilemas históricos interactivos con IA socrática, perfil intelectual y generación de dilemas on-demand."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #080810; color: #d8d8ec;
-      min-height: 100vh; overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    body::before {
-      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(79,142,247,.13) 0%, transparent 60%),
-                  linear-gradient(180deg, #080810 0%, #06060d 100%);
-    }
-    body::after {
-      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(79,142,247,.025) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(79,142,247,.025) 1px, transparent 1px);
-      background-size: 52px 52px;
-    }
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #252535; border-radius: 4px; }
+<style>
+/* ── BASE ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#080810;color:#d8d8ec;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 45% at 50% -5%,rgba(79,142,247,.13) 0%,transparent 60%),linear-gradient(180deg,#080810 0%,#06060d 100%)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(79,142,247,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,.025) 1px,transparent 1px);background-size:52px 52px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#252535;border-radius:4px}
 
-    .label-xs { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
-    .mono-val  { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+/* ── TYPOGRAPHY ── */
+.label-xs{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+.mono-val{font-family:'JetBrains Mono',monospace;font-weight:600}
 
-    .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; border: 1px solid; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: .03em; white-space: nowrap; }
-    .pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+/* ── PILL ── */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;border:1px solid;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.03em;white-space:nowrap}
+.pill-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 
-    .opt-btn { position: relative; overflow: hidden; width: 100%; text-align: left; background: #0c0c18; border: 1px solid #1e1e30; border-radius: 14px; padding: 18px 20px; cursor: pointer; transition: border-color .2s, background .2s, transform .18s, box-shadow .2s; }
-    .opt-btn::after { content: ''; position: absolute; inset: 0; opacity: 0; border-radius: inherit; transition: opacity .25s; pointer-events: none; }
-    .opt-btn.opt-A::after { background: radial-gradient(ellipse at 0% 40%, rgba(79,142,247,.13) 0%, transparent 65%); }
-    .opt-btn.opt-B::after { background: radial-gradient(ellipse at 0% 40%, rgba(245,166,35,.13) 0%, transparent 65%); }
-    .opt-btn:hover:not(:disabled)::after { opacity: 1; }
-    .opt-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(0,0,0,.45); }
-    .opt-btn.opt-A:hover:not(:disabled) { border-color: rgba(79,142,247,.5); }
-    .opt-btn.opt-B:hover:not(:disabled) { border-color: rgba(245,166,35,.5); }
-    .opt-btn:disabled { cursor: default; }
-    .opt-btn:focus-visible { outline: 2px solid rgba(79,142,247,.6); outline-offset: 2px; }
-    .opt-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; border: 1px solid; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-    .opt-result { border: 1px solid #1e1e30; border-radius: 14px; padding: 18px 20px; transition: all .3s; }
+/* ── OPTION BUTTONS ── */
+.opt-btn{position:relative;overflow:hidden;width:100%;text-align:left;background:#0c0c18;border:1px solid #1e1e30;border-radius:14px;padding:18px 20px;cursor:pointer;transition:border-color .2s,background .2s,transform .18s,box-shadow .2s}
+.opt-btn::after{content:'';position:absolute;inset:0;opacity:0;border-radius:inherit;transition:opacity .25s;pointer-events:none}
+.opt-btn.opt-A::after{background:radial-gradient(ellipse at 0% 40%,rgba(79,142,247,.13) 0%,transparent 65%)}
+.opt-btn.opt-B::after{background:radial-gradient(ellipse at 0% 40%,rgba(245,166,35,.13) 0%,transparent 65%)}
+.opt-btn:hover:not(:disabled)::after{opacity:1}
+.opt-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,0,0,.45)}
+.opt-btn.opt-A:hover:not(:disabled){border-color:rgba(79,142,247,.5)}
+.opt-btn.opt-B:hover:not(:disabled){border-color:rgba(245,166,35,.5)}
+.opt-btn:disabled{cursor:default}
+.opt-btn:focus-visible{outline:2px solid rgba(79,142,247,.6);outline-offset:2px}
+.opt-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;border:1px solid;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;flex-shrink:0}
+.opt-result{border:1px solid #1e1e30;border-radius:14px;padding:18px 20px;transition:all .3s}
 
-    .pct-track { height: 5px; border-radius: 3px; background: #161620; overflow: hidden; }
-    .pct-fill  { height: 100%; border-radius: 3px; width: 0; transition: width 1.3s cubic-bezier(0.22,1,.36,1); }
+/* ── PROGRESS BAR ── */
+.pct-track{height:5px;border-radius:3px;background:#161620;overflow:hidden}
+.pct-fill{height:100%;border-radius:3px;width:0;transition:width 1.3s cubic-bezier(0.22,1,.36,1)}
 
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-slide-up { animation: slideUp .5s cubic-bezier(0.16,1,.3,1) both; }
-    .delay-1 { animation-delay: .08s; } .delay-2 { animation-delay: .16s; }
-    .delay-3 { animation-delay: .24s; } .delay-4 { animation-delay: .32s; }
+/* ── ANIMATIONS ── */
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-slide-up{animation:slideUp .5s cubic-bezier(0.16,1,.3,1) both}
+.delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}.delay-3{animation-delay:.24s}.delay-4{animation-delay:.32s}
 
-    /* ── Side Modal ── */
-    #side-modal {
-      position: fixed; top: 0; right: 0;
-      width: min(560px, 100vw);
-      height: 100dvh; height: 100vh; /* dvh for mobile keyboard */
-      background: #0a0a16; border-left: 1px solid #1e1e30;
-      z-index: 100; display: flex; flex-direction: column;
-      transform: translateX(100%);
-      transition: transform .48s cubic-bezier(0.16,1,.3,1);
-    }
-    #side-modal.open { transform: translateX(0); }
+@keyframes pulseStreak{0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,.3)}50%{box-shadow:0 0 0 5px rgba(245,166,35,0)}}
+.streak-badge{animation:pulseStreak 3s ease-in-out infinite}
 
-    @media (max-width: 639px) {
-      #side-modal { width: 100vw; border-left: none; }
-    }
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 
-    #overlay { position: fixed; inset: 0; z-index: 99; background: rgba(0,0,0,.65); backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity .3s; }
-    #overlay.open { opacity: 1; pointer-events: all; }
+/* Victory pulse on card */
+@keyframes victoryRing{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}100%{box-shadow:0 0 0 18px rgba(52,211,153,0)}}
+.victory-pulse{animation:victoryRing .65s ease-out}
 
-    /* ── Chat ── */
-    .chat-ai   { align-self: flex-start; max-width: 92%; background: rgba(167,139,250,.08); border: 1px solid rgba(167,139,250,.18); border-radius: 4px 12px 12px 12px; padding: 9px 13px; color: #b8b8d8; line-height: 1.6; animation: slideUp .3s ease both; word-break: break-word; }
-    .chat-user { align-self: flex-end; max-width: 88%; background: rgba(79,142,247,.1); border: 1px solid rgba(79,142,247,.22); border-radius: 12px 12px 4px 12px; padding: 9px 13px; color: #e0e0f8; line-height: 1.55; animation: slideUp .3s ease both; word-break: break-word; }
-    #chat-messages { display: flex; flex-direction: column; gap: 8px; }
+/* ── SIDE MODAL ── */
+#side-modal{position:fixed;top:0;right:0;width:min(560px,100vw);height:100dvh;background:#0a0a16;border-left:1px solid #1e1e30;z-index:100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .48s cubic-bezier(0.16,1,.3,1)}
+#side-modal.open{transform:translateX(0)}
+@media(max-width:639px){#side-modal{width:100vw;border-left:none}}
 
-    /* Markdown inside bubbles */
-    .chat-ai strong { color: #d8d8f8; font-weight: 600; }
-    .chat-ai em     { color: #c4b5fd; font-style: italic; }
-    .chat-ai code   { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #1a1a2e; padding: 1px 5px; border-radius: 3px; }
-    .chat-ai ul     { padding-left: 16px; margin: 6px 0; list-style: disc; }
-    .chat-ai li     { margin: 3px 0; }
+#overlay{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s}
+#overlay.open{opacity:1;pointer-events:all}
 
-    /* Streaming cursor */
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    .s-cursor { display: inline-block; color: #a78bfa; animation: blink 1s step-end infinite; margin-left: 1px; }
+/* ── CENTER MODALS (Settings, Profile, Generator) ── */
+.cmodal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s}
+.cmodal-overlay.open{opacity:1;pointer-events:all}
+.cmodal-panel{background:#0e0e1c;border:1px solid #252535;border-radius:20px;padding:0;width:100%;max-width:460px;max-height:92dvh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(12px) scale(.97);transition:transform .32s cubic-bezier(.16,1,.3,1)}
+.cmodal-overlay.open .cmodal-panel{transform:translateY(0) scale(1)}
+.cmodal-header{padding:22px 24px 18px;border-bottom:1px solid #111120;flex-shrink:0}
+.cmodal-body{overflow-y:auto;padding:22px 24px;flex:1;-webkit-overflow-scrolling:touch}
 
-    .typing-dot { width: 5px; height: 5px; border-radius: 50%; background: #a78bfa; display: inline-block; animation: tdot 1.3s ease-in-out infinite; }
-    @keyframes tdot { 0%,80%,100%{ transform:scale(1);opacity:.5 } 40%{ transform:scale(1.4);opacity:1 } }
+/* ── CHAT ── */
+.chat-ai{align-self:flex-start;max-width:92%;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.18);border-radius:4px 12px 12px 12px;padding:9px 13px;color:#b8b8d8;line-height:1.6;animation:slideUp .3s ease both;word-break:break-word;font-size:12.5px}
+.chat-user{align-self:flex-end;max-width:88%;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.22);border-radius:12px 12px 4px 12px;padding:9px 13px;color:#e0e0f8;line-height:1.55;animation:slideUp .3s ease both;word-break:break-word;font-size:12.5px}
+#chat-messages{display:flex;flex-direction:column;gap:8px}
+.chat-ai strong{color:#d8d8f8;font-weight:600}
+.chat-ai em{color:#c4b5fd;font-style:italic}
+.chat-ai code{font-family:'JetBrains Mono',monospace;font-size:11px;background:#1a1a2e;padding:1px 5px;border-radius:3px}
+.chat-ai ul{padding-left:16px;margin:6px 0;list-style:disc}
+.chat-ai li{margin:3px 0}
 
-    .chat-field { flex: 1; resize: none; outline: none; background: #141420; border: 1px solid #252535; border-radius: 10px; color: #d8d8ec; font-size: 13px; line-height: 1.5; padding: 9px 13px; font-family: inherit; transition: border-color .2s; max-height: 100px; }
-    .chat-field:focus { border-color: rgba(79,142,247,.45); }
-    .chat-field::placeholder { color: #3a3a5a; }
+/* Streaming cursor */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.s-cursor{display:inline-block;color:#a78bfa;animation:blink 1s step-end infinite;margin-left:1px}
 
-    .send-btn { width: 36px; height: 36px; flex-shrink: 0; border-radius: 9px; border: none; background: linear-gradient(135deg, #4f8ef7, #7c3aed); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity .2s, transform .18s; }
-    .send-btn:hover { opacity: .85; transform: scale(1.05); }
+/* Typing dots */
+.typing-dot{width:5px;height:5px;border-radius:50%;background:#a78bfa;display:inline-block;animation:tdot 1.3s ease-in-out infinite}
+@keyframes tdot{0%,80%,100%{transform:scale(1);opacity:.5}40%{transform:scale(1.4);opacity:1}}
 
-    .btn-deepen { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 20px; border-radius: 11px; border: 1px solid; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; }
-    .btn-share  { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 16px; border-radius: 11px; border: 1px solid #252535; background: transparent; color: #5a5a7a; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; }
-    .btn-share:hover { color: #c0c0e0; border-color: #404058; }
+/* Chat input/send */
+.chat-field{flex:1;resize:none;outline:none;background:#141420;border:1px solid #252535;border-radius:10px;color:#d8d8ec;font-size:13px;line-height:1.5;padding:9px 13px;font-family:inherit;transition:border-color .2s;max-height:100px}
+.chat-field:focus{border-color:rgba(79,142,247,.45)}
+.chat-field::placeholder{color:#3a3a5a}
+.send-btn{width:36px;height:36px;flex-shrink:0;border-radius:9px;border:none;background:linear-gradient(135deg,#4f8ef7,#7c3aed);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .18s}
+.send-btn:hover{opacity:.85;transform:scale(1.05)}
 
-    /* ── Toast ── */
-    #toast-inner { display: flex; align-items: center; gap: 8px; background: #181828; border: 1px solid #303048; color: #e0e0f8; font-size: 13px; padding: 10px 16px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,.5); opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s; pointer-events: none; }
-    #toast-inner.show { opacity: 1; transform: translateY(0); }
+/* ── BUTTONS ── */
+.btn-deepen{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:11px;border:1px solid;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-share{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:11px;border:1px solid #252535;background:transparent;color:#5a5a7a;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-share:hover{color:#c0c0e0;border-color:#404058}
 
-    kbd { display: inline-block; background: #141420; border: 1px solid #252535; border-radius: 4px; padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #4a4a6a; }
+/* Header action icon buttons */
+.hdr-btn{width:30px;height:30px;border-radius:8px;background:#0c0c18;border:1px solid #1e1e30;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.hdr-btn:hover{color:#c0c0e0;border-color:#404058;background:#141420}
+.hdr-btn.active{background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.35);color:#7bb3ff}
+.hdr-btn.gen-btn{background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.22);color:#34d399}
+.hdr-btn.gen-btn:hover{background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.45)}
 
-    .nav-dot { border-radius: 999px; border: none; cursor: pointer; transition: all .3s cubic-bezier(0.16,1,.3,1); background: #252535; }
-    .nav-dot:hover { background: #404058; }
-    .nav-dot.active { width: 22px; height: 7px; background: #e0e0f8; }
-    .nav-dot.done   { width: 7px;  height: 7px; background: #4f8ef7; }
-    .nav-dot.idle   { width: 7px;  height: 7px; }
+/* ── TOAST ── */
+#toast-inner{display:flex;align-items:center;gap:8px;background:#181828;border:1px solid #303048;color:#e0e0f8;font-size:13px;padding:10px 16px;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s;pointer-events:none}
+#toast-inner.show{opacity:1;transform:translateY(0)}
 
-    @keyframes pulseStreak { 0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,.3)} 50%{box-shadow:0 0 0 5px rgba(245,166,35,0)} }
-    .streak-badge { animation: pulseStreak 3s ease-in-out infinite; }
+/* ── KBD ── */
+kbd{display:inline-block;background:#141420;border:1px solid #252535;border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#4a4a6a}
 
-    .concept-box { background: #0c0c18; border: 1px solid #1e1e30; border-radius: 12px; padding: 14px 16px; }
-    .tl-connector { width: 1px; flex: 1; margin-top: 3px; background: #1e1e30; }
-    .article-highlight { border-left: 2px solid; padding: 4px 0 4px 14px; }
+/* ── NAV DOTS ── */
+.nav-dot{border-radius:999px;border:none;cursor:pointer;transition:all .3s cubic-bezier(0.16,1,.3,1);background:#252535}
+.nav-dot:hover{background:#404058}
+.nav-dot.active{width:22px;height:7px;background:#e0e0f8}
+.nav-dot.done{width:7px;height:7px;background:#4f8ef7}
+.nav-dot.generated{width:7px;height:7px;background:#34d399}
+.nav-dot.idle{width:7px;height:7px}
 
-    /* ── Settings Modal ── */
-    #settings-overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
-      display: flex; align-items: center; justify-content: center;
-      padding: 16px;
-      opacity: 0; pointer-events: none;
-      transition: opacity .25s;
-    }
-    #settings-overlay.open { opacity: 1; pointer-events: all; }
-    #settings-panel {
-      background: #0e0e1c; border: 1px solid #252535; border-radius: 20px;
-      padding: 28px; width: 100%; max-width: 420px;
-      transform: translateY(10px) scale(.98);
-      transition: transform .3s cubic-bezier(.16,1,.3,1);
-    }
-    #settings-overlay.open #settings-panel { transform: translateY(0) scale(1); }
+/* ── MISC ── */
+.concept-box{background:#0c0c18;border:1px solid #1e1e30;border-radius:12px;padding:14px 16px}
+.tl-connector{width:1px;flex:1;margin-top:3px;background:#1e1e30}
+.article-highlight{border-left:2px solid;padding:4px 0 4px 14px}
 
-    .settings-input {
-      width: 100%; background: #111120; border: 1px solid #252535;
-      border-radius: 10px; color: #d8d8ec; font-size: 13px;
-      padding: 10px 14px; font-family: 'JetBrains Mono', monospace;
-      outline: none; transition: border-color .2s;
-    }
-    .settings-input:focus { border-color: rgba(79,142,247,.5); }
-    .settings-input::placeholder { color: #2a2a40; }
+/* ── SETTINGS/CONFIG ── */
+.settings-input{width:100%;background:#111120;border:1px solid #252535;border-radius:10px;color:#d8d8ec;font-size:13px;padding:10px 14px;font-family:'JetBrains Mono',monospace;outline:none;transition:border-color .2s}
+.settings-input:focus{border-color:rgba(79,142,247,.5)}
+.settings-input::placeholder{color:#2a2a40}
+.provider-tab{flex:1;padding:8px 12px;border-radius:8px;border:1px solid #252535;background:transparent;color:#5a5a7a;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.provider-tab.active{background:rgba(79,142,247,.12);border-color:rgba(79,142,247,.35);color:#7bb3ff}
+.gear-btn{width:26px;height:26px;border-radius:7px;background:#141420;border:1px solid #252535;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.gear-btn:hover{color:#a0a0c0;border-color:#404058}
+.gear-btn.configured{border-color:rgba(52,211,153,.3);color:#34d399;background:rgba(52,211,153,.06)}
+.demo-banner{display:flex;align-items:center;gap:8px;background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.18);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11.5px;color:#9a7a3a;line-height:1.4}
 
-    .provider-tab { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #252535; background: transparent; color: #5a5a7a; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; text-align: center; }
-    .provider-tab.active { background: rgba(79,142,247,.12); border-color: rgba(79,142,247,.35); color: #7bb3ff; }
+/* ── PROFILE CHART ── */
+.domain-bar-track{height:6px;border-radius:3px;background:#0e0e1c;overflow:hidden;flex:1}
+.domain-bar-fill{height:100%;border-radius:3px;width:0%;transition:width 1.2s cubic-bezier(0.22,1,.36,1)}
 
-    /* ── Demo banner ── */
-    .demo-banner {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(245,166,35,.06); border: 1px solid rgba(245,166,35,.18);
-      border-radius: 8px; padding: 8px 12px; margin-bottom: 10px;
-      font-size: 11.5px; color: #9a7a3a; line-height: 1.4;
-    }
+/* ── GENERATOR ── */
+.theme-chip{padding:6px 14px;border-radius:999px;border:1px solid #252535;background:#0c0c18;color:#5a5a7a;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.theme-chip:hover,.theme-chip.selected{background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.35);color:#7bb3ff}
 
-    /* ── Config gear button ── */
-    .gear-btn { width: 26px; height: 26px; border-radius: 7px; background: #141420; border: 1px solid #252535; color: #404060; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; flex-shrink: 0; }
-    .gear-btn:hover { color: #a0a0c0; border-color: #404058; }
-    .gear-btn.configured { border-color: rgba(52,211,153,.3); color: #34d399; background: rgba(52,211,153,.06); }
-  </style>
+@keyframes genSpin{to{transform:rotate(360deg)}}
+.gen-spinner{width:32px;height:32px;border:2px solid #1e1e30;border-top-color:#4f8ef7;border-radius:50%;animation:genSpin .8s linear infinite}
+
+/* ── CONFETTI CANVAS ── */
+#confetti-canvas{position:fixed;inset:0;z-index:500;pointer-events:none}
+</style>
 </head>
 
 <body class="relative z-10">
 
-  <!-- TOAST -->
-  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[300] pointer-events-none" style="min-width:240px">
-    <div id="toast-inner"><span id="toast-icon">✓</span><span id="toast-text"></span></div>
-  </div>
+<!-- CANVAS: Confetti -->
+<canvas id="confetti-canvas" style="display:none"></canvas>
 
-  <!-- SETTINGS OVERLAY -->
-  <div id="settings-overlay" onclick="App.closeSettings()">
-    <div id="settings-panel" onclick="event.stopPropagation()" id="settings-panel">
-      <div id="settings-content"></div>
+<!-- TOAST -->
+<div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[600] pointer-events-none" style="min-width:240px">
+  <div id="toast-inner"><span id="toast-icon">✓</span><span id="toast-text"></span></div>
+</div>
+
+<!-- OVERLAY (side modal backdrop) -->
+<div id="overlay" onclick="App.closeModal()"></div>
+
+<!-- SIDE MODAL (Article + Chat) -->
+<aside id="side-modal" role="dialog" aria-modal="true">
+  <div id="modal-content" class="flex flex-col h-full"></div>
+</aside>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-overlay" class="cmodal-overlay" onclick="App.closeSettings()">
+  <div class="cmodal-panel" onclick="event.stopPropagation()">
+    <div id="settings-content"></div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profile-overlay" class="cmodal-overlay" onclick="App.closeProfile()">
+  <div class="cmodal-panel" style="max-width:500px" onclick="event.stopPropagation()">
+    <div id="profile-content"></div>
+  </div>
+</div>
+
+<!-- GENERATOR MODAL -->
+<div id="generator-overlay" class="cmodal-overlay" onclick="App.closeGenerator()">
+  <div class="cmodal-panel" onclick="event.stopPropagation()">
+    <div id="generator-content"></div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div class="relative z-10 min-h-screen flex flex-col">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 border-b border-white/5 backdrop-blur-xl" style="background:rgba(8,8,16,.9)">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 h-[58px] flex items-center gap-2">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <div class="w-7 h-7 rounded-[8px] flex items-center justify-center" style="background:linear-gradient(135deg,#4f8ef7,#7c3aed)">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="2.2" fill="white"/><path d="M6.5 1.5v1.5M6.5 10v1.5M1.5 6.5H3M10 6.5h1.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span style="font-size:15px;font-weight:700;letter-spacing:-.3px;color:white">Dopaminapp</span>
+        <span class="hidden sm:inline label-xs px-1.5 py-0.5 rounded" style="background:#141420;border:1px solid #252535;color:#404060">ELITE</span>
+      </div>
+
+      <!-- Nav dots (center) -->
+      <div class="flex-1 flex items-center justify-center gap-1.5" id="nav-dots-container"></div>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <!-- Profile button -->
+        <button class="hdr-btn" id="profile-btn" onclick="App.openProfile()" title="Mi Perfil Intelectual" aria-label="Ver perfil">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><polygon points="6.5,1 8.2,4.5 12,5 9.25,7.7 10,11.5 6.5,9.6 3,11.5 3.75,7.7 1,5 4.8,4.5"/></svg>
+        </button>
+        <!-- Generate button -->
+        <button class="hdr-btn gen-btn" onclick="App.openGenerator()" title="Generar Dilema con IA" aria-label="Nuevo dilema">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M6.5 1v11M1 6.5h11"/></svg>
+        </button>
+        <!-- Streak -->
+        <div id="streak-badge" class="streak-badge flex items-center gap-1.5 px-3 py-1.5 rounded-full" style="background:rgba(245,166,35,.09);border:1px solid rgba(245,166,35,.25);color:#f5a623;font-size:13px;font-weight:600">
+          <span>🔥</span><span id="streak-count">0 días</span>
+        </div>
+      </div>
+
     </div>
-  </div>
+  </header>
 
-  <!-- MODAL OVERLAY -->
-  <div id="overlay" onclick="App.closeModal()"></div>
+  <!-- MAIN -->
+  <main class="flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
+    <div id="dilemma-view"></div>
+  </main>
 
-  <!-- SIDE MODAL -->
-  <aside id="side-modal" role="dialog" aria-modal="true" aria-label="Análisis en profundidad">
-    <div id="modal-content" class="flex flex-col h-full"></div>
-  </aside>
+  <!-- FOOTER -->
+  <footer class="max-w-2xl mx-auto w-full px-4 sm:px-6 py-4 flex items-center justify-between" style="border-top:1px solid #121220">
+    <span class="label-xs" style="color:#2a2a40">Dopaminapp Elite v4 · © 2024</span>
+    <div class="flex items-center gap-3 label-xs" style="color:#252535">
+      <span class="hidden sm:inline">1·A &nbsp; 2·B &nbsp; Espacio·Análisis &nbsp; ←→·Navegar</span>
+      <span style="display:flex;align-items:center;gap:5px;color:#2a2a40"><span style="width:5px;height:5px;border-radius:50%;background:#34d399;display:inline-block"></span>Online</span>
+    </div>
+  </footer>
+</div>
 
-  <!-- APP SHELL -->
-  <div class="relative z-10 min-h-screen flex flex-col">
-
-    <!-- HEADER -->
-    <header class="sticky top-0 z-50 border-b border-white/5 backdrop-blur-xl" style="background:rgba(8,8,16,.88)">
-      <div class="max-w-2xl mx-auto px-4 sm:px-6 h-[58px] flex items-center gap-3">
-        <div class="flex items-center gap-2.5 flex-shrink-0">
-          <div class="w-7 h-7 rounded-[8px] flex items-center justify-center" style="background:linear-gradient(135deg,#4f8ef7,#7c3aed)">
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="2.2" fill="white"/><path d="M6.5 1.5v1.5M6.5 10v1.5M1.5 6.5H3M10 6.5h1.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
-          </div>
-          <span style="font-size:15px;font-weight:700;letter-spacing:-.3px;color:white">Dopaminapp</span>
-          <span class="hidden sm:inline label-xs px-1.5 py-0.5 rounded" style="background:#141420;border:1px solid #252535;color:#404060">v3</span>
-        </div>
-        <div class="flex-1 flex items-center justify-center gap-1.5" id="nav-dots-container"></div>
-        <div class="flex-shrink-0">
-          <div id="streak-badge" class="streak-badge flex items-center gap-1.5 px-3 py-1.5 rounded-full" style="background:rgba(245,166,35,.09);border:1px solid rgba(245,166,35,.25);color:#f5a623;font-size:13px;font-weight:600">
-            <span>🔥</span><span id="streak-count">0 días</span>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- MAIN -->
-    <main class="flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-      <div id="dilemma-view"></div>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="max-w-2xl mx-auto w-full px-4 sm:px-6 py-4 flex items-center justify-between" style="border-top:1px solid #121220">
-      <span class="label-xs" style="color:#2a2a40">Dopaminapp v3.0 · © 2024</span>
-      <div class="flex items-center gap-3 label-xs" style="color:#252535">
-        <span>1 · A &nbsp; 2 · B &nbsp; Espacio · Análisis</span>
-        <span style="display:flex;align-items:center;gap:5px;color:#2a2a40"><span style="width:5px;height:5px;border-radius:50%;background:#34d399;display:inline-block"></span>Online</span>
-      </div>
-    </footer>
-  </div>
-
-
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════════════════
      JAVASCRIPT
-═══════════════════════════════════════════════════════════ -->
+════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
 
-/* ── HELPERS ──────────────────────────────────────────────── */
-function stripHtml(s) { return s.replace(/<[^>]+>/g,''); }
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════ */
+function stripHtml(s){ return (s||'').replace(/<[^>]+>/g,''); }
 
-function parseMarkdown(text) {
-  // Escape HTML that may come from AI
+function parseMarkdown(text){
   let h = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // Bold / Italic
   h = h.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
   h = h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
   h = h.replace(/\*([^*\n]+?)\*/g,'<em>$1</em>');
-  // Inline code
   h = h.replace(/`([^`]+)`/g,'<code>$1</code>');
-  // Bullet lists
   const lines = h.split('\n');
-  let out=[], inList=false;
-  for (const ln of lines) {
-    if (/^[-•]\s/.test(ln)) {
-      if (!inList) { out.push('<ul>'); inList=true; }
-      out.push(`<li>${ln.slice(2)}</li>`);
-    } else {
-      if (inList) { out.push('</ul>'); inList=false; }
-      out.push(ln);
-    }
+  let out=[],inList=false;
+  for(const ln of lines){
+    if(/^[-•]\s/.test(ln)){ if(!inList){out.push('<ul>');inList=true;} out.push(`<li>${ln.slice(2)}</li>`); }
+    else{ if(inList){out.push('</ul>');inList=false;} out.push(ln); }
   }
-  if (inList) out.push('</ul>');
-  // Paragraphs (double newline)
+  if(inList) out.push('</ul>');
   return out.join('\n').replace(/\n\n+/g,'</p><p>').replace(/\n/g,'<br>');
 }
 
-function showToast(text, icon='✓', ms=2800) {
+function showToast(text,icon='✓',ms=2800){
   const el=document.getElementById('toast-inner');
   document.getElementById('toast-icon').textContent=icon;
   document.getElementById('toast-text').textContent=text;
@@ -281,386 +291,580 @@ function showToast(text, icon='✓', ms=2800) {
 
 
 /* ═══════════════════════════════════════════════════════════
-   MODULE: CONFIG (BYOK)
+   MODULE: AUDIO FX  (Web Audio API)
+═══════════════════════════════════════════════════════════ */
+const AudioFX = (() => {
+  let _ctx = null;
+  function ctx(){
+    if(!_ctx) try{ _ctx = new(window.AudioContext||window.webkitAudioContext)(); }catch(_){}
+    return _ctx;
+  }
+
+  function click(){
+    const c=ctx(); if(!c) return;
+    try{
+      const osc=c.createOscillator(), g=c.createGain();
+      osc.connect(g); g.connect(c.destination);
+      osc.frequency.setValueAtTime(900,c.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(220,c.currentTime+.06);
+      g.gain.setValueAtTime(.12,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.09);
+      osc.start(); osc.stop(c.currentTime+.09);
+    }catch(_){}
+  }
+
+  function select(){
+    const c=ctx(); if(!c) return;
+    try{
+      const osc=c.createOscillator(), g=c.createGain();
+      osc.connect(g); g.connect(c.destination);
+      osc.type='sine'; osc.frequency.setValueAtTime(520,c.currentTime);
+      g.gain.setValueAtTime(.05,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.2);
+      osc.start(); osc.stop(c.currentTime+.2);
+    }catch(_){}
+  }
+
+  function victory(){
+    const c=ctx(); if(!c) return;
+    // Major chord: root + major-third + fifth + octave
+    [[440,0],[554,.08],[659,.16],[880,.26]].forEach(([freq,delay])=>{
+      try{
+        const osc=c.createOscillator(), g=c.createGain();
+        osc.connect(g); g.connect(c.destination);
+        osc.type='sine'; osc.frequency.setValueAtTime(freq,c.currentTime+delay);
+        g.gain.setValueAtTime(0,c.currentTime+delay);
+        g.gain.linearRampToValueAtTime(.07,c.currentTime+delay+.05);
+        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+delay+.9);
+        osc.start(c.currentTime+delay); osc.stop(c.currentTime+delay+.9);
+      }catch(_){}
+    });
+  }
+
+  function wrong(){
+    const c=ctx(); if(!c) return;
+    try{
+      const osc=c.createOscillator(), g=c.createGain();
+      osc.connect(g); g.connect(c.destination);
+      osc.type='sawtooth'; osc.frequency.setValueAtTime(200,c.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(120,c.currentTime+.18);
+      g.gain.setValueAtTime(.06,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.22);
+      osc.start(); osc.stop(c.currentTime+.22);
+    }catch(_){}
+  }
+
+  return { click, select, victory, wrong };
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE: CONFETTI  (Canvas)
+═══════════════════════════════════════════════════════════ */
+const Confetti = (() => {
+  let animId=null, particles=[];
+  const COLORS=['#4f8ef7','#a78bfa','#34d399','#f5a623','#f0f0ff','#f87171'];
+
+  function burst(){
+    const canvas=document.getElementById('confetti-canvas');
+    if(!canvas) return;
+    canvas.style.display='block';
+    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    const ctx2d=canvas.getContext('2d');
+    if(animId){ cancelAnimationFrame(animId); animId=null; }
+
+    particles = Array.from({length:70},()=>({
+      x: window.innerWidth*(.2+Math.random()*.6),
+      y: -10 - Math.random()*40,
+      vx: (Math.random()-.5)*5,
+      vy: Math.random()*3+1.5,
+      color: COLORS[Math.floor(Math.random()*COLORS.length)],
+      size: Math.random()*7+3,
+      rotation: Math.random()*360,
+      rotV: (Math.random()-.5)*10,
+      shape: Math.random()>.5?'rect':'circle',
+    }));
+
+    function frame(){
+      ctx2d.clearRect(0,0,canvas.width,canvas.height);
+      let alive=false;
+      for(const p of particles){
+        p.x+=p.vx; p.y+=p.vy; p.vy+=.07; p.rotation+=p.rotV;
+        if(p.y < canvas.height+20){
+          alive=true;
+          const alpha=Math.max(0,1-p.y/canvas.height*1.1);
+          ctx2d.save();
+          ctx2d.translate(p.x,p.y);
+          ctx2d.rotate(p.rotation*Math.PI/180);
+          ctx2d.globalAlpha=alpha;
+          ctx2d.fillStyle=p.color;
+          if(p.shape==='circle'){
+            ctx2d.beginPath(); ctx2d.arc(0,0,p.size/2,0,Math.PI*2); ctx2d.fill();
+          } else {
+            ctx2d.fillRect(-p.size/2,-p.size*.3,p.size,p.size*.6);
+          }
+          ctx2d.restore();
+        }
+      }
+      if(alive) animId=requestAnimationFrame(frame);
+      else { canvas.style.display='none'; }
+    }
+    animId=requestAnimationFrame(frame);
+    setTimeout(()=>{if(animId){cancelAnimationFrame(animId);animId=null;canvas.style.display='none';}},4000);
+  }
+
+  return { burst };
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE: CONFIG (BYOK — API Key Management)
 ═══════════════════════════════════════════════════════════ */
 const Config = (() => {
-  const KEY = 'dopaminapp_v3_config';
-  const PROVIDERS = {
-    gemini: {
-      name:'Google Gemini', emoji:'🔷',
+  const KEY='dopaminapp_v4_config';
+  const PROVIDERS={
+    gemini:{
+      name:'Google Gemini',emoji:'🔷',
       models:[
-        {id:'gemini-1.5-flash',      name:'Gemini 1.5 Flash (Recomendado)'},
-        {id:'gemini-2.0-flash-exp',  name:'Gemini 2.0 Flash (Experimental)'},
-        {id:'gemini-1.5-pro',        name:'Gemini 1.5 Pro (Avanzado)'},
+        {id:'gemini-1.5-flash',name:'Gemini 1.5 Flash (Recomendado)'},
+        {id:'gemini-2.0-flash-exp',name:'Gemini 2.0 Flash (Experimental)'},
+        {id:'gemini-1.5-pro',name:'Gemini 1.5 Pro (Avanzado)'},
       ],
       keyUrl:'https://aistudio.google.com/app/apikey',
       keyPlaceholder:'AIzaSy...',
     },
-    openai: {
-      name:'OpenAI', emoji:'⬛',
+    openai:{
+      name:'OpenAI',emoji:'⬛',
       models:[
-        {id:'gpt-4o-mini', name:'GPT-4o Mini (Rápido)'},
-        {id:'gpt-4o',      name:'GPT-4o (Avanzado)'},
+        {id:'gpt-4o-mini',name:'GPT-4o Mini (Rápido)'},
+        {id:'gpt-4o',name:'GPT-4o (Avanzado)'},
       ],
       keyUrl:'https://platform.openai.com/api-keys',
       keyPlaceholder:'sk-proj-...',
     },
   };
-
-  let cfg = { provider:'gemini', model:'gemini-1.5-flash', apiKey:'' };
-
-  function load() {
-    try { const r=localStorage.getItem(KEY); if(r) cfg={...cfg,...JSON.parse(r)}; } catch(_){}
-    return cfg;
-  }
-  function save(updates) {
-    cfg={...cfg,...updates};
-    try { localStorage.setItem(KEY,JSON.stringify(cfg)); } catch(_){}
-  }
-  function get() { return cfg; }
-  function hasKey() { return !!cfg.apiKey?.trim(); }
-  function getProviders() { return PROVIDERS; }
-  function getProvider() { return PROVIDERS[cfg.provider] || PROVIDERS.gemini; }
-
-  return { load, save, get, hasKey, getProviders, getProvider };
+  let cfg={provider:'gemini',model:'gemini-1.5-flash',apiKey:''};
+  function load(){ try{const r=localStorage.getItem(KEY);if(r)cfg={...cfg,...JSON.parse(r)};}catch(_){} return cfg; }
+  function save(u){ cfg={...cfg,...u}; try{localStorage.setItem(KEY,JSON.stringify(cfg));}catch(_){} }
+  function get(){ return cfg; }
+  function hasKey(){ return !!(cfg.apiKey?.trim()); }
+  function getProviders(){ return PROVIDERS; }
+  function getProvider(){ return PROVIDERS[cfg.provider]||PROVIDERS.gemini; }
+  return { load,save,get,hasKey,getProviders,getProvider };
 })();
 
 
 /* ═══════════════════════════════════════════════════════════
-   MODULE: LLM  (Gemini + OpenAI streaming)
+   MODULE: LLM  (Streaming + Dilemma Generator)
 ═══════════════════════════════════════════════════════════ */
 const LLM = {
 
-  buildSystemPrompt(d, userChoice) {
-    const opt   = d.options[userChoice];
-    const rev   = d.revelation;
-    const ok    = userChoice === rev.historicalChoice;
-    const ctx   = stripHtml(d.context);
-    const cExp  = stripHtml(rev.conceptExp);
+  buildSystemPrompt(d,userChoice){
+    const opt=d.options[userChoice], rev=d.revelation;
+    const ok=userChoice===rev.historicalChoice;
+    return `Eres un asesor intelectual del período ${d.year}, especializado en ${d.category}. Tu rol: pensador crítico y socrático, NO un asistente complaciente.
 
-    return `Eres un asesor intelectual del período histórico ${d.year} especializado en ${d.category}. Tu rol es el de un pensador crítico y socrático — NO un asistente complaciente.
-
-CONTEXTO DEL DILEMA (${d.year}, ${d.country}):
-${ctx}
+CONTEXTO (${d.year}, ${d.country}):
+${stripHtml(d.context)}
 
 EL USUARIO ELIGIÓ: Opción ${userChoice} — "${opt.label}": ${opt.desc}
 
-LO QUE OCURRIÓ HISTÓRICAMENTE: ${rev.actor} eligió la Opción ${rev.historicalChoice} — "${rev.choiceLabel}". ${stripHtml(rev.text)}
+LO QUE OCURRIÓ: ${rev.actor} eligió la Opción ${rev.historicalChoice} — "${rev.choiceLabel}". ${stripHtml(rev.text)}
 
-CONCEPTO CLAVE: ${rev.concept} — ${cExp}
+CONCEPTO CLAVE: ${rev.concept} — ${stripHtml(rev.conceptExp)}
 
 ${ok
-  ? `EL USUARIO ACERTÓ. Tu misión: NO solo validarlo. Desafíalo con los COSTOS COLATERALES reales de esta decisión. ¿Qué se sacrificó? ¿Quién pagó el precio? ¿Podría haber salido mal? Explora la complejidad moral y las consecuencias no previstas.`
-  : `EL USUARIO NO ACERTÓ. Eligió "${opt.label}" pero la historia eligió "${rev.choiceLabel}". Tu misión: rebatirlo con argumentos históricos concretos y desafiantes. Explica la lógica detrás de la decisión real. Hazle ver por qué su intuición, aunque comprensible, no refleja la realidad histórica.`
+  ?`EL USUARIO ACERTÓ. Desafíalo con los costos colaterales reales. ¿Qué se sacrificó? ¿Quién pagó el precio? Profundiza en las consecuencias no previstas y las complejidades morales.`
+  :`EL USUARIO NO ACERTÓ. Eligió "${opt.label}" pero la historia eligió "${rev.choiceLabel}". Rebátelo con argumentos históricos concretos. Explica la lógica detrás de la decisión real.`
 }
 
-REGLAS ESTRICTAS:
-- Máximo 3 párrafos concisos y densos. Sin relleno.
-- Usa **negritas** para conceptos clave.
-- Termina SIEMPRE con una pregunta socrática provocadora que obligue a reflexionar.
-- NUNCA uses frases genéricas de asistente ("¡Claro!", "¡Excelente pregunta!", "¡Buena observación!").
-- Habla con convicción analítica, como un historiador que conoce los hechos.
-- Si el usuario hace preguntas off-topic, redirígelas al dilema con inteligencia.
-- Responde siempre en español.`;
+REGLAS: Máximo 3 párrafos densos. Usa **negritas** para conceptos clave. Termina SIEMPRE con una pregunta socrática provocadora. NUNCA uses frases genéricas ("¡Claro!", "¡Excelente!"). Responde siempre en español.`;
   },
 
-  async _readStream(response, onChunk, onDone, onError, parseChunk) {
-    try {
-      const reader  = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) { onDone(); break; }
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split('\n');
-        buf = lines.pop(); // Keep incomplete line
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const data = line.slice(6).trim();
-          if (data === '[DONE]') { onDone(); return; }
-          if (!data) continue;
-          try {
-            const chunk = parseChunk(JSON.parse(data));
-            if (chunk) onChunk(chunk);
-          } catch(_) {}
+  buildGeneratorPrompt(theme){
+    return `Genera un dilema histórico educativo para una app de microaprendizaje. Responde SOLO con un objeto JSON válido (sin markdown, sin texto adicional).
+
+Tema solicitado: "${theme}"
+
+El JSON debe seguir EXACTAMENTE esta estructura:
+{
+  "id": "slug-año-unico",
+  "category": "Categoría (max 4 palabras)",
+  "catKey": "blue|purple|red|amber|green",
+  "year": "AÑO",
+  "country": "País/Países",
+  "icon": "un solo emoji relevante",
+  "title": "Título dramático (max 6 palabras)",
+  "subtitle": "Subtítulo breve (max 8 palabras)",
+  "context": "Contexto histórico, 2-3 frases. Puedes usar <strong> y <em> para énfasis.",
+  "stats": [
+    {"value": "métrica1", "label": "etiqueta1", "col": "#f87171"},
+    {"value": "métrica2", "label": "etiqueta2", "col": "#f5a623"},
+    {"value": "métrica3", "label": "etiqueta3", "col": "#34d399"}
+  ],
+  "options": {
+    "A": {"label": "Opción A (3-4 palabras)", "desc": "Descripción A (1-2 frases)", "pct": 45},
+    "B": {"label": "Opción B (3-4 palabras)", "desc": "Descripción B (1-2 frases)", "pct": 55}
+  },
+  "revelation": {
+    "historicalChoice": "A o B",
+    "choiceLabel": "Mismo label que la opción elegida",
+    "actor": "Nombre del actor histórico",
+    "text": "Lo que ocurrió realmente (2-3 frases)",
+    "concept": "Concepto clave (2-4 palabras)",
+    "conceptAuthors": "Autor · Obra, Año",
+    "conceptExp": "Explicación del concepto (2-3 frases)",
+    "metrics": [
+      {"value": "resultado1", "label": "etiqueta1", "col": "#34d399"},
+      {"value": "resultado2", "label": "etiqueta2", "col": "#4f8ef7"}
+    ]
+  },
+  "article": {
+    "title": "Título del artículo",
+    "readTime": "3 min",
+    "sections": [
+      {"h": "Título sección 1", "p": "Contenido (3-4 frases)", "hl": false},
+      {"h": "Título sección clave", "p": "Contenido destacado (3-4 frases)", "hl": true},
+      {"h": "El concepto", "p": "Explicación del concepto (3-4 frases)", "hl": false},
+      {"h": "Legado moderno", "p": "Relevancia actual (2-3 frases)", "hl": false}
+    ],
+    "timeline": [
+      {"date": "Fecha 1", "text": "Evento 1", "col": "#f5a623"},
+      {"date": "Fecha 2", "text": "Evento 2", "col": "#f87171"},
+      {"date": "Fecha 3", "text": "Evento 3", "col": "#34d399"}
+    ]
+  },
+  "chat": {
+    "starter": "Pregunta socrática inicial al usuario sobre su elección",
+    "responses": [
+      "Respuesta 1: analítica, datos históricos reales, termina con pregunta socrática",
+      "Respuesta 2: perspectiva alternativa con fundamento histórico",
+      "Respuesta 3: conexión con el concepto clave y dilemas contemporáneos",
+      "Respuesta 4: reflexión sobre las consecuencias y lecciones aprendidas"
+    ]
+  }
+}
+
+Requisitos: históricamente preciso, moralmente complejo, ambas opciones deben ser defendibles. La opción B suele ser la más audaz o disruptiva. Todo en español.`;
+  },
+
+  async _readStream(response,onChunk,onDone,onError,parseChunk){
+    try{
+      const reader=response.body.getReader(), dec=new TextDecoder();
+      let buf='';
+      while(true){
+        const {done,value}=await reader.read();
+        if(done){onDone();break;}
+        buf+=dec.decode(value,{stream:true});
+        const lines=buf.split('\n'); buf=lines.pop();
+        for(const line of lines){
+          if(!line.startsWith('data: ')) continue;
+          const data=line.slice(6).trim();
+          if(data==='[DONE]'){onDone();return;}
+          if(!data) continue;
+          try{ const chunk=parseChunk(JSON.parse(data)); if(chunk) onChunk(chunk); }catch(_){}
         }
       }
-    } catch(e) { onError(e.message); }
+    }catch(e){ onError(e.message); }
   },
 
-  async streamGemini(cfg, messages, systemPrompt, onChunk, onDone, onError) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${cfg.model}:streamGenerateContent?alt=sse&key=${cfg.apiKey}`;
-    const contents = messages.map(m=>({ role: m.role==='assistant'?'model':'user', parts:[{text:m.content}] }));
+  async streamGemini(cfg,messages,systemPrompt,onChunk,onDone,onError){
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/${cfg.model}:streamGenerateContent?alt=sse&key=${cfg.apiKey}`;
+    const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
     let res;
-    try {
-      res = await fetch(url, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          systemInstruction:{ parts:[{text:systemPrompt}] },
-          contents,
-          generationConfig:{ temperature:0.85, maxOutputTokens:700 },
-        })
-      });
-    } catch(e) { onError('Error de red: '+e.message); return; }
-    if (!res.ok) {
-      const err = await res.json().catch(()=>({error:{message:'Error '+res.status}}));
-      onError(err.error?.message || 'Error '+res.status); return;
-    }
-    await this._readStream(res, onChunk, onDone, onError,
-      j => j.candidates?.[0]?.content?.parts?.[0]?.text
+    try{ res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:systemPrompt}]},contents,generationConfig:{temperature:.85,maxOutputTokens:700}})}); }
+    catch(e){ onError('Error de red: '+e.message); return; }
+    if(!res.ok){ const err=await res.json().catch(()=>({error:{message:'Error '+res.status}})); onError(err.error?.message||'Error '+res.status); return; }
+    await this._readStream(res,onChunk,onDone,onError,j=>j.candidates?.[0]?.content?.parts?.[0]?.text);
+  },
+
+  async streamOpenAI(cfg,messages,systemPrompt,onChunk,onDone,onError){
+    let res;
+    try{ res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${cfg.apiKey}`},body:JSON.stringify({model:cfg.model,stream:true,messages:[{role:'system',content:systemPrompt},...messages],max_tokens:700,temperature:.85})}); }
+    catch(e){ onError('Error de red: '+e.message); return; }
+    if(!res.ok){ const err=await res.json().catch(()=>({error:{message:'Error '+res.status}})); onError(err.error?.message||'Error '+res.status); return; }
+    await this._readStream(res,onChunk,onDone,onError,j=>j.choices?.[0]?.delta?.content);
+  },
+
+  async send(messages,systemPrompt,onChunk,onDone,onError){
+    const cfg=Config.get();
+    if(cfg.provider==='openai') await this.streamOpenAI(cfg,messages,systemPrompt,onChunk,onDone,onError);
+    else await this.streamGemini(cfg,messages,systemPrompt,onChunk,onDone,onError);
+  },
+
+  async generateDilemma(theme,onProgress,onDone,onError){
+    if(!Config.hasKey()){ onError('no-key'); return; }
+    const cfg=Config.get();
+    const prompt=this.buildGeneratorPrompt(theme);
+    let accumulated='';
+    await this.send(
+      [{role:'user',content:prompt}],
+      'Eres un experto en historia, economía, filosofía política y geopolítica. Genera contenido educativo preciso, estructurado y en español.',
+      chunk=>{ accumulated+=chunk; onProgress(accumulated); },
+      ()=>{
+        try{
+          let clean=accumulated.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+          const s=clean.indexOf('{'), e=clean.lastIndexOf('}');
+          if(s===-1||e===-1) throw new Error('JSON inválido');
+          const d=JSON.parse(clean.slice(s,e+1));
+          d.id=d.id||'ai-generated-'+Date.now();
+          d._generated=true;
+          onDone(d);
+        }catch(err){ onError('parse: '+err.message); }
+      },
+      onError
     );
   },
 
-  async streamOpenAI(cfg, messages, systemPrompt, onChunk, onDone, onError) {
-    let res;
-    try {
-      res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':`Bearer ${cfg.apiKey}`},
-        body:JSON.stringify({
-          model: cfg.model, stream: true,
-          messages:[{role:'system',content:systemPrompt},...messages],
-          max_tokens:700, temperature:0.85,
-        })
-      });
-    } catch(e) { onError('Error de red: '+e.message); return; }
-    if (!res.ok) {
-      const err = await res.json().catch(()=>({error:{message:'Error '+res.status}}));
-      onError(err.error?.message || 'Error '+res.status); return;
-    }
-    await this._readStream(res, onChunk, onDone, onError,
-      j => j.choices?.[0]?.delta?.content
-    );
-  },
-
-  async send(messages, systemPrompt, onChunk, onDone, onError) {
-    const cfg = Config.get();
-    if (cfg.provider === 'openai') {
-      await this.streamOpenAI(cfg, messages, systemPrompt, onChunk, onDone, onError);
-    } else {
-      await this.streamGemini(cfg, messages, systemPrompt, onChunk, onDone, onError);
-    }
-  },
-
-  typewriter(text, element, onDone, speed=18) {
-    const chars = [...text];
-    let i = 0;
-    function tick() {
-      if (i < chars.length) {
-        element.textContent += chars[i++];
-        setTimeout(tick, speed + Math.random()*12);
-      } else {
-        element.innerHTML = parseMarkdown(text);
-        if (onDone) onDone();
-      }
-    }
+  typewriter(text,element,onDone,speed=18){
+    const chars=[...text]; let i=0;
+    function tick(){ if(i<chars.length){ element.textContent+=chars[i++]; setTimeout(tick,speed+Math.random()*12); } else { element.innerHTML=parseMarkdown(text); if(onDone) onDone(); } }
     tick();
   },
 };
 
 
 /* ═══════════════════════════════════════════════════════════
-   MODULE: DILEMMAS DATABASE
+   LOCAL GENERATOR TEMPLATES (fallback when no API key)
 ═══════════════════════════════════════════════════════════ */
-const DB = { dilemmas: [
-
+const LOCAL_TEMPLATES = [
   {
-    id:'volcker-1979', category:'Macroeconomía & Poder', catKey:'blue',
-    year:'1979', country:'EE.UU.', icon:'🏛️',
-    title:'El Presidente de la Reserva Federal',
-    subtitle:'Paul Volcker y la Gran Estanflación',
+    id:'dunkirk-1940',category:'Estrategia Militar',catKey:'red',year:'1940',country:'Francia / Reino Unido',icon:'⚓',
+    title:'La Evacuación de Dunkerque',subtitle:'Churchill — Rendirse o Resistir',
+    context:'<strong style="color:#e8e8f8">Mayo 1940, Dunkerque.</strong> 338.000 soldados aliados están atrapados en la playa. La Wehrmacht avanza. El gabinete de guerra está dividido: Halifax propone negociar con Hitler a través de Mussolini. Churchill se opone. <em style="color:#f87171;font-weight:600">La decisión marcará el curso de la Segunda Guerra Mundial.</em>',
+    stats:[{value:'338K',label:'Soldados atrapados',col:'#f87171'},{value:'10 días',label:'Para la rendición',col:'#f5a623'},{value:'5',label:'Sesiones del gabinete',col:'#4f8ef7'}],
+    options:{A:{label:'Negociar con Hitler',desc:'Usar a Mussolini como mediador para alcanzar un acuerdo de paz que preservara el Imperio Británico.',pct:35},B:{label:'Resistir sin cuartel',desc:'Evacuar Dunkerque, rechazar cualquier negociación y continuar la guerra aunque Francia capitule.',pct:65}},
+    revelation:{historicalChoice:'B',choiceLabel:'Resistir sin cuartel',actor:'Winston Churchill',text:'Churchill rechazó cualquier negociación. En la sesión del 28 de mayo convenció al gabinete con un discurso memorable. La Operación Dínamo evacuó <strong style="color:#34d399">338.000 soldados</strong> en 9 días. Churchill pronunció su discurso "lucharemos en las playas". El rechazo a negociar mantuvo a Gran Bretaña en la guerra, permitió el apoyo de EE.UU. y fue el punto de inflexión hacia la victoria aliada.',concept:'Punto de No Retorno',conceptAuthors:'Nassim Taleb · Antifragile, 2012',conceptExp:'Ciertas decisiones crean un "point of no return" donde la señal enviada es más importante que el acto en sí. La negativa de Churchill a negociar con Hitler envió una señal de resolución que transformó la psicología aliada global — incluyendo la posición de Roosevelt y Stalin.',metrics:[{value:'338K',label:'Soldados evacuados',col:'#34d399'},{value:'1945',label:'Victoria aliada',col:'#4f8ef7'}]},
+    article:{title:'Dunkerque: El Milagro que Salvó a Europa',readTime:'3 min',sections:[{h:'La trampa de Dunkerque',p:'En mayo de 1940, la Blitzkrieg alemana había partido las líneas aliadas. El BEF y las fuerzas francesas quedaron atrapados en la costa. La única salida era el mar — y la Luftwaffe dominaba el cielo. Parecía una rendición inevitable.',hl:false},{h:'El debate del gabinete',p:'El Foreign Secretary Lord Halifax argumentó que negociar con Hitler a través de Mussolini era la única opción racional. Gran Bretaña podría conservar su independencia y el Imperio. Churchill respondió que una Gran Bretaña que negociaba bajo amenaza nunca recuperaría su capacidad de resistencia — se convertiría en un estado vasallo de facto.',hl:true},{h:'El concepto: la señal como arma',p:'La resolución de Churchill fue, en parte, una jugada estratégica de señalización. Al rechazar negociar, envió un mensaje claro a Roosevelt: Gran Bretaña no capitulará. Esto fue crucial para el Lend-Lease y eventual entrada de EE.UU. en la guerra.',hl:false},{h:'Legado',p:'Dunkerque se convirtió en el símbolo de la resiliencia británica. La evacuación fue presentada como un milagro — y lo fue, en parte porque los tanques alemanes detuvieron su avance misteriosamente durante 3 días críticos.',hl:false}],timeline:[{date:'10 May 1940',text:'Churchill nombrado Primer Ministro. Alemania invade Francia y Bélgica.',col:'#f5a623'},{date:'26 May',text:'Inicio de la Operación Dínamo. Evacuación de Dunkerque.',col:'#f87171'},{date:'28 May',text:'Churchill convence al gabinete: no habrá negociación.',col:'#f5a623'},{date:'4 Jun',text:'338.000 soldados evacuados. Churchill da su discurso "lucharemos en las playas".',col:'#34d399'}]},
+    chat:{starter:'Halifax tenía un argumento racional: conservar el Imperio a cambio de autonomía limitada. ¿Por qué ese argumento, aparentemente sensato, era en realidad catastrófico a largo plazo?',responses:['La negociación con Hitler habría requerido ceder Gibraltar, Malta y posiblemente India. Pero el problema más profundo era estructural: un acuerdo con el nazismo legitimaba el régimen y eliminaba cualquier presión para su autodestrucción interna. La guerra era el único mecanismo que finalmente destruyó al nazismo. ¿Hay sistemas políticos que solo pueden ser derrotados, no negociados?','Churchill entendía algo que Halifax no: la percepción de debilidad en política internacional es debilidad real. Si Gran Bretaña negociaba bajo amenaza, los países neutrales — EE.UU., Turquía, España — concluirían que el eje ganará y se alinearían en consecuencia. La señal era más importante que el resultado inmediato.','La frase "lucharemos en las playas" es considerada uno de los mejores discursos de la historia. Pero Churchill sabía que era, en parte, propaganda interna: necesitaba que los británicos creyeran en la victoria para que la victoria fuera posible. ¿Cuándo la narrativa estratégica se convierte en mentira necesaria?','El "Milagro de Dunkerque" tuvo un factor que Churchill no controló: Hitler ordenó a sus Panzers detenerse durante 3 días críticos, posiblemente para preservarlos para futuras operaciones. Si los tanques hubieran continuado, Dunkerque habría sido una masacre. ¿Cómo calibras el papel de la suerte en las grandes decisiones históricas?']}
+  },
+  {
+    id:'marshall-plan-1947',category:'Geopolítica & Economía',catKey:'blue',year:'1947',country:'EE.UU. / Europa',icon:'🌍',
+    title:'El Plan Marshall',subtitle:'¿Reconstruir o Contener?',
+    context:'<strong style="color:#e8e8f8">1947, Europa devastada.</strong> La Segunda Guerra Mundial dejó 70 millones de muertos y economías en ruinas. El comunismo avanza en Francia e Italia. El Secretario de Estado George Marshall propone invertir <em style="color:#4f8ef7;font-weight:600">13.000 millones de dólares</em> en la reconstrucción europea. El Congreso se resiste: ¿por qué pagar la reconstrucción de los que acabamos de liberar?',
+    stats:[{value:'$13B',label:'Inversión propuesta',col:'#4f8ef7'},{value:'16',label:'Países beneficiarios',col:'#34d399'},{value:'70M',label:'Muertos en la guerra',col:'#f87171'}],
+    options:{A:{label:'Inversión masiva',desc:'El Plan Marshall: 13.000 millones en reconstrucción económica de Europa Occidental. Mercados fuertes = democracias fuertes.',pct:61},B:{label:'Contención mínima',desc:'Contener el comunismo con presencia militar sin reconstrucción económica masiva. Europa debe reconstruirse sola.',pct:39}},
+    revelation:{historicalChoice:'A',choiceLabel:'Inversión masiva',actor:'George Marshall / Truman',text:'El Plan Marshall fue aprobado en 1948. En cuatro años, la producción industrial europea superó los niveles de preguerra. <strong style="color:#34d399">El PIB europeo creció un 35%</strong> entre 1948 y 1952. Francia e Italia mantuvieron sus democracias. El Plan demostró que el desarrollo económico es la mejor vacuna contra el extremismo político.',concept:'Teoría de la Modernización',conceptAuthors:'Walt Rostow · The Stages of Economic Growth, 1960',conceptExp:'La teoría sostiene que el desarrollo económico produce estabilización política: las clases medias emergentes tienen demasiado que perder para apoyar el extremismo. El Plan Marshall fue el experimento más exitoso de esta teoría — y el modelo para el Plan de Acción de Truman en Asia y África.',metrics:[{value:'+35%',label:'PIB europeo 1948-52',col:'#34d399'},{value:'$13B',label:'→ Billones en comercio',col:'#4f8ef7'}]},
+    article:{title:'El Plan Marshall: La Geopolítica del Dinero',readTime:'3 min',sections:[{h:'La apuesta de Marshall',p:'El 5 de junio de 1947, Marshall pronunció su discurso en Harvard: Europa necesita ayuda masiva o caerá en el caos y el comunismo. El plan era radical para la época: gastar dinero de los contribuyentes americanos en reconstruir países que habían sido sus aliados — y algunos sus enemigos meses antes.',hl:false},{h:'El dilema real: seguridad o mercados',p:'El Plan Marshall tenía una doble motivación. La primera era geopolítica: evitar que Europa cayera bajo influencia soviética. La segunda era económica: EE.UU. necesitaba mercados solventes para comprar sus exportaciones. La reconstrucción europea era tanto altruismo estratégico como interés propio inteligente.',hl:true},{h:'La Unión Soviética rechazó participar',p:'Stalin fue invitado al Plan Marshall pero rechazó — correctamente calculó que la dependencia económica de EE.UU. limitaría la soberanía soviética en Europa del Este. Esta decisión consolidó la división de Europa en dos bloques y aceleró la Guerra Fría.',hl:false},{h:'Relevancia contemporánea',p:'El Plan Marshall es citado constantemente como modelo para reconstrucción post-conflicto: Iraq, Afganistán, Ucrania. Pero sus condiciones únicas — Europa industrializada con capital humano intacto, clara amenaza del comunismo, consenso político americano — raramente se replican.',hl:false}],timeline:[{date:'Jun 1947',text:'Marshall anuncia el plan en Harvard.',col:'#4f8ef7'},{date:'Abr 1948',text:'Congreso aprueba el Economic Cooperation Act.',col:'#34d399'},{date:'1948-52',text:'PIB europeo crece 35%. Producción supera niveles pre-guerra.',col:'#34d399'},{date:'1952',text:'Plan concluye. Europa Occidental establida. Bases de la futura UE.',col:'#4f8ef7'}]},
+    chat:{starter:'El Plan Marshall costó $13B en 1948 — equivalente a ~$140B hoy. ¿Cuándo la inversión en un adversario o aliado debilitado es más inteligente que la contención agresiva?',responses:['El Plan Marshall operó en condiciones muy específicas: Europa tenía capital humano, instituciones funcionales y una clase trabajadora calificada. Solo faltaba capital. En países donde faltan instituciones, reglas del derecho o capital humano, la inversión masiva no necesariamente produce el mismo efecto. ¿Cómo distingues cuándo el dinero puede "comprar" estabilidad y cuándo no?','El Secretario de Estado Acheson describió el dilema honestamente: "Estamos ante una de esas grandes situaciones en la historia que requieren una decisión irreversible". El Plan Marshall era difícil de revertir una vez iniciado — los europeos construirían instituciones y compromisos sobre esa base. ¿Cuáles son las consecuencias de las decisiones "irreversibles" en política exterior?','Stalin calculó correctamente que el Plan Marshall consolidaría la influencia de EE.UU. en Europa Occidental — y rechazó invitar a sus satélites. Esto creó la ironía: el Plan Marshall, diseñado para evitar la expansión soviética, consolidó las dos esferas de influencia que definieron la Guerra Fría por 45 años.','El Plan Marshall es frecuentemente citado como modelo para Ucrania post-guerra. Pero Europa en 1947 tenía algo que Ucrania actualmente no tiene claramente: un consenso político interno sobre su identidad nacional y dirección estratégica. ¿Es posible el "Plan Marshall" de Ucrania sin ese consenso previo?']}
+  },
+  {
+    id:'asian-crisis-1997',category:'Finanzas Globales',catKey:'amber',year:'1997',country:'Tailandia / FMI / Asia',icon:'🌏',
+    title:'La Crisis del Baht',subtitle:'FMI — Austeridad o Estímulo',
+    context:'<strong style="color:#e8e8f8">Julio 1997, Bangkok.</strong> El baht tailandés colapsa. La crisis se propaga como incendio: Indonesia, Corea del Sur, Malasia. El FMI ofrece rescate de <em style="color:#f5a623;font-weight:600">117.000 millones de dólares</em> condicionado a austeridad severa: subir tasas de interés, recortar gasto, liberalizar mercados. Mahathir de Malasia dice que es una conspiración de especuladores occidentales.',
+    stats:[{value:'$117B',label:'Rescate FMI',col:'#4f8ef7'},{value:'-40%',label:'Caída del baht',col:'#f87171'},{value:'5',label:'Países afectados',col:'#f5a623'}],
+    options:{A:{label:'Recetas del FMI',desc:'Austeridad fiscal, tasas altas, liberalización de mercados a cambio del rescate. Dolor a corto plazo, estabilidad a largo.',pct:44},B:{label:'Controles de capital',desc:'Rechazar condiciones del FMI. Imponer controles de capital para detener la fuga. Proteger la economía doméstica.',pct:56}},
+    revelation:{historicalChoice:'B',choiceLabel:'Controles de capital',actor:'Mahathir Mohamad (Malasia)',text:'Tailandia, Indonesia y Corea aceptaron el FMI — sus economías sufrieron recesiones devastadoras con 40% de caída del PIB en algunos sectores. <strong style="color:#34d399">Malasia rechazó al FMI</strong>, impuso controles de capital y fijó el tipo de cambio. Su recuperación fue más rápida. El debate sobre las "condicionalidades" del FMI reconfiguró la economía del desarrollo global.',concept:'Trilemma de Mundell & Contagio',conceptAuthors:'Joseph Stiglitz · Globalization and its Discontents, 2002',conceptExp:'La crisis asiática demostró que la liberalización financiera sin supervisión prudencial crea vulnerabilidades sistémicas. El "contagio financiero" — donde la crisis de un país se propaga a otros sin conexión fundamental — invalidó los modelos de crisis estándar del FMI. Stiglitz ganó el Nobel (2001) en parte por predecir estos fallos.',metrics:[{value:'+3%',label:'PIB Malasia 1999',col:'#34d399'},{value:'-13%',label:'PIB Indonesia 1998',col:'#f87171'}]},
+    article:{title:'La Crisis Asiática: Cuando el FMI Erró',readTime:'3 min',sections:[{h:'El milagro asiático y su fragilidad',p:'Los "Tigres Asiáticos" habían crecido al 8-10% anual durante dos décadas. Pero bajo el crecimiento se acumularon desequilibrios: endeudamiento en dólares, burbujas inmobiliarias y sistemas bancarios opacos. La liberalización financiera de los 90, impulsada por el FMI, expuso estas vulnerabilidades.',hl:false},{h:'El debate Stiglitz vs FMI',p:'Joseph Stiglitz, entonces economista jefe del Banco Mundial, criticó públicamente las recetas del FMI: subir tasas en medio de una recesión agravaba la caída. La austeridad reducía la demanda exactamente cuando era necesario estimularla. El FMI respondió que sin credibilidad fiscal, ningún rescate funcionaría. El debate sigue sin resolver.',hl:true},{h:'El experimento malayo',p:'Mahathir impuso controles de capital en septiembre de 1998, fijó el tipo de cambio a 3.8 ringgit/dólar e ignoró al FMI. En 1999, Malasia creció 3%. Los defensores del FMI argumentaron que la recuperación se debía a la mejora global; los críticos señalaron que Malasia evitó la devastación social que sufrieron Tailandia e Indonesia.',hl:false},{h:'Legado: el FMI reformado',p:'La crisis asiática forzó una reforma profunda del FMI. Las "condicionalidades" se suavizaron. La idea de que los mercados de capitales siempre se autoequilibran quedó desacreditada. China observó la crisis y concluyó que los controles de capital no son un signo de atraso sino de prudencia soberana — lección que aplica hasta hoy.',hl:false}],timeline:[{date:'Jul 1997',text:'Tailandia devalúa el baht. Crisis se propaga a toda Asia.',col:'#f87171'},{date:'Ago 1997',text:'FMI anuncia paquete de $117B con condicionalidades.',col:'#f5a623'},{date:'Sep 1998',text:'Malasia impone controles de capital. Rechaza al FMI.',col:'#f5a623'},{date:'1999',text:'Malasia crece 3%. Tailandia e Indonesia en recesión profunda.',col:'#34d399'}]},
+    chat:{starter:'El FMI exigía austeridad para restaurar confianza. Malasia impuso controles y se recuperó más rápido. ¿Qué dice esto sobre la diferencia entre "confianza del mercado" y bienestar económico real?',responses:['El FMI operaba con un modelo de crisis de balanza de pagos clásica: el problema era falta de credibilidad fiscal. Pero la crisis asiática era fundamentalmente diferente: los gobiernos tenían superávit fiscal, el problema era deuda privada en dólares y pánico de mercado. Aplicar el manual equivocado agravó la crisis. ¿Cómo distingues cuándo el diagnóstico correcto es más importante que la medicina?','Stiglitz argumentó que las condicionalidades del FMI en Asia equivalían a recetar austeridad a un paciente que sufre shock hemorrágico. La urgencia requería estimular, no restringir. La respuesta del FMI fue que sin disciplina fiscal, la confianza del mercado no regresaría. Este debate — estímulo vs austeridad en crisis — continúa en Europa en 2010, en Argentina en 2001, en cada crisis de deuda soberana.','La gran lección que China extrajo de la crisis asiática fue clara: nunca liberalizar completamente la cuenta de capital. Hasta hoy, China mantiene controles sobre los flujos de capitales — lo cual le da autonomía monetaria pero limita la internacionalización del yuan. ¿Es la soberanía monetaria más valiosa que la integración financiera global?','El "contagio" financiero demostró que los mercados no son racionales en el sentido eficiente: pánico en Tailandia llevó a ventas masivas en Corea del Sur sin razón fundamental. Esto invalidó la hipótesis de mercados eficientes en situaciones de estrés. ¿Cómo diseñas un sistema financiero que sea resiliente al pánico irracional sin suprimir los mercados?']}
+  },
+];
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE: DILEMMAS DATABASE (6 dilemas)
+═══════════════════════════════════════════════════════════ */
+const DB = {
+  dilemmas: [
+
+  /* ─── 1. VOLCKER 1979 ─────────────────────────────────── */
+  {
+    id:'volcker-1979',category:'Macroeconomía & Poder',catKey:'blue',
+    year:'1979',country:'EE.UU.',icon:'🏛️',
+    title:'El Presidente de la Reserva Federal',subtitle:'Paul Volcker y la Gran Estanflación',
     context:'<strong style="color:#e8e8f8">1979, Estados Unidos.</strong> La inflación supera el <em style="color:#f87171;font-weight:600">13% anual</em> y las expectativas están desancladas. Acabas de ser nombrado presidente de la <strong style="color:#e8e8f8">Reserva Federal</strong>. La presión política es inmensa: el gobierno exige crédito barato. Pero la inflación destruye los ahorros de millones de familias.',
-    stats:[
-      {value:'13.3%',label:'Inflación anual',col:'#f87171'},
-      {value:'7.1%', label:'Desempleo',       col:'#f5a623'},
-      {value:'−0.3%',label:'PIB real',         col:'#f87171'},
-    ],
-    options:{
-      A:{label:'Alivio Gradual',   desc:'Mantener tasas moderadas y pactar controles de precios para evitar la recesión inmediata.',pct:68},
-      B:{label:'Terapia de Shock', desc:'Subir tasas a niveles históricos (~20%) para quebrar la inflación. Asumir desempleo inmediato.',pct:32},
-    },
-    revelation:{
-      historicalChoice:'B',choiceLabel:'Terapia de Shock',actor:'Paul Volcker',
-      text:'Volcker eligió la Terapia de Shock. Escaló las tasas hasta casi el <strong style="color:#e8e8f8">20%</strong>. La economía entró en recesión, el desempleo llegó al 10.8%. Recibió amenazas de muerte y fue quemado en efigie. Sin embargo, para 1983 la inflación había caído al <strong style="color:#34d399">3.2%</strong> y el crecimiento regresó con fuerza récord.',
-      concept:'Inconsistencia Temporal',conceptAuthors:'Kydland & Prescott · Nobel 2004',
-      conceptExp:'Los policy makers tienen incentivos para <em>prometer</em> baja inflación y luego <em>incumplir</em> esa promesa para estimular el empleo a corto plazo. Resultado: nadie cree sus promesas y la inflación se cronifica. La única salida es un mecanismo de compromiso creíble — independencia del banco central o un shock tan doloroso que restaure la credibilidad por décadas.',
-      metrics:[{value:'3.2%',label:'Inflación 1983',col:'#34d399'},{value:'+7.2%',label:'Crecimiento 1984',col:'#4f8ef7'}],
-    },
-    article:{
-      title:'La Crisis de Stagflación de 1979', readTime:'3 min',
-      sections:[
-        {h:'El contexto: una economía en llamas',p:'En 1979, EE.UU. enfrentaba su peor crisis económica desde la Gran Depresión. La inflación superaba el 13% anual, alimentada por dos shocks petroleros, política monetaria laxa y el gasto deficitario acumulado de Vietnam.',hl:false},
-        {h:'Paul Volcker y el dilema imposible',p:'Carter nombró a Volcker en agosto de 1979. Volcker sabía que solo existía una solución: destruir la credibilidad de la inflación alta aunque el precio fuera una recesión brutal. En octubre de 1979 la Fed dejó de controlar las tasas directamente y comenzó a controlar la oferta monetaria. Las tasas escalaron al ~20% en 1981.',hl:true},
-        {h:'El concepto: Inconsistencia Temporal',p:'Kydland y Prescott (Nobel 2004) formalizaron el dilema: los gobiernos tienen incentivos para prometer baja inflación y luego incumplir. El resultado: inflación crónica. La única salida es un mecanismo de compromiso creíble — independencia del banco central o reglas rígidas.',hl:false},
-        {h:'El legado moderno',p:'El "Volcker Shock" estableció el paradigma de bancos centrales independientes que rige hasta hoy. Jerome Powell citó explícitamente a Volcker en sus discursos de Jackson Hole durante el ciclo de subidas 2022-2023.',hl:false},
-      ],
-      timeline:[
-        {date:'Ago 1979',text:'Volcker nombrado presidente de la Fed por Carter.',col:'#f5a623'},
-        {date:'Oct 1979',text:'Cambio de objetivo monetarista. Tasas comienzan a escalar.',col:'#f5a623'},
-        {date:'1981–82', text:'Recesión intensa. Desempleo llega al 10.8%.',col:'#f87171'},
-        {date:'1983–84', text:'Inflación cae al 3.2%. Expansión récord.',col:'#34d399'},
-      ],
-    },
-    chat:{
-      starter:'¿Cuál fue tu razonamiento? Recuerda que en 1979 nadie garantizaba que el shock funcionaría — muchos economistas predecían una depresión prolongada.',
-      responses:[
-        'La Inconsistencia Temporal es precisamente el problema que enfrentabas: cualquier promesa de moderación habría sido interpretada como señal de que la Fed cedería bajo presión política. La única forma de restaurar credibilidad era el costo que nadie quería pagar. ¿Crees que habría existido alguna alternativa que no requiriera este sacrificio?',
-        'Reagan resistió enorme presión para cesar a Volcker en 1981-82, cuando el desempleo superó el 10%. Si hubiera cedido, la inflación habría regresado en meses. La pregunta real es: ¿puede una democracia soportar el dolor a corto plazo necesario para el bien a largo plazo?',
-        'Nixon intentó controles de precios en 1971-74 — exactamente lo que propone la Opción A. Funcionaron temporalmente para suprimir la inflación visible, pero cuando se retiraron, la inflación explotó con más fuerza. ¿Cuál es la diferencia entre suprimir un síntoma y tratar la causa?',
-        'El ciclo de subidas de la Fed en 2022-2023 siguió exactamente el manual Volcker. Powell sacrificó popularidad para mantener credibilidad. ¿Qué dice esto sobre la naturaleza del liderazgo institucional versus el liderazgo político?',
-      ],
-    },
+    stats:[{value:'13.3%',label:'Inflación anual',col:'#f87171'},{value:'7.1%',label:'Desempleo',col:'#f5a623'},{value:'−0.3%',label:'PIB real',col:'#f87171'}],
+    options:{A:{label:'Alivio Gradual',desc:'Mantener tasas moderadas y pactar controles de precios para evitar la recesión inmediata.',pct:68},B:{label:'Terapia de Shock',desc:'Subir tasas a niveles históricos (~20%) para quebrar la inflación. Asumir desempleo inmediato.',pct:32}},
+    revelation:{historicalChoice:'B',choiceLabel:'Terapia de Shock',actor:'Paul Volcker',text:'Volcker escaló las tasas hasta casi el <strong style="color:#e8e8f8">20%</strong>. La economía entró en recesión, el desempleo llegó al 10.8%. Recibió amenazas de muerte y fue quemado en efigie. Para 1983 la inflación había caído al <strong style="color:#34d399">3.2%</strong> y el crecimiento regresó con fuerza récord.',concept:'Inconsistencia Temporal',conceptAuthors:'Kydland & Prescott · Nobel 2004',conceptExp:'Los policy makers tienen incentivos para <em>prometer</em> baja inflación y luego <em>incumplir</em> esa promesa para estimular el empleo. Resultado: nadie cree sus promesas y la inflación se cronifica. La única salida es un compromiso creíble — independencia del banco central o un shock tan doloroso que restaure la credibilidad por décadas.',metrics:[{value:'3.2%',label:'Inflación 1983',col:'#34d399'},{value:'+7.2%',label:'Crecimiento 1984',col:'#4f8ef7'}]},
+    article:{title:'La Crisis de Stagflación de 1979',readTime:'3 min',sections:[{h:'El contexto: una economía en llamas',p:'En 1979, EE.UU. enfrentaba su peor crisis económica desde la Gran Depresión. La inflación superaba el 13% anual, alimentada por dos shocks petroleros (1973 y 1979), política monetaria laxa y gasto deficitario acumulado de Vietnam.',hl:false},{h:'Paul Volcker y el dilema imposible',p:'Carter nombró a Volcker en agosto de 1979. Volcker sabía que solo existía una solución: destruir la credibilidad de la inflación alta aunque el precio fuera una recesión brutal. En octubre de 1979 cambió el objetivo: la Fed controlaría la oferta monetaria. Las tasas escalaron del 10% al ~20% en 1981.',hl:true},{h:'El concepto: Inconsistencia Temporal',p:'Kydland y Prescott (Nobel 2004) formalizaron el dilema: los gobiernos tienen incentivos para prometer baja inflación y luego incumplir. La única salida es un mecanismo de compromiso creíble — independencia del banco central o reglas rígidas.',hl:false},{h:'El legado moderno',p:'El "Volcker Shock" estableció el paradigma de bancos centrales independientes que rige hasta hoy. Jerome Powell citó explícitamente a Volcker en sus discursos de Jackson Hole durante el ciclo de subidas 2022-2023.',hl:false}],timeline:[{date:'Ago 1979',text:'Volcker nombrado presidente de la Fed por Carter.',col:'#f5a623'},{date:'Oct 1979',text:'Cambio de objetivo monetarista. Tasas comienzan a escalar.',col:'#f5a623'},{date:'1981–82',text:'Recesión intensa. Desempleo llega al 10.8%.',col:'#f87171'},{date:'1983–84',text:'Inflación cae al 3.2%. Expansión récord. Victoria de Volcker.',col:'#34d399'}]},
+    chat:{starter:'¿Tu razonamiento priorizó el bienestar inmediato o la estabilidad estructural a largo plazo? Recuerda que en 1979 nadie garantizaba que el shock funcionaría.',responses:['La Inconsistencia Temporal es el problema central: cualquier promesa de moderación habría sido interpretada como señal de que la Fed cedería bajo presión política. La única forma de restaurar credibilidad era el costo que nadie quería pagar. ¿Crees que habría existido alguna alternativa que no requiriera este sacrificio?','Nixon intentó controles de precios en 1971-74 — exactamente lo que propone la Opción A. Funcionaron temporalmente, pero cuando se retiraron, la inflación explotó con más fuerza. ¿Cuál es la diferencia entre suprimir un síntoma y tratar la causa?','El ciclo de subidas de la Fed en 2022-2023 siguió exactamente el manual Volcker. Powell sacrificó popularidad para mantener credibilidad. ¿Qué dice esto sobre la naturaleza del liderazgo institucional versus el liderazgo político?','La inflación "desanclada" es cuando las expectativas divergen de la meta del banco central. Cuando trabajadores piden aumentos anticipando inflación futura y empresas suben precios preventivamente, el ciclo se retroalimenta. Volcker tuvo que romper esa dinámica con violencia monetaria. ¿Existe un modo más humano de hacer lo mismo?']}
   },
 
+  /* ─── 2. MAQUIAVELO 1513 ──────────────────────────────── */
   {
-    id:'machiavelli-1513', category:'Filosofía del Poder', catKey:'purple',
-    year:'1513', country:'Florencia', icon:'🦅',
-    title:'El Consejo del Príncipe',
-    subtitle:'Maquiavelo — Virtud o Miedo',
-    context:'<strong style="color:#e8e8f8">Florencia, 1513.</strong> Niccolò Maquiavelo acaba de ser <em style="color:#a78bfa;font-weight:600">exiliado y torturado</em> por los Medici. Para rehabilitarse, escribe un tratado político para Lorenzo de Medici, nuevo señor de Florencia. Debes aconsejar a un príncipe que tomó el poder sobre un territorio dividido por facciones rivales.',
-    stats:[
-      {value:'4',     label:'Facciones rivales',col:'#f87171'},
-      {value:'2 años',label:'En el poder',      col:'#f5a623'},
-      {value:'ALTA',  label:'Inestabilidad',    col:'#f87171'},
-    ],
-    options:{
-      A:{label:'Virtud y Amor',  desc:'Gobernar con generosidad y clemencia, buscando el amor del pueblo para construir lealtad duradera.',pct:45},
-      B:{label:'La Necessità',   desc:'Ejercer el poder con firmeza estratégica. Ser temido antes que amado. Eliminar amenazas rápidamente.',pct:55},
-    },
-    revelation:{
-      historicalChoice:'B',choiceLabel:'La Necessità',actor:'Niccolò Maquiavelo',
-      text:'Maquiavelo prescribió la <strong style="color:#e8e8f8">Necessità</strong>: <em>"Es mejor ser temido que amado, si no puedes ser ambas cosas."</em> En El Príncipe arguye que la generosidad mal gestionada arruina al gobernante. El príncipe debe actuar como <strong style="color:#a78bfa">el León y el Zorro</strong> — fuerza brutal cuando es necesario, astucia política siempre.',
-      concept:'Virtù vs Fortuna',conceptAuthors:'Niccolò Maquiavelo · El Príncipe, 1513',
-      conceptExp:'<strong>Virtù</strong> (no virtud moral, sino capacidad política) es la habilidad del príncipe de dar forma a las circunstancias. <strong>Fortuna</strong> es la aleatoriedad del entorno, comparable a un río desbordado. Maquiavelo sostiene que la Virtù puede domar a la Fortuna la mitad del tiempo — el resto depende de la adaptabilidad.',
-      metrics:[{value:'510+',label:'Años de influencia',col:'#a78bfa'},{value:'Cap.XVII',label:'Amor vs Miedo',col:'#4f8ef7'}],
-    },
-    article:{
-      title:'El Príncipe y el Arte del Poder', readTime:'3 min',
-      sections:[
-        {h:'El hombre detrás del mito',p:'Maquiavelo no era un cínico enamorado del poder — era un funcionario republicano traumatizado. Durante 14 años fue secretario de la república florentina. Cuando los Medici restauraron su dominio, fue torturado bajo sospecha de conspiración y escribió El Príncipe desde el exilio.',hl:false},
-        {h:'La pregunta central: ¿Amor o Miedo?',p:'El capítulo XVII de El Príncipe es uno de los textos más citados y malinterpretados. Maquiavelo no dice que el miedo sea preferible en abstracto — dice que si debes elegir, el miedo es más confiable porque los hombres rompen lazos de amor por interés propio, pero temen al castigo constantemente.',hl:true},
-        {h:'Virtù vs Fortuna: el dilema eterno',p:'Maquiavelo introduce la distinción entre Virtù (capacidad política) y Fortuna (la aleatoriedad del entorno). El gran príncipe no espera la adversidad para prepararse — la anticipa. Como el ingeniero que construye diques antes de la inundación.',hl:false},
-        {h:'Legado: el primer politólogo moderno',p:'El Príncipe fundó la ciencia política moderna al separar la moral de la eficacia. De Richelieu a Napoleón, de Bismarck a Kissinger: la realpolitik maquiavélica estructura cómo los estados ejercen el poder hasta hoy.',hl:false},
-      ],
-      timeline:[
-        {date:'1498',    text:'Maquiavelo nombrado Secretario de la Segunda Cancillería de Florencia.',col:'#4f8ef7'},
-        {date:'Nov 1512',text:'Los Medici restauran su dominio. Maquiavelo torturado y exiliado.',col:'#f87171'},
-        {date:'1513',    text:'Escribe El Príncipe desde su exilio en Sant\'Andrea in Percussina.',col:'#f5a623'},
-        {date:'1532',    text:'El Príncipe publicado póstumamente. Maquiavelo murió en 1527.',col:'#34d399'},
-      ],
-    },
-    chat:{
-      starter:'¿Tu decisión refleja cómo crees que funciona el poder real, o cómo crees que debería funcionar? Hay una diferencia enorme entre ambas.',
-      responses:[
-        '"Maquiavélico" hoy tiene connotación negativa, pero Maquiavelo también escribió los Discursos sobre Tito Livio, donde defiende la república como el mejor sistema. El Príncipe era un manual de supervivencia para circunstancias extremas, no su filosofía completa. ¿Crees que existen contextos donde el realismo político brutal es la única opción ética disponible?',
-        'El León y el Zorro son complementarios: el León necesita la astucia del Zorro para no caer en trampas; el Zorro necesita la fuerza del León para no ser devorado. Los gobernantes que solo usan uno de los dos modelos fracasan. ¿Cuál de los dos crees que es más escaso en los líderes contemporáneos?',
-        'Platón quería gobernantes-filósofos guiados por la Justicia ideal. Maquiavelo quería gobernantes eficaces guiados por la necesidad real. 2500 años después, los sistemas democráticos liberales intentan un híbrido imposible: líderes que sean moralmente impecables Y políticamente efectivos. ¿Es ese híbrido estable o una contradicción estructural?',
-        'La Virtù de Maquiavelo no es la virtud cristiana — es adaptabilidad, decisión y capacidad de actuar en el momento correcto. En términos modernos: capacidad ejecutiva + inteligencia situacional + disposición para tomar decisiones impopulares. ¿Qué líder contemporáneo crees que más se aproxima a este ideal?',
-      ],
-    },
+    id:'machiavelli-1513',category:'Filosofía del Poder',catKey:'purple',
+    year:'1513',country:'Florencia',icon:'🦅',
+    title:'El Consejo del Príncipe',subtitle:'Maquiavelo — Virtud o Miedo',
+    context:'<strong style="color:#e8e8f8">Florencia, 1513.</strong> Niccolò Maquiavelo acaba de ser <em style="color:#a78bfa;font-weight:600">exiliado y torturado</em> por los Medici. Para rehabilitarse, escribe un tratado político para Lorenzo de Medici. Debes aconsejar a un príncipe que tomó el poder sobre un territorio dividido por facciones rivales y conspiraciones de la nobleza.',
+    stats:[{value:'4',label:'Facciones rivales',col:'#f87171'},{value:'2 años',label:'En el poder',col:'#f5a623'},{value:'ALTA',label:'Inestabilidad',col:'#f87171'}],
+    options:{A:{label:'Virtud y Amor',desc:'Gobernar con generosidad y clemencia, buscando el amor del pueblo para construir lealtad duradera.',pct:45},B:{label:'La Necessità',desc:'Ejercer el poder con firmeza estratégica. Ser temido antes que amado. Eliminar amenazas rápidamente.',pct:55}},
+    revelation:{historicalChoice:'B',choiceLabel:'La Necessità',actor:'Niccolò Maquiavelo',text:'Maquiavelo prescribió inequívocamente la <strong style="color:#e8e8f8">Necessità</strong>: <em>"Es mejor ser temido que amado, si no puedes ser ambas cosas."</em> El príncipe debe actuar como <strong style="color:#a78bfa">el León y el Zorro</strong> — fuerza brutal cuando es necesario, astucia política siempre.',concept:'Virtù vs Fortuna',conceptAuthors:'Niccolò Maquiavelo · El Príncipe, 1513',conceptExp:'<strong>Virtù</strong> (no virtud moral, sino capacidad política) es la habilidad del príncipe de dar forma a las circunstancias. <strong>Fortuna</strong> es la aleatoriedad del entorno, comparable a un río desbordado. Maquiavelo sostiene que la Virtù puede domar a la Fortuna la mitad del tiempo.',metrics:[{value:'510+',label:'Años de influencia',col:'#a78bfa'},{value:'Cap.XVII',label:'Amor vs Miedo',col:'#4f8ef7'}]},
+    article:{title:'El Príncipe y el Arte del Poder',readTime:'3 min',sections:[{h:'El hombre detrás del mito',p:'Maquiavelo no era un cínico enamorado del poder — era un funcionario republicano traumatizado. Durante 14 años fue secretario de la república florentina. Cuando los Medici restauraron su dominio, fue torturado bajo sospecha de conspiración y escribió El Príncipe desde el exilio buscando un mecenas.',hl:false},{h:'La pregunta central: ¿Amor o Miedo?',p:'El capítulo XVII de El Príncipe es uno de los textos más citados y malinterpretados. Maquiavelo no dice que el miedo sea preferible en abstracto — dice que si debes elegir, el miedo es más confiable porque los hombres rompen lazos de amor por interés propio, pero temen al castigo constantemente.',hl:true},{h:'Virtù vs Fortuna: el dilema eterno',p:'Maquiavelo introduce la distinción entre Virtù (capacidad política) y Fortuna (la aleatoriedad del entorno). El gran príncipe no espera la adversidad para prepararse — la anticipa. Como el ingeniero que construye diques antes de la inundación.',hl:false},{h:'Legado: el primer politólogo moderno',p:'El Príncipe fundó la ciencia política moderna al separar la moral de la eficacia. De Richelieu a Napoleón, de Bismarck a Kissinger: la realpolitik maquiavélica estructura cómo los estados ejercen el poder hasta hoy.',hl:false}],timeline:[{date:'1498',text:'Maquiavelo nombrado Secretario de la Segunda Cancillería de Florencia.',col:'#4f8ef7'},{date:'Nov 1512',text:'Los Medici restauran su dominio. Maquiavelo torturado y exiliado.',col:'#f87171'},{date:'1513',text:'Escribe El Príncipe desde su exilio en Sant\'Andrea in Percussina.',col:'#f5a623'},{date:'1532',text:'El Príncipe publicado póstumamente. Maquiavelo murió en 1527.',col:'#34d399'}]},
+    chat:{starter:'¿Tu decisión refleja cómo crees que funciona el poder real, o cómo crees que debería funcionar? Hay una diferencia enorme entre ambas perspectivas.',responses:['El León y el Zorro son complementarios: el León necesita la astucia del Zorro para no caer en trampas; el Zorro necesita la fuerza del León para no ser devorado. Los gobernantes que solo usan uno de los dos modelos fracasan. ¿Cuál de los dos crees que es más escaso en los líderes contemporáneos?','Platón quería gobernantes-filósofos guiados por la Justicia ideal. Maquiavelo quería gobernantes eficaces guiados por la necesidad real. 2500 años después, las democracias intentan un híbrido: líderes moralmente impecables Y políticamente efectivos. ¿Es ese híbrido estable o una contradicción estructural?','La Virtù de Maquiavelo no tiene nada que ver con la virtud cristiana. Es adaptabilidad, decisión y capacidad de actuar en el momento correcto. En términos modernos: capacidad ejecutiva + inteligencia situacional + disposición para tomar decisiones impopulares necesarias.','Kissinger es considerado el maquiavélico más influyente del siglo XX. Defendió a regímenes autoritarios si servían a los intereses estratégicos de EE.UU. ¿Dónde está la línea entre el pragmatismo político y la complicidad moral?']}
   },
 
+  /* ─── 3. CUBA 1962 ────────────────────────────────────── */
   {
-    id:'cuba-missiles-1962', category:'Geopolítica Nuclear', catKey:'red',
-    year:'1962', country:'EE.UU. / Cuba / URSS', icon:'☢️',
-    title:'Trece Días al Borde del Abismo',
-    subtitle:'Kennedy, Khrushchev y los Misiles de Cuba',
+    id:'cuba-missiles-1962',category:'Geopolítica Nuclear',catKey:'red',
+    year:'1962',country:'EE.UU. / Cuba / URSS',icon:'☢️',
+    title:'Trece Días al Borde del Abismo',subtitle:'Kennedy, Khrushchev y los Misiles de Cuba',
     context:'<strong style="color:#e8e8f8">16 octubre, 1962.</strong> Fotografías del U-2 confirman lo impensable: la URSS instala <em style="color:#f87171;font-weight:600">misiles nucleares en Cuba</em>, a 90 millas de Florida. Kennedy convoca el ExComm en secreto. El general LeMay presiona por ataque aéreo. McNamara propone bloqueo naval. Tienes 48 horas para decidir.',
-    stats:[
-      {value:'42',  label:'Misiles detectados',     col:'#f87171'},
-      {value:'18h', label:'Para ser operacionales', col:'#f87171'},
-      {value:'~500',label:'Megatones totales',       col:'#f5a623'},
-    ],
-    options:{
-      A:{label:'Bloqueo Naval',desc:'Cuarentena marítima para impedir nuevos misiles y negociar diplomáticamente su retirada.',pct:73},
-      B:{label:'Ataque Aéreo', desc:'Destrucción quirúrgica de los sitios de misiles antes de que sean operacionales. Asumir represalias.',pct:27},
-    },
-    revelation:{
-      historicalChoice:'A',choiceLabel:'Bloqueo Naval',actor:'John F. Kennedy',
-      text:'Kennedy eligió el Bloqueo Naval. El 22 de octubre lo anunció al mundo. Durante 13 días el planeta estuvo al borde del abismo. El <strong style="color:#f87171">27 de octubre</strong> ("Sábado Negro") un U-2 fue derribado y submarinos soviéticos con torpedos nucleares fueron detectados dentro del bloqueo. Vasili Arkhipov se negó a autorizar el torpedo nuclear. El 28 Khrushchev retiró los misiles a cambio de un acuerdo secreto sobre Turquía.',
-      concept:'Brinksmanship / Chicken Game',conceptAuthors:'Thomas Schelling · Strategy of Conflict, 1960',
-      conceptExp:'El "Chicken Game": dos jugadores aceleran hacia el otro. Quien desvía primero "pierde" reputación, pero ambos pierden si ninguno desvía. La disuasión nuclear es un Chicken Game estructural: la credibilidad de tu amenaza depende de tu disposición a cumplirla, pero cumplirla significa destrucción mutua asegurada (MAD).',
-      metrics:[{value:'13',label:'Días de crisis',col:'#f87171'},{value:'0',label:'Misiles lanzados',col:'#34d399'}],
-    },
-    article:{
-      title:'Trece Días que Cambiaron la Historia', readTime:'3 min',
-      sections:[
-        {h:'El descubrimiento',p:'El 14 de octubre de 1962, un U-2 fotografió sitios de misiles soviéticos en Cuba. El análisis confirmó misiles R-12 con alcance para alcanzar Washington D.C. Kennedy fue informado el 16 y convocó al ExComm, un grupo secreto de 14 asesores.',hl:false},
-        {h:'El ExComm dividido',p:'Los "halcones" — el general LeMay y el director de la CIA McCone — presionaban por ataque aéreo masivo. Lo que no sabían: los soviéticos tenían 100 armas tácticas nucleares operacionales en Cuba, listas para usar en caso de invasión.',hl:true},
-        {h:'La teoría del juego: Brinksmanship',p:'Schelling formalizó el Brinksmanship: llevar al adversario al borde del abismo para forzar concesiones. El bloqueo era Brinksmanship clásico: Khrushchev debía elegir entre escalar (riesgo nuclear) o retroceder (pérdida de reputación).',hl:false},
-        {h:'El hombre que salvó el mundo',p:'El 27 de octubre, el submarino soviético B-59 perdió comunicación con Moscú. El capitán Savitsky ordenó armar el torpedo nuclear. Solo el oficial Vasili Arkhipov vetó el lanzamiento — su voto era necesario por protocolo. Un desconocido evitó la Tercera Guerra Mundial.',hl:false},
-      ],
-      timeline:[
-        {date:'14 Oct',text:'U-2 fotografía sitios de misiles soviéticos en Cuba.',col:'#f87171'},
-        {date:'16 Oct',text:'Kennedy convoca el ExComm en secreto.',col:'#f5a623'},
-        {date:'22 Oct',text:'Kennedy anuncia el bloqueo naval al mundo.',col:'#f5a623'},
-        {date:'27 Oct',text:'"Sábado Negro": U-2 derribado. Arkhipov veta torpedo nuclear.',col:'#f87171'},
-        {date:'28 Oct',text:'Khrushchev retira los misiles. Crisis resuelta.',col:'#34d399'},
-      ],
-    },
-    chat:{
-      starter:'El ExComm estuvo dividido por días. ¿Qué argumento concreto te habría convencido de cambiar tu decisión? Quiero saber qué información adicional considerarías decisiva.',
-      responses:[
-        'Lo que los "halcones" del ExComm no sabían es crucial: los soviéticos tenían misiles tácticos Luna con ojivas nucleares y órdenes de usarlos si Cuba era invadida. Un ataque aéreo habría desencadenado una respuesta nuclear táctica en Cuba, lo que habría obligado a EE.UU. a responder, lo que habría obligado a la URSS a responder en Berlín... ¿Ves cómo la "solución quirúrgica" del ataque aéreo ignoraba la complejidad real del sistema?',
-        'El acuerdo final incluyó una cláusula secreta no revelada durante décadas: EE.UU. retiró sus misiles Jupiter de Turquía en 6 meses. Kennedy no podía anunciarlo sin parecer que había capitulado. La "victoria" fue en realidad un intercambio de misiles disfrazado de firmeza. ¿Cuál es la diferencia entre diplomacia real y teatro político?',
-        'El "hotline" Moscú-Washington se instaló directamente como resultado de la crisis del 62. La lección: las guerras nucleares no comienzan por agresión deliberada, sino por malentendidos en situaciones de alta presión y comunicación deficiente. ¿Qué nos dice esto sobre los sistemas de comunicación en crisis geopolíticas actuales?',
-        'Vasili Arkhipov probablemente no comprendía en ese momento que estaba tomando la decisión más importante de la historia humana. Actuaba por protocolo, juicio táctico y dudas sobre la situación real. La paz más importante del siglo XX dependió de la sensatez burocrática de un oficial desconocido. ¿Qué nos revela esto sobre cómo funciona realmente el poder en los momentos críticos?',
-      ],
-    },
+    stats:[{value:'42',label:'Misiles detectados',col:'#f87171'},{value:'18h',label:'Para ser operacionales',col:'#f87171'},{value:'~500',label:'Megatones totales',col:'#f5a623'}],
+    options:{A:{label:'Bloqueo Naval',desc:'Cuarentena marítima para impedir nuevos misiles y negociar diplomáticamente su retirada.',pct:73},B:{label:'Ataque Aéreo',desc:'Destrucción quirúrgica de los sitios de misiles antes de que sean operacionales. Asumir represalias.',pct:27}},
+    revelation:{historicalChoice:'A',choiceLabel:'Bloqueo Naval',actor:'John F. Kennedy',text:'Kennedy eligió el Bloqueo Naval. El 22 de octubre lo anunció al mundo. Durante 13 días el planeta estuvo al borde del abismo. El <strong style="color:#f87171">27 de octubre</strong> ("Sábado Negro") el oficial soviético Vasili Arkhipov se negó a autorizar un torpedo nuclear. El 28 Khrushchev retiró los misiles a cambio de un acuerdo secreto sobre Turquía.',concept:'Brinksmanship / Chicken Game',conceptAuthors:'Thomas Schelling · Strategy of Conflict, 1960',conceptExp:'El "Chicken Game": dos jugadores aceleran hacia el otro. Quien desvía primero "pierde" reputación, pero ambos pierden si ninguno desvía. La disuasión nuclear es un Chicken Game estructural: la credibilidad de tu amenaza depende de tu disposición a cumplirla, pero cumplirla significa destrucción mutua asegurada.',metrics:[{value:'13',label:'Días de crisis',col:'#f87171'},{value:'0',label:'Misiles lanzados',col:'#34d399'}]},
+    article:{title:'Trece Días que Cambiaron la Historia',readTime:'3 min',sections:[{h:'El descubrimiento',p:'El 14 de octubre de 1962, un U-2 fotografió sitios de misiles soviéticos en Cuba. El análisis confirmó misiles R-12 con alcance para alcanzar Washington D.C. Kennedy fue informado el 16 y convocó al ExComm, un grupo secreto de 14 asesores.',hl:false},{h:'El ExComm dividido',p:'Los "halcones" — el general LeMay y el director de la CIA McCone — presionaban por ataque aéreo masivo. Lo que no sabían: los soviéticos tenían 100 armas tácticas nucleares operacionales en Cuba, listas para usar en caso de invasión.',hl:true},{h:'La teoría del juego: Brinksmanship',p:'Schelling formalizó el Brinksmanship: llevar al adversario al borde del abismo para forzar concesiones. El bloqueo era Brinksmanship clásico: Khrushchev debía elegir entre escalar (riesgo nuclear) o retroceder (pérdida de reputación).',hl:false},{h:'El hombre que salvó el mundo',p:'El 27 de octubre, el submarino soviético B-59 perdió comunicación con Moscú. El capitán Savitsky ordenó armar el torpedo nuclear. Solo el oficial Vasili Arkhipov vetó el lanzamiento. Un desconocido evitó la Tercera Guerra Mundial.',hl:false}],timeline:[{date:'14 Oct',text:'U-2 fotografía sitios de misiles soviéticos en Cuba.',col:'#f87171'},{date:'16 Oct',text:'Kennedy convoca el ExComm en secreto.',col:'#f5a623'},{date:'22 Oct',text:'Kennedy anuncia el bloqueo naval al mundo.',col:'#f5a623'},{date:'27 Oct',text:'"Sábado Negro": U-2 derribado. Arkhipov veta torpedo nuclear.',col:'#f87171'},{date:'28 Oct',text:'Khrushchev retira los misiles. Crisis resuelta.',col:'#34d399'}]},
+    chat:{starter:'El ExComm estuvo dividido por días. ¿Qué argumento concreto te habría convencido de cambiar tu decisión? ¿Qué información considerarías decisiva?',responses:['Lo que los "halcones" del ExComm no sabían: los soviéticos tenían misiles tácticos Luna con ojivas nucleares y órdenes de usarlos si Cuba era invadida. Un ataque aéreo habría desencadenado una respuesta nuclear táctica, lo que habría obligado a EE.UU. a responder, lo que habría obligado a la URSS a responder en Berlín... ¿Ves cómo la "solución quirúrgica" ignoraba la complejidad real del sistema?','El acuerdo final incluyó una cláusula secreta no revelada por décadas: EE.UU. retiró sus misiles Jupiter de Turquía en 6 meses. La "victoria" fue en realidad un intercambio de misiles disfrazado de firmeza. ¿Cuál es la diferencia entre diplomacia real y teatro político?','El "hotline" Moscú-Washington se instaló directamente como resultado de la crisis del 62. La lección: las guerras nucleares no comienzan por agresión deliberada, sino por malentendidos en situaciones de alta presión. ¿Qué nos dice esto sobre los sistemas de comunicación en crisis geopolíticas actuales?','Vasili Arkhipov no comprendía en ese momento que estaba tomando la decisión más importante de la historia humana. Actuaba por protocolo y dudas sobre la situación real. La paz más importante del siglo XX dependió de la sensatez burocrática de un oficial desconocido. ¿Qué nos revela esto sobre cómo funciona realmente el poder en los momentos críticos?']}
   },
 
-]};
+  /* ─── 4. LTCM 1998 ────────────────────────────────────── */
+  {
+    id:'ltcm-1998',category:'Finanzas & Riesgo Sistémico',catKey:'green',
+    year:'1998',country:'EE.UU.',icon:'💸',
+    title:'El Rescate que Nadie Quería',subtitle:'LTCM y el Riesgo Moral del Sistema',
+    context:'<strong style="color:#e8e8f8">Agosto 1998.</strong> Long-Term Capital Management, dirigido por ganadores del <em style="color:#34d399;font-weight:600">Premio Nobel de Economía</em>, está en colapso. Tiene $125B en activos pero <strong style="color:#f87171">$1.25 billones</strong> en exposición derivada. La crisis rusa lo ha destruido. La Fed de Nueva York convoca a 16 bancos. Eres el presidente de la Fed: ¿orquestas el rescate o dejas al mercado actuar?',
+    stats:[{value:'$1.25T',label:'Exposición derivada',col:'#f87171'},{value:'25x',label:'Apalancamiento',col:'#f5a623'},{value:'16',label:'Bancos en riesgo',col:'#f87171'}],
+    options:{A:{label:'Rescate Coordinado',desc:'Organizar una inyección de $3.6B por 16 bancos para desmantelar la posición ordenadamente y evitar el contagio.',pct:72},B:{label:'Disciplina de Mercado',desc:'Dejar que LTCM quiebre. El mercado debe aprender. El riesgo moral es peor que la crisis inmediata.',pct:28}},
+    revelation:{historicalChoice:'A',choiceLabel:'Rescate Coordinado',actor:'Alan Greenspan / Fed Nueva York',text:'La Fed de Nueva York orquestó el rescate. William McDonough convocó a 16 bancos que inyectaron $3.600 millones. LTCM fue liquidado ordenadamente en 2000. La crisis sistémica fue evitada... pero el mensaje fue claro: los actores "too big to fail" siempre serán rescatados. Esta lección sería ignorada con consecuencias devastadoras en <strong style="color:#f87171">2008</strong>.',concept:'Riesgo Moral (Moral Hazard)',conceptAuthors:'Bernanke, Paulson · TARP 2008',conceptExp:'El Riesgo Moral ocurre cuando los actores toman más riesgos sabiendo que serán rescatados si fallan. Al rescatar a LTCM, la Fed envió una señal peligrosa: los grandes actores financieros pueden apalancar posiciones masivas porque el sistema los protegerá. Esta lógica se amplificó hasta la crisis financiera de 2008.',metrics:[{value:'$3.6B',label:'Rescate coordinado',col:'#34d399'},{value:'2008',label:'Cuando estalló la burbuja',col:'#f87171'}]},
+    article:{title:'LTCM: Demasiado Inteligente para Quebrar',readTime:'3 min',sections:[{h:'El fondo más sofisticado del mundo',p:'LTCM fue fundado en 1994 por John Meriwether y contaba con Myron Scholes y Robert Merton, quienes ganaron el Nobel de Economía en 1997 precisamente por su trabajo en valoración de derivados. La ironía: sus propios modelos no capturaban los riesgos que estaban tomando.',hl:false},{h:'La trampa del apalancamiento',p:'LTCM tenía $125B en activos pero con apalancamiento de 25:1, su exposición real superaba $1.25 billones. Sus modelos asumían distribuciones normales y correlaciones estables — suposiciones que la crisis rusa de agosto de 1998 destruyó en días. Cuando activos que "no debían" correlacionarse colapsaron juntos, el fondo perdió $4.6B en semanas.',hl:true},{h:'El dilema: rescate o contagio',p:'La Fed calculó que una quiebra desordenada de LTCM forzaría ventas de emergencia masivas en bonos, divisas y derivados globales. El efecto en cadena podría derribar a varios de los 16 bancos más expuestos. Rescatar generaba riesgo moral; dejar caer generaba riesgo sistémico.',hl:false},{h:'Legado: la semilla del 2008',p:'El rescate estableció el precedente del "put de Greenspan": la Fed intervendrá para evitar colapsos sistémicos. Este seguro implícito animó a los grandes bancos a tomar riesgos aún mayores en la siguiente década, culminando en la crisis de 2008.',hl:false}],timeline:[{date:'Feb 1994',text:'Meriwether funda LTCM con capital inicial de $1.25B.',col:'#4f8ef7'},{date:'Ago 1998',text:'Crisis rusa. LTCM pierde $4.6B en semanas.',col:'#f87171'},{date:'Sep 1998',text:'Fed NY orquesta rescate de $3.6B por 16 bancos.',col:'#f5a623'},{date:'2000',text:'LTCM liquidado. Crisis sistémica evitada por ahora.',col:'#34d399'},{date:'2008',text:'La misma lógica "too big to fail" destruye el sistema financiero global.',col:'#f87171'}]},
+    chat:{starter:'El rescate de LTCM "funcionó" en 1998. La quiebra de Lehman en 2008 no fue rescatada y el sistema colapsó. ¿Qué nos dice esto sobre cuándo rescatar y cuándo dejar caer?',responses:['El Riesgo Moral es el problema más difícil de la regulación financiera. Si rescatas, incentivas el riesgo futuro. Si no rescatas, pagas el precio inmediato del contagio. Nassim Taleb argumenta que el sistema financiero debería estar diseñado para que los actores grandes fallen sin arrastrar a otros. ¿Cómo diseñarías ese sistema?','Myron Scholes y Robert Merton ganaron el Nobel por la fórmula Black-Scholes, que asume distribuciones normales. La crisis rusa demostró que los mercados siguen distribuciones de "cola gruesa" donde los eventos extremos son mucho más frecuentes de lo que predice la curva de Gauss. ¿Qué pasa cuando los modelos de riesgo miden el riesgo equivocado?','Alan Greenspan admitió en 2008 ante el Congreso que encontró un "flaw" (defecto) en su visión del mundo: creía que los bancos protegerían sus propios intereses lo suficientemente bien. Se equivocó. El Riesgo Moral que LTCM sembró en 1998 germinó en la mayor crisis financiera desde 1929.','La diferencia entre LTCM (1998) y Lehman (2008) es de escala y velocidad. LTCM tenía posiciones que podían ser liquidadas ordenadamente en 14 días. Lehman tenía miles de contrapartes y productos que nadie entendía del todo. El problema no era si rescatar sino si el rescate era técnicamente posible.']}
+  },
+
+  /* ─── 5. HOBBES vs LOCKE 1651 ─────────────────────────── */
+  {
+    id:'hobbes-locke-1651',category:'Filosofía Política',catKey:'purple',
+    year:'1651',country:'Europa',icon:'⚖️',
+    title:'El Fundamento del Estado',subtitle:'Hobbes vs Locke — El Origen del Poder Legítimo',
+    context:'<strong style="color:#e8e8f8">Europa, 1651.</strong> La Guerra de los Treinta Años devastó el continente. Las monarquías absolutas se tambalean. Thomas Hobbes acaba de publicar el <em style="color:#a78bfa;font-weight:600">Leviatán</em>. Debes fundar el marco filosófico de un nuevo estado tras una guerra civil: ¿el poder emana del miedo y la seguridad colectiva, o de derechos naturales y el consentimiento popular?',
+    stats:[{value:'30 años',label:'Guerra civil europea',col:'#f87171'},{value:'8M',label:'Muertos estimados',col:'#f87171'},{value:'1651',label:'Leviatán publicado',col:'#f5a623'}],
+    options:{A:{label:'Contrato Lockeano',desc:'El poder emana del consentimiento. Los ciudadanos tienen derechos naturales inalienables. El estado protege, no controla.',pct:58},B:{label:'Leviatán Hobbesiano',desc:'Sin soberano absoluto, la vida es "solitaria, pobre, brutal y corta". La seguridad justifica la autoridad total.',pct:42}},
+    revelation:{historicalChoice:'A',choiceLabel:'Contrato Lockeano',actor:'La Historia (Revolución Gloriosa 1688)',text:'Locke ganó la batalla histórica: sus "Two Treatises of Government" (1689) fundamentaron la Revolución Gloriosa inglesa, inspiraron directamente la <strong style="color:#4f8ef7">Declaración de Independencia de EE.UU. (1776)</strong> y la Revolución Francesa (1789). Sin embargo, el siglo XX probaría que Hobbes tenía razón en algo crucial: la autoridad sin poder real colapsa ante la violencia organizada.',concept:'Dilema Seguridad vs Libertad',conceptAuthors:'Isaiah Berlin · Two Concepts of Liberty, 1958',conceptExp:'Berlin diferenció la "libertad negativa" (ausencia de interferencia — Locke) de la "libertad positiva" (capacidad real de auto-determinación). Hobbes vio que sin la primera —seguridad física— la segunda es imposible. El liberalismo moderno intenta la síntesis permanentemente inestable de ambas.',metrics:[{value:'1776',label:'Declaración de Independencia',col:'#4f8ef7'},{value:'1984',label:'El Leviatán sin límites (Orwell)',col:'#f87171'}]},
+    article:{title:'El Origen del Poder: La Batalla que Moldea el Mundo',readTime:'3 min',sections:[{h:'Hobbes: el Estado de Naturaleza como guerra',p:'Para Hobbes, sin autoridad soberana, los seres humanos viven en un "estado de naturaleza" donde la vida es "solitaria, pobre, desagradable, brutal y corta". La solución: un contrato social donde todos ceden libertades absolutas a un soberano que garantice seguridad. Este soberano no puede ser cuestionado.',hl:false},{h:'Locke: el poder viene del consentimiento',p:'Locke argumentó que los humanos nacen con derechos naturales inalienables: vida, libertad y propiedad. El Estado se crea para proteger estos derechos, no para suprimirlos. Si el gobierno los viola, los ciudadanos tienen el derecho — incluso el deber — de rebelarse. Esta idea radical fundamentó todas las revoluciones liberales modernas.',hl:true},{h:'El debate que nunca termina',p:'El siglo XX fue un laboratorio brutal: los estados hobbeesianos extremos (nazismo, stalinismo) demostraron que la seguridad sin libertad deviene tiranía. Los estados lockeianos extremos demostraron que la libertad sin estructura deviene caos. Las democracias liberales son un intento de síntesis permanentemente inestable.',hl:false},{h:'Relevancia contemporánea',p:'El debate Hobbes-Locke estructura todos los debates políticos modernos: vigilancia masiva vs privacidad, seguridad nacional vs derechos civiles, intervención estatal vs mercado libre. En 2020, la pandemia forzó a democracias liberales a tomar medidas hobbeesianas que muchos ciudadanos lockeanos rechazaron.',hl:false}],timeline:[{date:'1642',text:'Guerra Civil Inglesa. Decapitación de Carlos I.',col:'#f87171'},{date:'1651',text:'Hobbes publica el Leviatán desde su exilio en París.',col:'#f5a623'},{date:'1689',text:'Locke publica Two Treatises. Revolución Gloriosa en Inglaterra.',col:'#4f8ef7'},{date:'1776',text:'Declaración de Independencia de EE.UU. cita textualmente a Locke.',col:'#34d399'},{date:'1984',text:'Orwell publica 1984: el Leviatán sin límites deviene pesadilla.',col:'#f87171'}]},
+    chat:{starter:'El contrato de Locke triunfó históricamente. Pero en crisis extremas los estados vuelven a Hobbes. ¿Eso invalida a Locke o lo confirma?',responses:['La tensión es irresoluble porque describen realidades diferentes. Hobbes describe la dinámica del poder tal como funciona; Locke describe cómo debería legitimarse. La pregunta real es: ¿puede un sistema sostenerse a largo plazo si solo describe cómo funciona, sin incluir cómo debe legitimarse?','John Rawls en 1971 intentó la síntesis definitiva con su "velo de ignorancia": si no supieras en qué posición social nacias, ¿qué sistema elegirías? Concluyó que elegiríamos el que maximiza las oportunidades del más desfavorecido. ¿Esto resuelve el dilema Hobbes-Locke o solo lo desplaza?','El COVID-19 fue el experimento político más relevante del siglo XXI: forzó a democracias liberales a tomar medidas hobbeesianas (confinamiento, restricción de movimiento) contra voluntades individuales lockeanas. Lo que determinó el resultado no fue la filosofía sino la confianza institucional previa. ¿Qué dice esto sobre el fundamento real del contrato social?','El gran error de interpretación de Hobbes es pensar que el Leviatán debe ser un monarca. Hobbes solo requería que el soberano garantizara seguridad — eso puede ser una asamblea, un partido, incluso un algoritmo. ¿Qué forma de Leviatán moderno cumple mejor las condiciones hobbeesianas?']}
+  },
+
+  /* ─── 6. NIXON SHOCK 1971 ─────────────────────────────── */
+  {
+    id:'nixon-shock-1971',category:'Macroeconomía Global',catKey:'amber',
+    year:'1971',country:'EE.UU. / Global',icon:'💵',
+    title:'El Fin del Patrón Oro',subtitle:'Nixon y el Colapso de Bretton Woods',
+    context:'<strong style="color:#e8e8f8">Washington, agosto 1971.</strong> Los costos de Vietnam y los programas de la Gran Sociedad han disparado el déficit. Francia exige canjear sus dólares por oro a <em style="color:#f5a623;font-weight:600">$35/oz</em>. Las reservas de Fort Knox caen en picada. Si mantienes la convertibilidad, Europa te vaciará de oro. Si la eliminas, rediseñas el sistema monetario global.',
+    stats:[{value:'$10B',label:'Oro en reservas',col:'#f5a623'},{value:'$55B',label:'Dólares en el exterior',col:'#f87171'},{value:'6.1%',label:'Inflación en EE.UU.',col:'#f87171'}],
+    options:{A:{label:'Defender Bretton Woods',desc:'Mantener la convertibilidad oro a $35/oz. Negociar con aliados para evitar el vaciamiento de reservas.',pct:38},B:{label:'Nixon Shock',desc:'Cerrar la ventanilla del oro y dejar flotar el dólar libremente. Fin del sistema de Bretton Woods.',pct:62}},
+    revelation:{historicalChoice:'B',choiceLabel:'Nixon Shock',actor:'Richard Nixon',text:'El 15 de agosto de 1971, Nixon anunció el cierre de la ventanilla del oro y un arancel del 10% a importaciones. El sistema de Bretton Woods colapsó. En 1973 se adoptaron tipos de cambio flotantes. El dólar, sin respaldo en oro, se convirtió en patrón de reserva global por conveniencia — el llamado <strong style="color:#f5a623">"dólar de petróleo"</strong>.',concept:'Trilema de Mundell-Fleming',conceptAuthors:'Robert Mundell · Nobel 1999',conceptExp:'Ningún país puede tener simultáneamente: (1) tipo de cambio fijo, (2) libre movimiento de capitales y (3) política monetaria independiente. Bretton Woods sacrificó el punto 3. Nixon eligió el punto 3 (autonomía monetaria) eliminando el punto 1. Hoy, China mantiene el 1 y el 3 sacrificando el 2 (controles de capital).',metrics:[{value:'1973',label:'Tipos de cambio flotantes',col:'#f5a623'},{value:'$35→∞',label:'Precio del oro tras Nixon',col:'#34d399'}]},
+    article:{title:'El Nixon Shock: El Día que Cambió el Dinero',readTime:'3 min',sections:[{h:'Bretton Woods: el sistema que gobernó el mundo',p:'En julio de 1944, 44 naciones acordaron en Bretton Woods un sistema monetario anclado al dólar, convertible en oro a $35/oz. El FMI y el Banco Mundial nacieron de este acuerdo. Durante 25 años, el sistema garantizó estabilidad monetaria global y el desarrollo de la economía de posguerra.',hl:false},{h:'La trampa del "dilema de Triffin"',p:'El economista Robert Triffin predijo en 1960 la contradicción fatal: para que el mundo tenga suficientes dólares para el comercio internacional, EE.UU. debe tener déficits permanentes. Pero con déficits permanentes, los países perderán confianza en el dólar. EE.UU. atrapado entre emitir demasiado o frenar el comercio mundial.',hl:true},{h:'El Trilema de Mundell-Fleming',p:'Mundell demostró que ningún país puede simultáneamente tener tipo de cambio fijo, libre movimiento de capitales y política monetaria independiente. Nixon decidió que la autonomía monetaria era no negociable. El costo fue la inestabilidad cambiaria global que duró hasta los años 80.',hl:false},{h:'El mundo de los petrodólares',p:'Sin el oro como respaldo, Nixon acordó con Arabia Saudita en 1973 que el petróleo global se vendería en dólares a cambio de garantías de seguridad. El "petrodólar" reemplazó al patrón oro. Hoy, Arabia Saudita acepta yuanes en algunos acuerdos — el debate que abrió Nixon está lejos de resolverse.',hl:false}],timeline:[{date:'Jul 1944',text:'Conferencia de Bretton Woods. Nace el sistema FMI/Banco Mundial.',col:'#4f8ef7'},{date:'1960',text:'Triffin predice el dilema que destruirá a Bretton Woods.',col:'#f5a623'},{date:'Ago 1971',text:'Nixon Shock: cierre de ventanilla del oro, arancel del 10%.',col:'#f87171'},{date:'1973',text:'Tipos de cambio flotantes. Fin formal de Bretton Woods.',col:'#f5a623'},{date:'1973',text:'Acuerdo petrodólar con Arabia Saudita.',col:'#34d399'}]},
+    chat:{starter:'El Nixon Shock fue presentado como crisis pero resultó en una nueva arquitectura financiera global. ¿Cuántas "crisis" son en realidad oportunidades de rediseño que los sistemas conservadores no permitirían de otro modo?',responses:['El Trilema de Mundell es una de las verdades más duras de la economía internacional: no puedes tenerlo todo. China hoy elige controlar el tipo de cambio y mantener política monetaria autónoma, sacrificando la libre circulación de capitales. La Zona Euro eligió el tipo de cambio fijo y libre movimiento de capitales, sacrificando la política monetaria nacional — eso causó la crisis griega de 2010.','El "privilegio exorbitante" del dólar — como lo llamó De Gaulle — permite a EE.UU. endeudarse en su propia moneda indefinidamente sin la disciplina que otros países enfrentan. Esto ha sido tanto una fortaleza estratégica como una trampa: ha facilitado el déficit crónico y la desindustrialización.','El Bitcoin fue explícitamente diseñado como respuesta al Nixon Shock: una moneda con oferta fija que no puede ser inflada por un gobierno. ¿Tiene sentido el argumento de que el dinero fiduciario sin respaldo es inherentemente inflacionario? Los últimos 50 años darían argumentos a ambos lados.','Arabia Saudita en 2023 comenzó a aceptar yuanes por el petróleo en algunos acuerdos con China. Si el petrodólar pierde su estatus, ¿qué lo reemplaza? ¿Una canasta de divisas? ¿El yuan? ¿Un activo digital neutral? El debate que abrió Nixon en 1971 está lejos de resolverse.']}
+  },
+
+  ],
+
+  // Generated dilemmas get pushed here
+  _generated: [],
+
+  get all(){ return [...this.dilemmas, ...this._generated]; },
+  addGenerated(d){ this._generated.push(d); },
+  getAll(){ return this.all; },
+  findById(id){ return this.all.find(d=>d.id===id); },
+};
 
 
 /* ═══════════════════════════════════════════════════════════
    MODULE: STATE MANAGEMENT
 ═══════════════════════════════════════════════════════════ */
 const State = (() => {
-  const KEY = 'dopaminapp_v2_state';
-  let s = { idx:0, completed:{}, streak:{count:0,last:null} };
-  function _today() { return new Date().toISOString().slice(0,10); }
-  function load() {
-    try { const r=localStorage.getItem(KEY); if(r) s={...s,...JSON.parse(r)}; } catch(_){}
-    if (s.streak.last) {
+  const KEY='dopaminapp_v4_state';
+  let s={idx:0,completed:{},streak:{count:0,last:null}};
+  function _today(){ return new Date().toISOString().slice(0,10); }
+  function load(){
+    try{ const r=localStorage.getItem(KEY); if(r) s={...s,...JSON.parse(r)}; }catch(_){}
+    if(s.streak.last){
       const diff=(new Date(_today())-new Date(s.streak.last))/86400000;
       if(diff>1){ s.streak.count=0; s.streak.last=null; _save(); }
     }
     return s;
   }
-  function _save() { try { localStorage.setItem(KEY,JSON.stringify(s)); } catch(_){} }
-  function complete(id,choice) {
+  function _save(){ try{ localStorage.setItem(KEY,JSON.stringify(s)); }catch(_){} }
+  function complete(id,choice){
     if(s.completed[id]) return;
     s.completed[id]={choice,ts:Date.now()};
     const today=_today();
     if(s.streak.last!==today){ s.streak.count++; s.streak.last=today; }
     _save();
   }
-  function isDone(id)    { return !!s.completed[id]; }
-  function getChoice(id) { return s.completed[id]?.choice||null; }
-  function get()         { return s; }
-  function setIdx(i)     { s.idx=i; _save(); }
-  function reset()       { s={idx:0,completed:{},streak:{count:0,last:null}}; _save(); }
-  return { load, complete, isDone, getChoice, get, setIdx, reset };
+  function isDone(id){ return !!s.completed[id]; }
+  function getChoice(id){ return s.completed[id]?.choice||null; }
+  function get(){ return s; }
+  function setIdx(i){ s.idx=i; _save(); }
+  function reset(){ s={idx:0,completed:{},streak:{count:0,last:null}}; _save(); }
+  return { load,complete,isDone,getChoice,get,setIdx,reset };
 })();
 
 
 /* ═══════════════════════════════════════════════════════════
-   MODULE: COLOR HELPERS
+   MODULE: COLORS
 ═══════════════════════════════════════════════════════════ */
 const Colors = {
   map:{
-    blue:  {bg:'rgba(79,142,247,.09)',  bd:'rgba(79,142,247,.22)',  tx:'#7bb3ff', dot:'#4f8ef7'},
-    purple:{bg:'rgba(167,139,250,.09)', bd:'rgba(167,139,250,.22)', tx:'#c4b5fd', dot:'#a78bfa'},
-    red:   {bg:'rgba(248,113,113,.09)', bd:'rgba(248,113,113,.22)', tx:'#fca5a5', dot:'#f87171'},
-    amber: {bg:'rgba(245,166,35,.09)',  bd:'rgba(245,166,35,.22)',  tx:'#fcd34d', dot:'#f5a623'},
-    green: {bg:'rgba(52,211,153,.09)',  bd:'rgba(52,211,153,.22)',  tx:'#6ee7b7', dot:'#34d399'},
+    blue:  {bg:'rgba(79,142,247,.09)', bd:'rgba(79,142,247,.22)', tx:'#7bb3ff',dot:'#4f8ef7'},
+    purple:{bg:'rgba(167,139,250,.09)',bd:'rgba(167,139,250,.22)',tx:'#c4b5fd',dot:'#a78bfa'},
+    red:   {bg:'rgba(248,113,113,.09)',bd:'rgba(248,113,113,.22)',tx:'#fca5a5',dot:'#f87171'},
+    amber: {bg:'rgba(245,166,35,.09)', bd:'rgba(245,166,35,.22)', tx:'#fcd34d',dot:'#f5a623'},
+    green: {bg:'rgba(52,211,153,.09)', bd:'rgba(52,211,153,.22)', tx:'#6ee7b7',dot:'#34d399'},
   },
-  get(k) { return this.map[k]||this.map.blue; },
-  pill(text,key,extra='') {
+  get(k){ return this.map[k]||this.map.blue; },
+  pill(text,key,extra=''){
     const c=this.get(key);
     return `<span class="pill" style="background:${c.bg};border-color:${c.bd};color:${c.tx}" ${extra}><span class="pill-dot" style="background:${c.dot}"></span>${text}</span>`;
+  },
+};
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE: PROFILE (Intellectual Archetype)
+═══════════════════════════════════════════════════════════ */
+const Profile = {
+  DOMAINS:[
+    {key:'Macro',      label:'Macro',      ids:['volcker-1979','nixon-shock-1971'],    col:'#4f8ef7',icon:'📈'},
+    {key:'Filosofía',  label:'Filosofía',  ids:['machiavelli-1513','hobbes-locke-1651'],col:'#a78bfa',icon:'🧠'},
+    {key:'Geopolítica',label:'Geopolítica',ids:['cuba-missiles-1962'],                 col:'#f87171',icon:'🌐'},
+    {key:'Finanzas',   label:'Finanzas',   ids:['ltcm-1998','asian-crisis-1997'],       col:'#34d399',icon:'💹'},
+  ],
+  ARCHETYPES:[
+    {id:'strategist',name:'El Estratega Frío',   icon:'🎯',color:'#4f8ef7', cond:(b,a)=>a>=70&&b>=65, desc:'Combinas audacia con precisión histórica. Tus decisiones son contundentes y alineadas con la realidad. El análisis frío antes de la acción es tu sello.'},
+    {id:'scholar',   name:'El Historiador Empírico',icon:'🔭',color:'#a78bfa', cond:(b,a)=>a>=67,        desc:'Tu conocimiento histórico es sólido. Aciertas frecuentemente con las decisiones reales y comprendes las restricciones del contexto.'},
+    {id:'hawk',      name:'El Halcón Pragmático',  icon:'🦅',color:'#f5a623', cond:(b,a)=>b>=65,        desc:'Tomas decisiones audaces y contundentes. Priorizas resultados sobre procesos. La historia te suele dar la razón en dilemas donde el gradualismo fracasó.'},
+    {id:'idealist',  name:'El Idealista Bienintencionado',icon:'🌱',color:'#34d399',cond:(b,a)=>b<35,  desc:'Priorizas el bienestar inmediato sobre las dinámicas estructurales. Moralmente comprensible, pero a veces ignorando las consecuencias sistémicas.'},
+    {id:'moderate',  name:'El Moderado Estratégico', icon:'⚖️',color:'#6ee7b7', cond:()=>true,         desc:'Buscas el equilibrio entre estabilidad y cambio. Eres cauteloso y reflexivo, priorizas el consenso sobre la unilateralidad.'},
+  ],
+
+  compute(){
+    const all=DB.getAll();
+    const completed=all.filter(d=>State.isDone(d.id));
+    if(completed.length===0) return null;
+
+    let boldCount=0, accurateCount=0;
+    const domainData={};
+    for(const dom of this.DOMAINS) domainData[dom.key]={done:0,accurate:0,total:0};
+
+    for(const d of all){
+      // Count total in domain
+      for(const dom of this.DOMAINS){
+        if(dom.ids.includes(d.id)){ domainData[dom.key].total++; }
+      }
+      if(!State.isDone(d.id)) continue;
+      const choice=State.getChoice(d.id);
+      if(choice==='B') boldCount++;
+      if(choice===d.revelation.historicalChoice) accurateCount++;
+      for(const dom of this.DOMAINS){
+        if(dom.ids.includes(d.id)){
+          domainData[dom.key].done++;
+          if(choice===d.revelation.historicalChoice) domainData[dom.key].accurate++;
+        }
+      }
+    }
+
+    const total=completed.length;
+    const boldness=Math.round((boldCount/total)*100);
+    const accuracy=Math.round((accurateCount/total)*100);
+    const archetype=this.ARCHETYPES.find(a=>a.cond(boldness,accuracy))||this.ARCHETYPES[4];
+
+    // Domain scores (0-100)
+    const domainScores={};
+    for(const dom of this.DOMAINS){
+      const d=domainData[dom.key];
+      domainScores[dom.key]=d.done===0?null:Math.round((d.accurate/d.done)*100);
+    }
+
+    return {total,boldness,accuracy,archetype,domainScores,domainData};
   },
 };
 
@@ -670,34 +874,43 @@ const Colors = {
 ═══════════════════════════════════════════════════════════ */
 const Render = {
 
-  header() {
+  header(){
     const {idx,streak}=State.get();
-    const dots=DB.dilemmas.map((d,i)=>{
-      const cls=i===idx?'active':State.isDone(d.id)?'done':'idle';
+    const all=DB.getAll();
+    const dots=all.map((d,i)=>{
+      let cls;
+      if(i===idx) cls='active';
+      else if(State.isDone(d.id)) cls='done';
+      else if(d._generated) cls='generated';
+      else cls='idle';
       return `<button class="nav-dot ${cls}" onclick="App.goTo(${i})" title="${d.title}"></button>`;
     }).join('');
     document.getElementById('nav-dots-container').innerHTML=
       `<div style="display:flex;align-items:center;gap:6px">${dots}</div>
-       <span class="label-xs" style="color:#2a2a40;margin-left:6px">${idx+1}/${DB.dilemmas.length}</span>`;
+       <span class="label-xs" style="color:#2a2a40;margin-left:6px">${idx+1}/${all.length}</span>`;
     document.getElementById('streak-count').textContent=streak.count+' días';
+    const done=all.filter(d=>State.isDone(d.id)).length;
+    document.getElementById('profile-btn').classList.toggle('active',done>0);
   },
 
-  dilemma() {
+  dilemma(){
     const {idx}=State.get();
-    const d=DB.dilemmas[idx], done=State.isDone(d.id), choice=State.getChoice(d.id), cc=Colors.get(d.catKey);
+    const all=DB.getAll();
+    const d=all[idx], done=State.isDone(d.id), choice=State.getChoice(d.id), cc=Colors.get(d.catKey);
     document.getElementById('dilemma-view').innerHTML=`
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-        <span class="label-xs" style="color:#2a2a40;white-space:nowrap">Dilema ${idx+1} de ${DB.dilemmas.length}</span>
+        <span class="label-xs" style="color:#2a2a40;white-space:nowrap">Dilema ${idx+1} de ${all.length}</span>
         <div style="flex:1;height:1px;background:#121220;position:relative">
-          <div style="position:absolute;top:0;left:0;height:1px;width:${((idx+1)/DB.dilemmas.length)*100}%;background:linear-gradient(90deg,#4f8ef7,#7c3aed);transition:width .6s ease"></div>
+          <div style="position:absolute;top:0;left:0;height:1px;width:${((idx+1)/all.length)*100}%;background:linear-gradient(90deg,#4f8ef7,#7c3aed);transition:width .6s ease"></div>
         </div>
-        <span class="label-xs" style="color:#2a2a40;white-space:nowrap">⏱ ~2 min</span>
+        ${d._generated?`<span class="label-xs" style="color:#34d399;white-space:nowrap">✦ IA</span>`:'<span class="label-xs" style="color:#2a2a40;white-space:nowrap">⏱ ~2 min</span>'}
       </div>
 
       <article id="dilemma-card" style="background:#0c0c18;border:1px solid ${done?cc.bd:'#1a1a28'};border-radius:18px;overflow:hidden;opacity:0;transform:translateY(16px);transition:opacity .4s ease,transform .45s cubic-bezier(.16,1,.3,1)">
         <div style="padding:22px 24px 18px;border-bottom:1px solid #111120">
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
             ${Colors.pill(d.category,d.catKey)}${Colors.pill(d.country,'amber')}${Colors.pill(d.year,'purple')}
+            ${d._generated?Colors.pill('Generado por IA','green'):''}
           </div>
           <h2 style="color:#f0f0ff;font-size:clamp(20px,4vw,26px);font-weight:800;letter-spacing:-.5px;line-height:1.2">${d.icon} ${d.title}</h2>
           <p style="color:#404060;font-size:13px;margin-top:4px;font-weight:500">${d.subtitle}</p>
@@ -722,7 +935,7 @@ const Render = {
         <button onclick="App.navigate(-1)" style="display:flex;align-items:center;gap:7px;font-size:13px;color:#404060;padding:8px 12px;border-radius:9px;border:none;background:transparent;cursor:pointer;transition:all .2s;${idx===0?'opacity:.25;pointer-events:none':''}" onmouseover="this.style.color='#c0c0e0';this.style.background='#141420'" onmouseout="this.style.color='#404060';this.style.background='transparent'">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M8 2L4 6.5L8 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Anterior
         </button>
-        <button onclick="App.navigate(1)" style="display:flex;align-items:center;gap:7px;font-size:13px;color:#404060;padding:8px 12px;border-radius:9px;border:none;background:transparent;cursor:pointer;transition:all .2s;${idx===DB.dilemmas.length-1?'opacity:.25;pointer-events:none':''}" onmouseover="this.style.color='#c0c0e0';this.style.background='#141420'" onmouseout="this.style.color='#404060';this.style.background='transparent'">
+        <button onclick="App.navigate(1)" style="display:flex;align-items:center;gap:7px;font-size:13px;color:#404060;padding:8px 12px;border-radius:9px;border:none;background:transparent;cursor:pointer;transition:all .2s;${idx===all.length-1?'opacity:.25;pointer-events:none':''}" onmouseover="this.style.color='#c0c0e0';this.style.background='#141420'" onmouseout="this.style.color='#404060';this.style.background='transparent'">
           Siguiente<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 2l4 4.5L5 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>`;
@@ -735,11 +948,11 @@ const Render = {
     if(done) this._animateBars(d);
   },
 
-  _optionsActive(d) {
+  _optionsActive(d){
     return `<p class="label-xs" style="color:#2a2a42;margin-bottom:14px">¿Cuál es tu decisión? <kbd>1</kbd> <kbd>2</kbd></p>
     <div style="display:flex;flex-direction:column;gap:10px">
       ${['A','B'].map(opt=>{const o=d.options[opt],col=opt==='A'?'#4f8ef7':'#f5a623';return`
-        <button id="opt-${opt}" onclick="App.selectOption('${opt}')" class="opt-btn opt-${opt}" aria-label="Opción ${opt}: ${o.label}">
+        <button id="opt-${opt}" onclick="App.selectOption('${opt}')" class="opt-btn opt-${opt}">
           <div style="display:flex;align-items:flex-start;gap:12px">
             <span class="opt-badge" style="background:${col}12;border-color:${col}28;color:${col};margin-top:1px">${opt}</span>
             <div><p style="color:#e8e8f8;font-weight:600;font-size:14px">${o.label}</p>
@@ -749,7 +962,7 @@ const Render = {
     </div>`;
   },
 
-  _optionsDone(d,choice) {
+  _optionsDone(d,choice){
     return `<div style="display:flex;flex-direction:column;gap:10px">
       ${['A','B'].map(opt=>{
         const o=d.options[opt],pct=o.pct,col=opt==='A'?'#4f8ef7':'#f5a623';
@@ -771,16 +984,16 @@ const Render = {
     </div>`;
   },
 
-  _animateBars(d) {
+  _animateBars(d){
     ['A','B'].forEach(opt=>{
       const bar=document.getElementById(`pct-${opt}-bar`),num=document.getElementById(`pct-${opt}-num`);
       if(!bar||!num) return;
       const target=parseInt(bar.dataset.target);
       requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.style.width=target+'%';}));
-      let start=null; const dur=1300;
+      let start=null;
       function step(ts){
         if(!start) start=ts;
-        const p=Math.min((ts-start)/dur,1),e=1-Math.pow(1-p,4);
+        const p=Math.min((ts-start)/1300,1),e=1-Math.pow(1-p,4);
         num.textContent=Math.round(e*target)+'%';
         if(p<1) requestAnimationFrame(step); else num.textContent=target+'%';
       }
@@ -788,7 +1001,7 @@ const Render = {
     });
   },
 
-  _revelation(d,choice) {
+  _revelation(d,choice){
     const rev=d.revelation,cc=Colors.get(d.catKey),ok=choice===rev.historicalChoice;
     return`<div id="revelation-card" class="animate-slide-up" style="margin-top:14px;background:linear-gradient(135deg,${cc.bg},rgba(0,0,0,.01));border:1px solid ${cc.bd};border-radius:18px;padding:22px 24px">
       <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:18px">
@@ -802,9 +1015,7 @@ const Render = {
       <p style="color:#7a7a9a;font-size:14px;line-height:1.75;margin-bottom:18px">${rev.text}</p>
       <div class="concept-box" style="margin-bottom:18px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <div style="width:18px;height:18px;border-radius:5px;background:#34d39912;border:1px solid #34d39928;display:flex;align-items:center;justify-content:center">
-            <svg width="9" height="9" viewBox="0 0 9 9" fill="#34d399"><path d="M4.5 1L5.5 3.5H8L6 5.1L6.9 7.9L4.5 6.3L2.1 7.9L3 5.1L1 3.5H3.5L4.5 1Z"/></svg>
-          </div>
+          <span style="width:16px;height:16px;border-radius:4px;background:#34d39912;border:1px solid #34d39928;display:flex;align-items:center;justify-content:center;font-size:8px">💡</span>
           <p class="label-xs" style="color:#34d399">Concepto Clave</p>
           <p class="label-xs" style="color:#252540;margin-left:auto">${rev.conceptAuthors}</p>
         </div>
@@ -827,148 +1038,249 @@ const Render = {
     </div>`;
   },
 
-  modal() {
-    const {idx}=State.get(), d=DB.dilemmas[idx], art=d.article, cc=Colors.get(d.catKey);
+  modal(){
+    const {idx}=State.get(), all=DB.getAll(), d=all[idx], art=d.article, cc=Colors.get(d.catKey);
     const hasKey=Config.hasKey(), cfg=Config.get();
-
     document.getElementById('modal-content').innerHTML=`
-      <!-- Modal header -->
       <div style="padding:18px 20px 16px;border-bottom:1px solid #111120;flex-shrink:0">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-              ${Colors.pill(d.category,d.catKey)}
-              <span class="label-xs" style="color:#252540">· ${art.readTime}</span>
+              ${Colors.pill(d.category,d.catKey)}<span class="label-xs" style="color:#252540">· ${art.readTime}</span>
             </div>
             <h2 style="color:#f0f0ff;font-weight:700;font-size:17px;line-height:1.25;letter-spacing:-.3px">${art.title}</h2>
           </div>
-          <button onclick="App.closeModal()" style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:#121220;border:1px solid #1e1e30;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:2px" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'" aria-label="Cerrar">
+          <button onclick="App.closeModal()" style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:#121220;border:1px solid #1e1e30;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'">
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
           </button>
         </div>
       </div>
-
-      <!-- Scrollable article -->
       <div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:20px;-webkit-overflow-scrolling:touch">
-        ${art.sections.map((s,i)=>`
-          <div class="animate-slide-up delay-${Math.min(i+1,4)}">
-            <h3 style="color:#d8d8f0;font-weight:600;font-size:15px;margin-bottom:8px;letter-spacing:-.2px">${s.h}</h3>
-            ${s.hl
-              ?`<div class="article-highlight" style="border-color:${cc.dot}40"><p style="color:#7a7a9a;font-size:14px;line-height:1.75">${s.p}</p></div>`
-              :`<p style="color:#606080;font-size:14px;line-height:1.75">${s.p}</p>`}
-          </div>`).join('')}
+        ${art.sections.map((s,i)=>`<div class="animate-slide-up delay-${Math.min(i+1,4)}">
+          <h3 style="color:#d8d8f0;font-weight:600;font-size:15px;margin-bottom:8px;letter-spacing:-.2px">${s.h}</h3>
+          ${s.hl?`<div class="article-highlight" style="border-color:${cc.dot}40"><p style="color:#7a7a9a;font-size:14px;line-height:1.75">${s.p}</p></div>`:`<p style="color:#606080;font-size:14px;line-height:1.75">${s.p}</p>`}
+        </div>`).join('')}
         <div class="animate-slide-up delay-4">
           <p class="label-xs" style="color:#252540;margin-bottom:14px">Línea de Tiempo</p>
           <div style="display:flex;flex-direction:column">
-            ${art.timeline.map((t,i,arr)=>`
-              <div style="display:flex;gap:12px">
-                <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-                  <div style="width:8px;height:8px;border-radius:50%;background:${t.col};margin-top:5px;flex-shrink:0"></div>
-                  ${i<arr.length-1?`<div class="tl-connector"></div>`:''}
-                </div>
-                <div style="padding-bottom:${i<arr.length-1?'14px':'0'}">
-                  <p class="mono-val" style="font-size:12px;color:${t.col}">${t.date}</p>
-                  <p style="color:#505070;font-size:13px;margin-top:2px;line-height:1.5">${t.text}</p>
-                </div>
-              </div>`).join('')}
+            ${art.timeline.map((t,i,arr)=>`<div style="display:flex;gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+                <div style="width:8px;height:8px;border-radius:50%;background:${t.col};margin-top:5px;flex-shrink:0"></div>
+                ${i<arr.length-1?`<div class="tl-connector"></div>`:''}
+              </div>
+              <div style="padding-bottom:${i<arr.length-1?'14px':'0'}">
+                <p class="mono-val" style="font-size:12px;color:${t.col}">${t.date}</p>
+                <p style="color:#505070;font-size:13px;margin-top:2px;line-height:1.5">${t.text}</p>
+              </div>
+            </div>`).join('')}
           </div>
         </div>
       </div>
-
-      <!-- Chat panel (flex-shrink-0 + safe-area) -->
       <div style="border-top:1px solid #111120;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0)">
-        <!-- Chat header -->
         <div style="padding:14px 18px 10px;display:flex;align-items:center;gap:8px">
-          <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f8ef7,#7c3aed);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><circle cx="5" cy="5" r="3"/></svg>
-          </div>
+          <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f8ef7,#7c3aed);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px">🤖</div>
           <span style="font-size:12px;font-weight:600;color:#d0d0f0;flex:1">Asesor Histórico IA</span>
           <span class="label-xs" style="background:${hasKey?'#34d39910':'#f5a62310'};border:1px solid ${hasKey?'#34d39928':'#f5a62328'};color:${hasKey?'#34d399':'#f5a623'};padding:2px 8px;border-radius:999px">${hasKey?'🔑 '+cfg.model.split('-')[0].toUpperCase():'Demo'}</span>
-          <button class="gear-btn ${hasKey?'configured':''}" onclick="App.openSettings()" title="Configurar API Key" id="gear-btn">
+          <button class="gear-btn ${hasKey?'configured':''}" onclick="App.openSettings()" title="Configurar API Key">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="6" cy="6" r="2"/><path d="M6 1v1M6 10v1M1 6h1M10 6h1M2.5 2.5l.7.7M8.8 8.8l.7.7M9.5 2.5l-.7.7M3.2 8.8l-.7.7"/></svg>
           </button>
         </div>
-
-        <!-- Demo banner -->
         ${!hasKey?`<div class="demo-banner" style="margin:0 18px 10px">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#f5a623" stroke-width="1.2"/><path d="M7 4v3.5M7 9.5v.5" stroke="#f5a623" stroke-width="1.4" stroke-linecap="round"/></svg>
-          <span>Modo demostración · <button onclick="App.openSettings()" style="background:none;border:none;color:#f5a623;cursor:pointer;font-size:11.5px;text-decoration:underline;padding:0">Agrega tu API Key</button> para debatir libremente con la IA.</span>
+          <span>Modo demostración · <button onclick="App.openSettings()" style="background:none;border:none;color:#f5a623;cursor:pointer;font-size:11.5px;text-decoration:underline;padding:0">Agrega tu API Key</button> para debatir libremente.</span>
         </div>`:''}
-
-        <!-- Messages -->
         <div id="chat-messages" style="max-height:160px;overflow-y:auto;padding:0 18px 8px;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch">
-          <div class="chat-ai" style="font-size:12.5px">${d.chat.starter}</div>
+          <div class="chat-ai">${d.chat.starter}</div>
         </div>
-
-        <!-- Input row -->
         <div style="padding:8px 18px 14px;display:flex;gap:8px;align-items:flex-end">
           <textarea id="chat-input" class="chat-field" rows="1"
-            placeholder="${hasKey?'Debate con el asesor histórico…':'Pregunta (modo demostración)…'}"
+            placeholder="${hasKey?'Debate con el asesor histórico…':'Pregunta (modo demo)…'}"
             onkeydown="App.chatKey(event)" oninput="App.chatResize(this)"
             inputmode="text" autocomplete="off"></textarea>
-          <button class="send-btn" onclick="App.sendChat()" aria-label="Enviar">
+          <button class="send-btn" onclick="App.sendChat()">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 2L6 8M12 2L8.5 12L6 8M12 2L2 5.5L6 8" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </div>`;
-
     const msgs=document.getElementById('chat-messages');
     if(msgs) msgs.scrollTop=msgs.scrollHeight;
   },
 
-  settings() {
+  settings(){
     const cfg=Config.get(), providers=Config.getProviders();
     const p=providers[cfg.provider]||providers.gemini;
-
     document.getElementById('settings-content').innerHTML=`
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
-        <div>
-          <h3 style="color:#f0f0ff;font-weight:700;font-size:17px">Configurar IA</h3>
-          <p style="color:#404060;font-size:12px;margin-top:2px">Tu API Key se guarda solo en este navegador</p>
+      <div class="cmodal-header">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div><h3 style="color:#f0f0ff;font-weight:700;font-size:17px">Configurar IA</h3>
+          <p style="color:#404060;font-size:12px;margin-top:2px">Tu API Key se guarda solo en este navegador</p></div>
+          <button onclick="App.closeSettings()" style="width:28px;height:28px;border-radius:8px;background:#141420;border:1px solid #252535;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
         </div>
-        <button onclick="App.closeSettings()" style="width:28px;height:28px;border-radius:8px;background:#141420;border:1px solid #252535;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'">
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="cmodal-body">
+        <p class="label-xs" style="color:#2a2a40;margin-bottom:8px">Proveedor</p>
+        <div style="display:flex;gap:6px;margin-bottom:18px">
+          ${Object.entries(providers).map(([k,v])=>`<button class="provider-tab ${cfg.provider===k?'active':''}" onclick="App.setProvider('${k}')">${v.emoji} ${v.name}</button>`).join('')}
+        </div>
+        <p class="label-xs" style="color:#2a2a40;margin-bottom:6px">API Key <a href="${p.keyUrl}" target="_blank" rel="noopener" style="color:#4f8ef7;text-decoration:none;font-size:9px;margin-left:6px">↗ Obtener gratis</a></p>
+        <div style="position:relative;margin-bottom:16px">
+          <input id="api-key-input" type="password" class="settings-input" placeholder="${p.keyPlaceholder}" value="${cfg.apiKey||''}" style="padding-right:42px">
+          <button onclick="App.toggleKeyVisibility()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#404060;cursor:pointer;padding:4px">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 7.5C3 4 5 2.5 7.5 2.5S12 4 14 7.5C12 11 10 12.5 7.5 12.5S3 11 1 7.5Z"/><circle cx="7.5" cy="7.5" r="2"/></svg>
+          </button>
+        </div>
+        <p class="label-xs" style="color:#2a2a40;margin-bottom:6px">Modelo</p>
+        <select id="model-select" class="settings-input" style="cursor:pointer">
+          ${p.models.map(m=>`<option value="${m.id}" ${cfg.model===m.id?'selected':''}>${m.name}</option>`).join('')}
+        </select>
+        <div style="display:flex;gap:8px;margin-top:22px">
+          <button onclick="App.saveSettings()" style="flex:1;padding:11px;border-radius:10px;background:linear-gradient(135deg,#4f8ef7,#7c3aed);border:none;color:white;font-weight:600;font-size:13px;cursor:pointer" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Guardar configuración</button>
+          ${cfg.apiKey?`<button onclick="App.clearKey()" style="padding:11px 16px;border-radius:10px;background:#f8717110;border:1px solid #f8717128;color:#f87171;font-weight:600;font-size:12px;cursor:pointer">Borrar key</button>`:''}
+        </div>
+        <p style="color:#252535;font-size:11px;margin-top:12px;line-height:1.5;text-align:center">Tu API Key nunca sale de este navegador</p>
+      </div>`;
+  },
+
+  profile(){
+    const data=Profile.compute();
+    const el=document.getElementById('profile-content');
+    if(!data){
+      el.innerHTML=`
+        <div class="cmodal-header"><div style="display:flex;align-items:center;justify-content:space-between"><h3 style="color:#f0f0ff;font-weight:700;font-size:17px">⭐ Mi Perfil Intelectual</h3><button onclick="App.closeProfile()" style="width:28px;height:28px;border-radius:8px;background:#141420;border:1px solid #252535;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></div></div>
+        <div class="cmodal-body" style="text-align:center;padding:40px 24px">
+          <div style="font-size:48px;margin-bottom:16px">🧭</div>
+          <p style="color:#d0d0f0;font-weight:600;font-size:16px;margin-bottom:8px">Aún no hay datos</p>
+          <p style="color:#404060;font-size:13px;line-height:1.6">Responde al menos un dilema para ver tu arquetipo intelectual y estadísticas.</p>
+        </div>`;
+      return;
+    }
+    const {total,boldness,accuracy,archetype,domainData}=data;
+    el.innerHTML=`
+      <div class="cmodal-header">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div><h3 style="color:#f0f0ff;font-weight:700;font-size:17px">⭐ Mi Perfil Intelectual</h3>
+          <p style="color:#404060;font-size:12px;margin-top:2px">Basado en ${total} dilema${total!==1?'s':''} completado${total!==1?'s':''}</p></div>
+          <button onclick="App.closeProfile()" style="width:28px;height:28px;border-radius:8px;background:#141420;border:1px solid #252535;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cmodal-body">
+        <!-- Archetype Card -->
+        <div style="background:${archetype.color}0c;border:1px solid ${archetype.color}28;border-radius:16px;padding:20px;margin-bottom:20px;text-align:center">
+          <div style="font-size:44px;margin-bottom:10px">${archetype.icon}</div>
+          <p style="color:${archetype.color};font-weight:700;font-size:18px;margin-bottom:6px">${archetype.name}</p>
+          <p style="color:#5a5a7a;font-size:13px;line-height:1.6">${archetype.desc}</p>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+          <div style="background:#0c0c18;border:1px solid #1e1e30;border-radius:12px;padding:14px 16px;text-align:center">
+            <p class="mono-val" style="font-size:32px;color:#34d399;line-height:1">${accuracy}%</p>
+            <p class="label-xs" style="color:#2a2a42;margin-top:8px">Acierto Histórico</p>
+          </div>
+          <div style="background:#0c0c18;border:1px solid #1e1e30;border-radius:12px;padding:14px 16px;text-align:center">
+            <p class="mono-val" style="font-size:32px;color:#a78bfa;line-height:1">${boldness}%</p>
+            <p class="label-xs" style="color:#2a2a42;margin-top:8px">Índice de Audacia</p>
+          </div>
+          <div style="background:#0c0c18;border:1px solid #1e1e30;border-radius:12px;padding:14px 16px;text-align:center">
+            <p class="mono-val" style="font-size:32px;color:#4f8ef7;line-height:1">${total}</p>
+            <p class="label-xs" style="color:#2a2a42;margin-top:8px">Dilemas Completados</p>
+          </div>
+          <div style="background:#0c0c18;border:1px solid #1e1e30;border-radius:12px;padding:14px 16px;text-align:center">
+            <p class="mono-val" style="font-size:32px;color:#f5a623;line-height:1">${DB.getAll().length}</p>
+            <p class="label-xs" style="color:#2a2a42;margin-top:8px">Dilemas Disponibles</p>
+          </div>
+        </div>
+
+        <!-- Domain Breakdown -->
+        <p class="label-xs" style="color:#252540;margin-bottom:14px">Desempeño por Área</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          ${Profile.DOMAINS.map(dom=>{
+            const dd=domainData[dom.key];
+            const pct=dd.done>0?Math.round((dd.accurate/dd.done)*100):null;
+            return`<div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:13px">${dom.icon}</span>
+                  <span style="color:#c0c0e0;font-size:13px;font-weight:500">${dom.label}</span>
+                  ${dd.done>0?`<span class="label-xs" style="color:#252540">${dd.done}/${dd.total} completados</span>`:`<span class="label-xs" style="color:#1e1e30">sin datos</span>`}
+                </div>
+                <span class="mono-val" style="font-size:14px;color:${dom.col}" id="dom-pct-${dom.key}">${pct!==null?'0%':'—'}</span>
+              </div>
+              <div class="domain-bar-track">
+                ${pct!==null?`<div class="domain-bar-fill" id="dom-bar-${dom.key}" data-target="${pct}" style="background:${dom.col}"></div>`:''}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+
+        <!-- Tendency Analysis -->
+        <div style="margin-top:20px;background:#0c0c18;border:1px solid #1e1e30;border-radius:12px;padding:14px 16px">
+          <p class="label-xs" style="color:#252540;margin-bottom:10px">Análisis de Tendencia</p>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="font-size:12px;color:#404060">Cauteloso</span>
+            <div style="flex:1;height:4px;background:#1e1e30;border-radius:2px;position:relative">
+              <div style="position:absolute;left:0;top:0;height:100%;border-radius:2px;background:linear-gradient(90deg,#34d399,#4f8ef7);width:0%" id="boldness-bar" data-target="${boldness}"></div>
+            </div>
+            <span style="font-size:12px;color:#404060">Audaz</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px">
+            <span style="font-size:11px;color:#252540">Baja Audacia</span>
+            <span style="font-size:11px;color:#4f8ef7;font-weight:600">${boldness < 35 ? 'Moderado' : boldness < 65 ? 'Equilibrado' : 'Audaz'}</span>
+            <span style="font-size:11px;color:#252540">Alta Audacia</span>
+          </div>
+        </div>
+      </div>`;
+
+    // Animate bars after render
+    setTimeout(()=>{
+      Profile.DOMAINS.forEach(dom=>{
+        const bar=document.getElementById(`dom-bar-${dom.key}`);
+        const num=document.getElementById(`dom-pct-${dom.key}`);
+        if(!bar||!num) return;
+        const target=parseInt(bar.dataset.target||0);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ bar.style.width=target+'%'; }));
+        let start=null;
+        function step(ts){ if(!start) start=ts; const p=Math.min((ts-start)/1000,1),e=1-Math.pow(1-p,3); num.textContent=Math.round(e*target)+'%'; if(p<1) requestAnimationFrame(step); else num.textContent=target+'%'; }
+        requestAnimationFrame(step);
+      });
+      const bb=document.getElementById('boldness-bar');
+      if(bb){ const t=parseInt(bb.dataset.target||0); requestAnimationFrame(()=>requestAnimationFrame(()=>{ bb.style.width=t+'%'; })); }
+    },100);
+  },
+
+  generator(){
+    const hasKey=Config.hasKey();
+    const THEMES=['Churchill 1940','Plan Marshall','Crisis Asiática 1997','Crisis de Suez 1956','La Gran Depresión 1929','Hiroshima & Nagasaki','Revolución Francesa 1789','La Burbuja de los Tulipanes 1637'];
+    document.getElementById('generator-content').innerHTML=`
+      <div class="cmodal-header">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <h3 style="color:#f0f0ff;font-weight:700;font-size:17px">✦ Generar Dilema con IA</h3>
+            <p style="color:#404060;font-size:12px;margin-top:2px">${hasKey?'Powered by '+Config.get().model:'Generador local · Agrega API Key para IA real'}</p>
+          </div>
+          <button onclick="App.closeGenerator()" style="width:28px;height:28px;border-radius:8px;background:#141420;border:1px solid #252535;color:#404060;cursor:pointer;display:flex;align-items:center;justify-content:center" onmouseover="this.style.color='#d0d0f0'" onmouseout="this.style.color='#404060'">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cmodal-body">
+        <p class="label-xs" style="color:#2a2a40;margin-bottom:10px">Tema o período histórico</p>
+        <input id="gen-theme-input" class="settings-input" placeholder="Ej: La Revolución Industrial, La caída de Roma, Crisis del petróleo 1973…" style="margin-bottom:14px">
+        <p class="label-xs" style="color:#1e1e30;margin-bottom:10px">Temas sugeridos</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px">
+          ${THEMES.map(t=>`<button class="theme-chip" onclick="App.selectTheme('${t}')">${t}</button>`).join('')}
+        </div>
+        <button id="gen-btn" onclick="App.generateDilemma()" style="width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,#34d399,#059669);border:none;color:white;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          ${hasKey?'Generar con IA':'Generar Dilema'}
         </button>
-      </div>
-
-      <!-- Provider tabs -->
-      <p class="label-xs" style="color:#2a2a40;margin-bottom:8px">Proveedor</p>
-      <div style="display:flex;gap:6px;margin-bottom:18px" id="provider-tabs">
-        ${Object.entries(providers).map(([k,v])=>`
-          <button class="provider-tab ${cfg.provider===k?'active':''}" onclick="App.setProvider('${k}')" id="tab-${k}">
-            ${v.emoji} ${v.name}
-          </button>`).join('')}
-      </div>
-
-      <!-- API Key input -->
-      <p class="label-xs" style="color:#2a2a40;margin-bottom:6px">API Key <a href="${p.keyUrl}" target="_blank" rel="noopener" style="color:#4f8ef7;text-decoration:none;font-size:9px;margin-left:6px">↗ Obtener gratis</a></p>
-      <div style="position:relative;margin-bottom:16px">
-        <input id="api-key-input" type="password" class="settings-input"
-          placeholder="${p.keyPlaceholder}"
-          value="${cfg.apiKey||''}"
-          style="padding-right:42px">
-        <button onclick="App.toggleKeyVisibility()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#404060;cursor:pointer;padding:4px" id="eye-btn" title="Mostrar/ocultar">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 7.5C3 4 5 2.5 7.5 2.5S12 4 14 7.5C12 11 10 12.5 7.5 12.5S3 11 1 7.5Z"/><circle cx="7.5" cy="7.5" r="2"/></svg>
-        </button>
-      </div>
-
-      <!-- Model selector -->
-      <p class="label-xs" style="color:#2a2a40;margin-bottom:6px">Modelo</p>
-      <select id="model-select" class="settings-input" style="cursor:pointer;appearance:auto">
-        ${p.models.map(m=>`<option value="${m.id}" ${cfg.model===m.id?'selected':''}>${m.name}</option>`).join('')}
-      </select>
-
-      <!-- Actions -->
-      <div style="display:flex;gap:8px;margin-top:22px">
-        <button onclick="App.saveSettings()" style="flex:1;padding:11px;border-radius:10px;background:linear-gradient(135deg,#4f8ef7,#7c3aed);border:none;color:white;font-weight:600;font-size:13px;cursor:pointer;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
-          Guardar configuración
-        </button>
-        ${cfg.apiKey?`<button onclick="App.clearKey()" style="padding:11px 16px;border-radius:10px;background:#f8717110;border:1px solid #f8717128;color:#f87171;font-weight:600;font-size:12px;cursor:pointer;transition:all .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">Borrar key</button>`:''}
-      </div>
-
-      <p style="color:#252535;font-size:11px;margin-top:12px;line-height:1.5;text-align:center">
-        Tu API Key nunca sale de este navegador · Procesado directamente con la API del proveedor
-      </p>`;
+        <div id="gen-status" style="margin-top:14px;display:none"></div>
+        ${!hasKey?`<p style="color:#2a2a40;font-size:11.5px;margin-top:12px;text-align:center;line-height:1.5">💡 <button onclick="App.closeGenerator();App.openSettings()" style="background:none;border:none;color:#4f8ef7;cursor:pointer;text-decoration:underline;font-size:11.5px">Agrega tu API Key</button> para dilemas generados en tiempo real con IA</p>`:''}
+      </div>`;
   },
 };
 
@@ -977,14 +1289,13 @@ const Render = {
    MODULE: APP CONTROLLER
 ═══════════════════════════════════════════════════════════ */
 const App = {
-  _chatIdx: 0,
-  _modalOpen: false,
-  _settingsOpen: false,
-  _chatHistory: [],   // [{role:'user'|'assistant', content:'...'}]
-  _streaming: false,
-  _currentProvider: 'gemini',
+  _chatIdx:    0,
+  _modalOpen:  false,
+  _chatHistory:[],
+  _streaming:  false,
+  _genTheme:   '',
 
-  init() {
+  init(){
     State.load();
     Config.load();
     Render.dilemma();
@@ -992,21 +1303,23 @@ const App = {
     this._bindMobileViewport();
   },
 
-  goTo(i) {
-    if(i===State.get().idx) return;
+  goTo(i){
+    const all=DB.getAll();
+    if(i<0||i>=all.length||i===State.get().idx) return;
     State.setIdx(i); this._chatIdx=0; this._chatHistory=[];
     Render.dilemma();
+    AudioFX.click();
   },
 
-  navigate(dir) {
-    const {idx}=State.get(), next=idx+dir;
-    if(next<0||next>=DB.dilemmas.length) return;
-    this.goTo(next);
+  navigate(dir){
+    const all=DB.getAll(), next=State.get().idx+dir;
+    if(next>=0&&next<all.length) this.goTo(next);
   },
 
-  selectOption(opt) {
-    const {idx}=State.get(), d=DB.dilemmas[idx];
+  selectOption(opt){
+    const all=DB.getAll(), {idx}=State.get(), d=all[idx];
     if(State.isDone(d.id)) return;
+    AudioFX.select();
     State.complete(d.id,opt);
     const optArea=document.getElementById('options-area'), revArea=document.getElementById('revelation-area');
     if(!optArea||!revArea) return;
@@ -1017,213 +1330,245 @@ const App = {
       revArea.innerHTML=Render._revelation(d,opt);
       Render.header();
       const ok=opt===d.revelation.historicalChoice;
-      showToast(ok?`¡Acertaste con la decisión de ${d.revelation.actor}!`:'Interesante — ve la revelación histórica', ok?'🎯':'📖');
+      if(ok){ AudioFX.victory(); Confetti.burst(); document.getElementById('dilemma-card')?.classList.add('victory-pulse'); }
+      else   { AudioFX.wrong(); }
+      showToast(ok?`✓ Acertaste con la decisión de ${d.revelation.actor}!`:'📖 Mira la revelación histórica', ok?'🎯':'📖');
     },230);
   },
 
-  openModal() {
-    if(!State.isDone(DB.dilemmas[State.get().idx].id)){
-      showToast('Primero elige una opción','🔒'); return;
-    }
+  openModal(){
+    const all=DB.getAll(), {idx}=State.get();
+    if(!State.isDone(all[idx].id)){ showToast('Primero elige una opción','🔒'); return; }
     this._chatHistory=[]; this._chatIdx=0;
     Render.modal();
     document.getElementById('side-modal').classList.add('open');
     document.getElementById('overlay').classList.add('open');
-    document.body.style.overflow='hidden';
-    this._modalOpen=true;
+    document.body.style.overflow='hidden'; this._modalOpen=true;
     setTimeout(()=>document.getElementById('chat-input')?.focus(),550);
   },
 
-  closeModal() {
+  closeModal(){
     document.getElementById('side-modal').classList.remove('open');
     document.getElementById('overlay').classList.remove('open');
     document.body.style.overflow=''; this._modalOpen=false;
   },
 
   /* ── Settings ── */
-  openSettings() {
+  openSettings(){
     Render.settings();
     document.getElementById('settings-overlay').classList.add('open');
-    this._settingsOpen=true;
   },
-
-  closeSettings() {
+  closeSettings(){
     document.getElementById('settings-overlay').classList.remove('open');
-    this._settingsOpen=false;
   },
-
-  setProvider(key) {
-    const providers=Config.getProviders();
-    const p=providers[key]; if(!p) return;
-    Config.save({provider:key, model:p.models[0].id});
-    Render.settings(); // Re-render with new provider
+  setProvider(key){
+    const p=Config.getProviders()[key]; if(!p) return;
+    Config.save({provider:key,model:p.models[0].id}); Render.settings();
   },
-
-  toggleKeyVisibility() {
+  toggleKeyVisibility(){
     const inp=document.getElementById('api-key-input');
     if(inp) inp.type=inp.type==='password'?'text':'password';
   },
-
-  saveSettings() {
+  saveSettings(){
     const key=(document.getElementById('api-key-input')?.value||'').trim();
     const model=document.getElementById('model-select')?.value||'';
-    Config.save({apiKey:key, model});
+    Config.save({apiKey:key,model});
     this.closeSettings();
-    showToast(key?'✓ API Key configurada. ¡Listo para debatir!':'Configuración guardada sin API Key','🔑');
-    // Refresh modal chat header if open
+    showToast(key?'✓ API Key configurada. ¡Listo para debatir!':'Configuración guardada','🔑');
     if(this._modalOpen) Render.modal();
   },
-
-  clearKey() {
-    Config.save({apiKey:''});
-    Render.settings();
+  clearKey(){
+    Config.save({apiKey:''}); Render.settings();
     showToast('API Key eliminada','🗑️');
     if(this._modalOpen) Render.modal();
   },
 
-  /* ── Chat ── */
-  async sendChat() {
-    if(this._streaming) return;
-    const {idx}=State.get(), d=DB.dilemmas[idx], choice=State.getChoice(d.id);
-    const input=document.getElementById('chat-input'), msgs=document.getElementById('chat-messages');
-    if(!input||!msgs) return;
+  /* ── Profile ── */
+  openProfile(){
+    Render.profile();
+    document.getElementById('profile-overlay').classList.add('open');
+  },
+  closeProfile(){
+    document.getElementById('profile-overlay').classList.remove('open');
+  },
 
-    const text=input.value.trim(); if(!text) return;
-    input.value=''; input.style.height='auto';
+  /* ── Generator ── */
+  openGenerator(){
+    Render.generator();
+    document.getElementById('generator-overlay').classList.add('open');
+  },
+  closeGenerator(){
+    document.getElementById('generator-overlay').classList.remove('open');
+    this._genTheme='';
+  },
+  selectTheme(t){
+    this._genTheme=t;
+    const inp=document.getElementById('gen-theme-input');
+    if(inp) inp.value=t;
+    document.querySelectorAll('.theme-chip').forEach(c=>c.classList.toggle('selected',c.textContent.trim()===t));
+    AudioFX.click();
+  },
 
-    // User bubble
-    const u=document.createElement('div');
-    u.className='chat-user'; u.style.fontSize='12.5px'; u.textContent=text;
-    msgs.appendChild(u); msgs.scrollTop=msgs.scrollHeight;
+  async generateDilemma(){
+    const inp=document.getElementById('gen-theme-input');
+    const theme=(inp?.value?.trim()||this._genTheme||'').trim();
+    if(!theme){ showToast('Escribe un tema primero','✏️'); inp?.focus(); return; }
 
-    // Add to history
-    this._chatHistory.push({role:'user', content:text});
+    const btn=document.getElementById('gen-btn');
+    const status=document.getElementById('gen-status');
+    if(btn){ btn.disabled=true; btn.innerHTML='<div class="gen-spinner"></div>Generando dilema…'; }
+    if(status){ status.style.display='block'; status.innerHTML=`<p style="color:#34d399;font-size:12px;font-weight:500;text-align:center">✦ Construyendo dilema sobre "<em>${theme}</em>"…</p>`; }
+    AudioFX.select();
 
-    // Build system prompt
-    const systemPrompt = choice
-      ? LLM.buildSystemPrompt(d, choice)
-      : `Eres un asesor histórico experto en ${d.category} del período ${d.year}. Responde de forma analítica, breve y socrática. Responde siempre en español.`;
-
-    if(Config.hasKey()) {
-      // ── REAL API (streaming) ──
-      this._streaming=true;
-      const aiDiv=document.createElement('div');
-      aiDiv.className='chat-ai'; aiDiv.style.fontSize='12.5px';
-      aiDiv.innerHTML='<span class="s-cursor">▋</span>';
-      msgs.appendChild(aiDiv); msgs.scrollTop=msgs.scrollHeight;
-
-      let accumulated='';
-
-      await LLM.send(
-        this._chatHistory,
-        systemPrompt,
-        (chunk) => {
-          accumulated+=chunk;
-          aiDiv.innerHTML=parseMarkdown(accumulated)+'<span class="s-cursor">▋</span>';
-          msgs.scrollTop=msgs.scrollHeight;
+    if(Config.hasKey()){
+      // Real AI generation
+      await LLM.generateDilemma(
+        theme,
+        (partial)=>{
+          if(status) status.innerHTML=`<p style="color:#404060;font-size:11px;font-family:JetBrains Mono,monospace;max-height:60px;overflow:hidden">${partial.slice(-200)}</p>`;
         },
-        () => {
-          aiDiv.innerHTML=parseMarkdown(accumulated);
-          this._chatHistory.push({role:'assistant', content:accumulated});
-          this._streaming=false;
-          msgs.scrollTop=msgs.scrollHeight;
+        (dilemma)=>{
+          DB.addGenerated(dilemma);
+          this.closeGenerator();
+          const newIdx=DB.getAll().length-1;
+          State.setIdx(newIdx); this._chatHistory=[]; this._chatIdx=0;
+          Render.dilemma();
+          showToast(`✦ Dilema generado: "${dilemma.title}"`, '🤖');
+          AudioFX.victory();
         },
-        (err) => {
-          aiDiv.innerHTML=`<span style="color:#f87171;font-size:12px">⚠ ${err}</span>`;
-          this._streaming=false;
-          // Remove failed message from history
-          this._chatHistory.pop();
+        (err)=>{
+          if(btn){ btn.disabled=false; btn.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Reintentar'; }
+          if(status) status.innerHTML=`<p style="color:#f87171;font-size:12px;text-align:center">⚠ ${err.startsWith('parse:')?'Error al parsear la respuesta de la IA. Reintenta.':err}</p>`;
         }
       );
     } else {
-      // ── DEMO MODE (typewriter) ──
-      const responses=d.chat.responses;
-      const response=responses[this._chatIdx % responses.length];
-      this._chatIdx++;
+      // Local template generation
+      const usedIds=new Set(DB._generated.map(d=>d.id));
+      const available=LOCAL_TEMPLATES.filter(t=>!usedIds.has(t.id));
+      const tpl=available.length>0
+        ? available[Math.floor(Math.random()*available.length)]
+        : LOCAL_TEMPLATES[Math.floor(Math.random()*LOCAL_TEMPLATES.length)];
 
-      // Typing indicator
-      const typing=document.createElement('div');
-      typing.className='chat-ai'; typing.style.fontSize='12px';
-      typing.innerHTML='<span style="display:flex;gap:4px;align-items:center;padding:2px 0"><span class="typing-dot"></span><span class="typing-dot" style="animation-delay:.2s"></span><span class="typing-dot" style="animation-delay:.4s"></span></span>';
-      msgs.appendChild(typing); msgs.scrollTop=msgs.scrollHeight;
-
-      await new Promise(r=>setTimeout(r, 800+Math.random()*600));
-      typing.remove();
-
-      const aiDiv=document.createElement('div');
-      aiDiv.className='chat-ai'; aiDiv.style.fontSize='12.5px';
-      msgs.appendChild(aiDiv); msgs.scrollTop=msgs.scrollHeight;
-
-      LLM.typewriter(response, aiDiv, ()=>{
-        this._chatHistory.push({role:'assistant', content:response});
-        msgs.scrollTop=msgs.scrollHeight;
-      });
+      await new Promise(r=>setTimeout(r,1400)); // Simulate generation time
+      const dilemma={...tpl, id:tpl.id+'-'+Date.now(), _generated:true};
+      DB.addGenerated(dilemma);
+      this.closeGenerator();
+      const newIdx=DB.getAll().length-1;
+      State.setIdx(newIdx); this._chatHistory=[]; this._chatIdx=0;
+      Render.dilemma();
+      showToast(`✦ Dilema añadido: "${dilemma.title}"`, '📜');
+      AudioFX.victory();
     }
   },
 
-  chatKey(e)     { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault(); this.sendChat();} },
-  chatResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,96)+'px'; },
+  /* ── Chat ── */
+  async sendChat(){
+    if(this._streaming) return;
+    const all=DB.getAll(), {idx}=State.get(), d=all[idx];
+    const choice=State.getChoice(d.id);
+    const input=document.getElementById('chat-input'), msgs=document.getElementById('chat-messages');
+    if(!input||!msgs) return;
+    const text=input.value.trim(); if(!text) return;
+    input.value=''; input.style.height='auto';
+
+    const u=document.createElement('div');
+    u.className='chat-user'; u.textContent=text;
+    msgs.appendChild(u); msgs.scrollTop=msgs.scrollHeight;
+    this._chatHistory.push({role:'user',content:text});
+
+    const sysPrompt=choice
+      ? LLM.buildSystemPrompt(d,choice)
+      : `Eres un asesor histórico experto en ${d.category} del período ${d.year}. Responde de forma analítica y socrática en español.`;
+
+    if(Config.hasKey()){
+      this._streaming=true;
+      const aiDiv=document.createElement('div');
+      aiDiv.className='chat-ai'; aiDiv.innerHTML='<span class="s-cursor">▋</span>';
+      msgs.appendChild(aiDiv); msgs.scrollTop=msgs.scrollHeight;
+      let acc='';
+      await LLM.send(
+        this._chatHistory, sysPrompt,
+        chunk=>{ acc+=chunk; aiDiv.innerHTML=parseMarkdown(acc)+'<span class="s-cursor">▋</span>'; msgs.scrollTop=msgs.scrollHeight; },
+        ()=>{ aiDiv.innerHTML=parseMarkdown(acc); this._chatHistory.push({role:'assistant',content:acc}); this._streaming=false; msgs.scrollTop=msgs.scrollHeight; },
+        err=>{ aiDiv.innerHTML=`<span style="color:#f87171;font-size:12px">⚠ ${err}</span>`; this._streaming=false; this._chatHistory.pop(); }
+      );
+    } else {
+      // Demo mode typewriter
+      const responses=d.chat.responses;
+      const response=responses[this._chatIdx%responses.length]; this._chatIdx++;
+      const typing=document.createElement('div');
+      typing.className='chat-ai';
+      typing.innerHTML='<span style="display:flex;gap:4px;align-items:center;padding:2px 0"><span class="typing-dot"></span><span class="typing-dot" style="animation-delay:.2s"></span><span class="typing-dot" style="animation-delay:.4s"></span></span>';
+      msgs.appendChild(typing); msgs.scrollTop=msgs.scrollHeight;
+      await new Promise(r=>setTimeout(r,700+Math.random()*500));
+      typing.remove();
+      const aiDiv=document.createElement('div'); aiDiv.className='chat-ai';
+      msgs.appendChild(aiDiv); msgs.scrollTop=msgs.scrollHeight;
+      LLM.typewriter(response,aiDiv,()=>{ this._chatHistory.push({role:'assistant',content:response}); msgs.scrollTop=msgs.scrollHeight; });
+    }
+  },
+
+  chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();this.sendChat();} },
+  chatResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,96)+'px'; },
 
   /* ── Share ── */
-  shareVerdict() {
-    const {idx,streak}=State.get(), d=DB.dilemmas[idx], choice=State.getChoice(d.id);
+  shareVerdict(){
+    const all=DB.getAll(), {idx,streak}=State.get(), d=all[idx], choice=State.getChoice(d.id);
     if(!choice){ showToast('Primero elige una opción','⚠️'); return; }
     const ok=choice===d.revelation.historicalChoice;
     const pA=d.options.A.pct, pB=d.options.B.pct;
     const bar=n=>'█'.repeat(Math.round(n/10))+'░'.repeat(10-Math.round(n/10));
     const txt=[
-      `🧠 Dopaminapp — Dilema del Día`,`━━━━━━━━━━━━━━━━`,
+      `🧠 Dopaminapp Elite — Dilema del Día`,`━━━━━━━━━━━━━━━━`,
       `📌 ${d.category} · ${d.year}`,`${d.icon} ${d.title}`,``,
       `Mi veredicto: ${choice==='A'?'🔵':'🟡'} ${d.options[choice].label} (${choice})`,
       ok?`✅ Acerté con la decisión histórica`:`❌ No acerté — fue "${d.revelation.choiceLabel}"`,``,
       `📊 La comunidad eligió:`,`🔵 A  ${bar(pA)} ${pA}%`,`🟡 B  ${bar(pB)} ${pB}%`,``,
-      `🔥 Racha: ${streak.count} días`,`dopaminapp.io`,
+      `🔥 Racha: ${streak.count} días | ⭐ ${Profile.compute()?.archetype?.name||'Sin arquetipo aún'}`,`dopaminapp.io`,
     ].join('\n');
     const copy=()=>{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);};
-    (navigator.clipboard?.writeText(txt)||Promise.reject())
-      .then(()=>showToast('¡Veredicto copiado!','📋'))
-      .catch(()=>{copy();showToast('¡Veredicto copiado!','📋');});
+    (navigator.clipboard?.writeText(txt)||Promise.reject()).then(()=>showToast('¡Veredicto copiado!','📋')).catch(()=>{copy();showToast('¡Veredicto copiado!','📋');});
   },
 
-  /* ── Keyboard shortcuts ── */
-  _bindKeys() {
-    document.addEventListener('keydown', e=>{
+  /* ── Keyboard Shortcuts ── */
+  _bindKeys(){
+    document.addEventListener('keydown',e=>{
       if(e.target.matches('input,textarea,select')) return;
       if(e.metaKey||e.ctrlKey||e.altKey) return;
-      const {idx}=State.get(), d=DB.dilemmas[idx], done=State.isDone(d.id);
+      const all=DB.getAll(), {idx}=State.get(), d=all[idx], done=State.isDone(d.id);
       switch(e.key){
-        case '1': if(!done) this.selectOption('A'); break;
-        case '2': if(!done) this.selectOption('B'); break;
+        case '1': if(!done){ this.selectOption('A'); } break;
+        case '2': if(!done){ this.selectOption('B'); } break;
         case ' ': e.preventDefault(); this._modalOpen?this.closeModal():this.openModal(); break;
-        case 'Escape': this._settingsOpen?this.closeSettings():this.closeModal(); break;
+        case 'Escape':
+          if(document.getElementById('settings-overlay').classList.contains('open')) this.closeSettings();
+          else if(document.getElementById('profile-overlay').classList.contains('open')) this.closeProfile();
+          else if(document.getElementById('generator-overlay').classList.contains('open')) this.closeGenerator();
+          else this.closeModal();
+          break;
         case 'ArrowRight': this.navigate(1); break;
         case 'ArrowLeft':  this.navigate(-1); break;
       }
     });
   },
 
-  /* ── Mobile viewport (keyboard handling) ── */
-  _bindMobileViewport() {
+  /* ── Mobile Viewport (keyboard handling) ── */
+  _bindMobileViewport(){
     if(!window.visualViewport) return;
-    window.visualViewport.addEventListener('resize', ()=>{
+    const handle=()=>{
       const modal=document.getElementById('side-modal');
       if(!modal?.classList.contains('open')) return;
-      // Shrink modal to visual viewport height (avoids keyboard overlap)
       modal.style.height=window.visualViewport.height+'px';
       modal.style.top=window.visualViewport.offsetTop+'px';
-      // Scroll chat to bottom
       const msgs=document.getElementById('chat-messages');
       if(msgs) setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50);
-    });
-    window.visualViewport.addEventListener('scroll', ()=>{
-      const modal=document.getElementById('side-modal');
-      if(modal?.classList.contains('open'))
-        modal.style.top=window.visualViewport.offsetTop+'px';
-    });
+    };
+    window.visualViewport.addEventListener('resize',handle);
+    window.visualViewport.addEventListener('scroll',handle);
   },
 };
 
-document.addEventListener('DOMContentLoaded', ()=>App.init());
+document.addEventListener('DOMContentLoaded',()=>App.init());
 </script>
 </body>
 </html>
