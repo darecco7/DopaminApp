@@ -315,7 +315,26 @@ const Glossary = {
     'Riesgo Moral': 'Cuando alguien asume más riesgos porque otro asume los costos si las cosas salen mal.',
     'Efecto Lindy': 'Teoría que dice que la esperanza de vida futura de algo es proporcional a su edad actual.',
     'Heurística de Disponibilidad': 'Atajo mental que basa decisiones en ejemplos inmediatos que vienen a la mente.',
-    'Cisne Negro': 'Evento altamente improbable con impacto masivo que es racionalizado en retrospectiva.'
+    'Cisne Negro': 'Evento altamente improbable con impacto masivo que es racionalizado en retrospectiva.',
+    'Navaja de Ockham': 'Principio que sugiere que, en igualdad de condiciones, la explicación más simple suele ser la correcta.',
+    'Segundas Derivadas': 'Las consecuencias de las consecuencias. Pensar más allá del efecto inmediato de una acción.',
+    'Pensamiento Inverso de Munger': 'Evitar la estupidez es más fácil que buscar la brillantez. "¿Cómo garantizo el fracaso? Evitemos eso".',
+    'Costo de Oportunidad': 'El valor de la mejor alternativa a la que renuncias al tomar una decisión.',
+    'Tragedia de los Comunes': 'Cuando individuos racionales agotan un recurso compartido buscando su propio interés a corto plazo.',
+    'Efecto Dunning-Kruger': 'Sesgo donde las personas con menos habilidad sobrestiman ilusoriamente sus capacidades.',
+    'Ley de Goodhart': 'Cuando una métrica se convierte en el objetivo, deja de ser una buena métrica.',
+    'Ventaja Comparativa': 'La capacidad de producir un bien a un costo de oportunidad menor que otro actor.',
+    'Sesgo de Supervivencia': 'Concentrarse en los ganadores que sobrevivieron a un proceso e ignorar a los perdedores invisibles.',
+    'Regla de Pareto': 'Ley de potencias donde aproximadamente el 80% de los efectos provienen del 20% de las causas.',
+    'Efecto Red': 'Fenómeno por el cual el valor de un producto o servicio aumenta a medida que más personas lo usan.',
+    'Efecto Mateo': 'Ventaja acumulativa: el rico se hace más rico y el exitoso obtiene más éxito por tener ventajas iniciales.',
+    'Ley de Parkinson': 'El trabajo se expande hasta llenar el tiempo disponible para su finalización.',
+    'Falacia de Costos Hundidos': 'Continuar un comportamiento destructivo sólo porque ya se han invertido recursos irrecuperables.',
+    'Ley de Amara': 'Tendencia a sobreestimar el efecto de una tecnología a corto plazo y subestimarlo a largo plazo.',
+    'Problema del Principal-Agente': 'Conflicto de intereses cuando una persona (el agente) toma decisiones en nombre de otra (el principal).',
+    'Sesgo de Confirmación': 'Tendencia a buscar y favorecer información que confirma nuestras creencias preexistentes.',
+    'Falacia del Francotirador': 'Pintar la diana después de haber disparado para hacer que el azar parezca habilidad.',
+    'Teoría de las Ventanas Rotas': 'El desorden visible fomenta más desorden y criminalidad si no se repara de inmediato.'
   },
   parse(text){
     let t = text;
@@ -933,6 +952,582 @@ const DB = {
         responses: [
           'La disuasión nuclear. La amenaza de aniquilación mutua eliminó la viabilidad del ataque preventivo espartano. La bomba atómica fue, irónicamente, el mayor pacificador.',
           'Ambos imperios crearon esferas de influencia separadas sin intentar absorber el sistema comercial del otro, algo que EE.UU. y China no han hecho.'
+        ]
+      }
+    },
+    {
+      id: 'great-depression-1930',
+      category: 'Macroeconomía & Dinero',
+      catKey: 'blue', year: '1930', country: 'Estados Unidos', icon: '🏦',
+      title: 'La Gran Depresión',
+      hook: 'Eres el Secretario del Tesoro. El mercado de valores acaba de colapsar, destruyendo fortunas y paralizando bancos. ¿Dejas que las empresas débiles quiebren para "purgar" la economía o gastas dinero del Estado para estimularla?',
+      context: '1930. El presidente Herbert Hoover confía en su Secretario del Tesoro, Andrew Mellon. Mellon cree en el "Liquidacionismo": las crisis son necesarias para purgar la economía de deudas improductivas y especulación. En la vereda opuesta, un economista británico llamado John Maynard Keynes argumenta que la demanda agregada ha colapsado y solo el Estado puede reactivarla gastando dinero, incluso si se endeuda.',
+      options: {
+        A: { label: 'Liquidacionismo de Mellon: Liquida el trabajo, liquida las acciones, liquida los agricultores. Purgará la podredumbre.', pct: 25 },
+        B: { label: 'Estímulo Keynesiano: Intervención masiva del Estado con obras públicas e inyección de liquidez.', pct: 75 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Hoover y Mellon', choiceLabel: 'Liquidacionismo (Inacción)' },
+      article: {
+        metrics: [ { lbl: 'Desempleo 1933', val: '24.9%' }, { lbl: 'Caída del PIB', val: '-30%' }, { lbl: 'Bancos Quebrados', val: '9,000' } ],
+        content: [
+          {h: 'La inacción como veneno', p: 'La postura de "dejar que el mercado se arregle solo" mientras la Reserva Federal reducía la masa monetaria, convirtió un pánico bursátil en una catástrofe global que duró una década.', hl: true},
+          {h: 'El Cambio de Paradigma', p: 'En 1933, FDR implementó el New Deal (cercano al enfoque Keynesiano), rompiendo la ortodoxia clásica de austeridad.', hl: false},
+          {h: 'El Debate Eterno', p: 'Keynes ganó la batalla ideológica para el siglo XX. Sin embargo, hoy los defensores de la escuela austriaca argumentan que evitar las recesiones crea "empresas zombis" y burbujas aún peores.', hl: true}
+        ],
+        timeline: [ {date: '1929', text: 'Crash de Wall Street.', col: '#f87171'}, {date: '1933', text: 'Desempleo pico y asunción de FDR.', col: '#f5a623'} ]
+      },
+      quiz: {
+        question: '¿Por qué Keynes decía que a largo plazo "estamos todos muertos" para refutar el Liquidacionismo?',
+        options: [
+          { text: 'Argumentaba que esperar a que el mercado "se ajuste solo a largo plazo" es inútil porque el dolor a corto plazo destruye a la sociedad antes de que llegue la recuperación.', correct: true, feedback: 'Correcto. La deflación masiva causa revoluciones políticas antes de que la economía pueda "sanarse".' },
+          { text: 'Argumentaba que las guerras destruían inevitablemente a las naciones antes de que la economía se recuperara.', correct: false, feedback: 'Falso. Era una crítica pura al enfoque clásico del equilibrio de largo plazo.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: '¿El miedo actual a dejar que los bancos y aerolíneas quiebren (rescates del 2008 y 2020) significa que Mellon tenía razón: que el miedo al dolor a corto plazo arruina el largo plazo?',
+        responses: [
+          'Es el péndulo fatal. Mellon creó un dolor tan extremo que paralizó el capitalismo. Hoy, el péndulo osciló al otro extremo: intervenimos tanto para evitar cualquier recesión que creamos corporaciones zombis adictas a tasas del 0%.',
+          'El Liquidacionismo tiene sentido en una economía local de granjeros. En un sistema financiero hiper-conectado, liquidar a Lehman Brothers (2008) casi destruye la civilización moderna en una tarde.'
+        ]
+      }
+    },
+    {
+      id: 'asian-crisis-1997',
+      category: 'Macroeconomía & Dinero',
+      catKey: 'blue', year: '1997', country: 'Tailandia', icon: '📉',
+      title: 'La Crisis Asiática',
+      hook: 'Eres el Banco Central de Tailandia. Inversores extranjeros en pánico están vendiendo masivamente tu moneda (el Baht) por dólares. Si te quedas sin dólares, tu país no podrá importar petróleo ni comida. ¿Qué haces para defender tu economía?',
+      context: 'El "Milagro Asiático" atrajo miles de millones en préstamos en dólares. Tailandia ataba su moneda (Baht) al dólar. Cuando los exportadores fallaron, los especuladores (incluyendo fondos de cobertura) comenzaron a vender en corto el Baht, apostando a que el Banco Central no tenía suficientes reservas en dólares para mantener el tipo de cambio fijo.',
+      options: {
+        A: { label: 'Defender el tipo de cambio: Vender tus reservas de dólares para comprar Bahts y subir las tasas de interés para atraer capital.', pct: 30 },
+        B: { label: 'Devaluar (Flotación libre): Rendirse a los especuladores, dejar que el mercado fije el precio del Baht y guardar los dólares.', pct: 70 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Banco Central de Tailandia', choiceLabel: 'Quemar reservas hasta la devaluación forzada' },
+      article: {
+        metrics: [ { lbl: 'Caída del Baht', val: '-50%' }, { lbl: 'Reservas Gastadas', val: '$23.4B' }, { lbl: 'Rescate FMI', val: '$17B' } ],
+        content: [
+          {h: 'La quema de reservas', p: 'Tailandia eligió defender su orgullo y el anclaje al dólar. En pocos meses, quemaron casi todas sus reservas internacionales comprando su propia moneda contra los especuladores.', hl: true},
+          {h: 'La Rendición', p: 'El 2 de julio de 1997, sin dólares, no tuvieron otra opción que dejar flotar el Baht. La moneda colapsó a la mitad de su valor en días.', hl: false},
+          {h: 'Efecto Contagio', p: 'El colapso quebró corporaciones que debían dólares pero ganaban en Bahts, iniciando una crisis que arrasó Corea del Sur, Indonesia, Rusia (1998) y hasta Argentina (2001).', hl: true}
+        ],
+        timeline: [ {date: 'May 1997', text: 'Defensa heroica pero inútil del Baht.', col: '#f5a623'}, {date: 'Jul 1997', text: 'Flotación forzada, la moneda colapsa.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: '¿Qué es el "Pecado Original" en economía internacional que causó esta crisis?',
+        options: [
+          { text: 'Tomar préstamos en una moneda extranjera (dólares) que tú no puedes imprimir, mientras cobras impuestos en tu moneda local.', correct: true, feedback: 'Correcto. Si tu moneda se devalúa, tu deuda externa en dólares se multiplica matemáticamente de la noche a la mañana. Es un riesgo asimétrico brutal.' },
+          { text: 'Permitir que el Fondo Monetario Internacional dicte las políticas fiscales del país.', correct: false, feedback: 'Eso fue la consecuencia del colapso, no la causa inicial que fue el descalce cambiario.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si George Soros y otros "especuladores" ganaron miles de millones quebrando al Baht, ¿debería prohibirse vender monedas soberanas en corto?',
+        responses: [
+          'Prohibir a los especuladores es como romper el termómetro para bajar la fiebre. Soros no destruyó la economía tailandesa, simplemente aceleró la corrección de un tipo de cambio ficticio e insostenible.',
+          'Sin embargo, cuando el tamaño de los fondos de cobertura supera al PIB de un país emergente, la asimetría de poder permite que el mercado financiero dicte la política soberana. Un triunfo del capital sobre el Estado.'
+        ]
+      }
+    },
+    {
+      id: 'weimar-hyperinflation-1923',
+      category: 'Macroeconomía & Dinero',
+      catKey: 'blue', year: '1923', country: 'Alemania (Weimar)', icon: '💸',
+      title: 'La Hiperinflación de Weimar',
+      hook: 'La gente usa billetes como papel tapiz y combustible para la estufa. Una barra de pan cuesta 200 mil millones de marcos. Como nuevo Canciller, debes detener el pánico inflacionario sin tener un solo gramo de oro para respaldar una nueva moneda.',
+      context: 'Alemania debe pagar reparaciones de guerra masivas (Tratado de Versalles) en divisas fuertes. Para pagar salarios y mantener el Estado, el gobierno imprime papel moneda sin freno. En 1923, la inflación es del 29,500% mensual. Gustav Stresemann y Hjalmar Schacht deben crear una nueva moneda, pero no tienen oro ni divisas.',
+      options: {
+        A: { label: 'Rentenmark (Patrón Tierra): Crear una nueva moneda atada al valor hipotético de todas las tierras agrícolas e industriales de Alemania.', pct: 85 },
+        B: { label: 'Deflación Brutal: Dejar de imprimir, recortar salarios al 50% y confiscar ahorros para reducir la masa monetaria artificialmente.', pct: 15 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Hjalmar Schacht', choiceLabel: 'Introducción del Rentenmark' },
+      article: {
+        metrics: [ { lbl: 'Inflación Mensual', val: '29,500%' }, { lbl: 'Cambio', val: '1x10¹² Viejos = 1 Nuevo' }, { lbl: 'El Respaldo', val: 'Ficción Psicológica' } ],
+        content: [
+          {h: 'El Truco Psicológico', p: 'El Rentenmark no estaba respaldado por oro, sino por una hipoteca sobre las tierras y propiedades alemanas. Era puramente psicológico (nadie podía cambiar un billete por un metro de tierra), pero funcionó.', hl: true},
+          {h: 'El Fin del Pánico', p: 'En noviembre de 1923, 1 billón de "papiermarks" viejos se cambió por 1 Rentenmark. Al detener la imprenta y ofrecer esta ilusión de valor sólido, la inflación se detuvo instantáneamente.', hl: false},
+          {h: 'Cicatriz Alemana', p: 'Esta crisis traumatizó a la cultura alemana, forjando su histórica obsesión con la austeridad fiscal y el miedo a la inflación que define al Banco Central Europeo hasta hoy.', hl: false}
+        ],
+        timeline: [ {date: 'Oct 1923', text: 'Un pan cuesta 200 mil millones.', col: '#f87171'}, {date: 'Nov 1923', text: 'Se introduce el Rentenmark.', col: '#34d399'} ]
+      },
+      quiz: {
+        question: '¿Qué demuestra el éxito del "Rentenmark" sobre la naturaleza fundamental del dinero?',
+        options: [
+          { text: 'Demuestra que el dinero no necesita valor intrínseco (como el oro), sino únicamente la fe colectiva y la limitación estricta de su suministro.', correct: true, feedback: 'Correcto. El dinero es una alucinación compartida. Al limitar la emisión, la "confianza" respaldada en tierras funcionó.' },
+          { text: 'Demuestra que las materias primas como la tierra son el único respaldo verdadero para una economía industrial.', correct: false, feedback: 'Falso. Fue un truco contable. El gobierno no cedió tierras, solo usó el concepto como placebo psicológico para el público.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si el valor del dinero es puramente fe psicológica (como probó el Rentenmark o el Bitcoin), ¿no es un engaño gigantesco en el que todos participamos?',
+        responses: [
+          'El dinero es la ficción más exitosa inventada por el Homo Sapiens. No tiene valor calórico como el trigo ni funcional como el acero, pero permite cooperar a millones de extraños. Es una alucinación útil.',
+          'La ficción se vuelve tóxica cuando el soberano la diluye en secreto (impresión masiva). La hiperinflación es, en esencia, la pérdida repentina de esa fe en el director de la ilusión (el Estado).'
+        ]
+      }
+    },
+    {
+      id: 'caesar-rubicon',
+      category: 'Filosofía del Poder',
+      catKey: 'purple', year: '49 a.C.', country: 'República Romana', icon: '🦅',
+      title: 'El Cruce del Rubicón',
+      hook: 'Eres un general glorioso amado por tus tropas. El Senado en la capital, temeroso de tu poder, te ha despojado de tu mando militar y te ordena volver como civil para ser juzgado y exiliado. El río Rubicón marca la frontera. Si lo cruzas con tu ejército, eres un traidor y estallará la guerra civil.',
+      context: 'Julio César ha conquistado la Galia y posee el ejército más leal de Roma. El Senado, instigado por Pompeyo, exige su renuncia para destruirlo políticamente. La ley romana prohíbe estrictamente cruzar el río Rubicón con tropas (traición capital). Si obedece la ley de la República, su carrera y quizás su vida terminan. Si la rompe, destruye la República de 500 años.',
+      options: {
+        A: { label: 'Cruzar el Rubicón: "Alea iacta est" (La suerte está echada). Marchar sobre Roma, tomar el poder por la fuerza y salvar tu legado.', pct: 70 },
+        B: { label: 'Acatar al Senado: Dejar las legiones y enfrentar juicio, confiando en tu popularidad y oratoria para sobrevivir políticamente.', pct: 30 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Julio César', choiceLabel: 'Cruzar con la Legión XIII (Alea iacta est)' },
+      article: {
+        metrics: [ { lbl: 'Tropas al cruzar', val: '1 Legión (5,000)' }, { lbl: 'Fin de República', val: 'Absoluto' }, { lbl: 'Destino', val: 'Dictador Perpetuo' } ],
+        content: [
+          {h: 'El Punto de No Retorno', p: 'El 10 de enero, César avanzó con la Legión XIII. Sorprendió a Roma por la rapidez de su marcha invernal. Pompeyo y gran parte del Senado huyeron de la ciudad sin luchar, dejando el control a César.', hl: true},
+          {h: 'La Caída del Sistema', p: 'Ese solo acto probó que las leyes (Senado) no son nada frente a la fuerza letal disciplinada (Ejército). El monopolio de la violencia había cambiado de manos.', hl: false},
+          {h: 'El Precio del Poder', p: 'Aunque César ganó la guerra civil y fue nombrado Dictador Perpetuo, el resentimiento por la muerte de la República culminó en su asesinato en los Idus de Marzo.', hl: false}
+        ],
+        timeline: [ {date: '49 a.C.', text: 'Cruce del Rubicón.', col: '#f87171'}, {date: '44 a.C.', text: 'Asesinato de César.', col: '#a78bfa'} ]
+      },
+      quiz: {
+        question: 'Políticamente, ¿qué representa la metáfora "Cruzar el Rubicón" en la toma de decisiones?',
+        options: [
+          { text: 'Tomar una decisión irreversible que obliga a un curso de acción extremo, asumiendo todos los riesgos.', correct: true, feedback: 'Correcto. Al igual que quemar los barcos de Cortés, elimina las opciones de retirada y fuerza el compromiso total.' },
+          { text: 'Actuar ilegalmente contra un gobierno.', correct: false, feedback: 'Aunque en el caso histórico fue ilegal, la frase moderna se refiere a la *irreversibilidad* psicológica y táctica de una decisión.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si el sistema legal está diseñado por tus enemigos para destruirte, ¿es ético destruirlo antes por la fuerza militar, como hizo César?',
+        responses: [
+          'La moralidad desaparece cuando la supervivencia entra en juego. El Senado usó la ley como un arma letal encubierta; César respondió con armas de acero abiertas. Fue un choque de monopolios de poder.',
+          'La advertencia histórica: Cuando un individuo resuelve su injusticia personal destruyendo el marco institucional de su nación, crea el precedente para tiranías futuras. Roma no volvió a ser libre.'
+        ]
+      }
+    },
+    {
+      id: 'cyrus-babylon',
+      category: 'Filosofía del Poder',
+      catKey: 'purple', year: '539 a.C.', country: 'Imperio Persa', icon: '📜',
+      title: 'El Cilindro de Ciro',
+      hook: 'Acabas de conquistar Babilonia, la ciudad más rica y fortificada del mundo, donde decenas de naciones cautivas y dioses ajenos coexisten. La tradición militar manda masacrar a las élites, esclavizar al pueblo y destruir los templos ajenos. ¿Qué haces con los vencidos?',
+      context: 'Ciro II el Grande del Imperio Aqueménida entra triunfante a Babilonia tras desviar el río Éufrates para tomarla sin asedio prolongado. Tiene en sus manos a los judíos esclavizados (el exilio babilónico) y decenas de otros pueblos. La norma imperial asiria y babilónica era la dominación a través del terror, el desplazamiento forzado y el sometimiento religioso absoluto.',
+      options: {
+        A: { label: 'Tolerancia y Restauración: Emitir un edicto liberando a los esclavos (incluyendo judíos) y financiar la reconstrucción de sus templos locales.', pct: 80 },
+        B: { label: 'Sometimiento Imperial: Destruir a los dioses locales, imponer la cultura persa y redistribuir a las élites para prevenir rebeliones.', pct: 20 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Ciro el Grande', choiceLabel: 'Emitir la primera declaración de tolerancia' },
+      article: {
+        metrics: [ { lbl: 'Innovación', val: 'Derechos Humanos' }, { lbl: 'Pueblos Liberados', val: 'Decenas (Judíos)' }, { lbl: 'Legado', val: 'Mesías Bíblico' } ],
+        content: [
+          {h: 'El Primer Edicto de Tolerancia', p: 'Ciro talló en un cilindro de arcilla su decreto: liberó a los judíos para volver a Jerusalén y reconstruir su Templo, y ordenó respetar las religiones locales de todos sus súbditos.', hl: true},
+          {h: 'Poder Suave (Soft Power)', p: 'No fue mera caridad. Ciro inventó el "imperio multicultural". Al proteger las culturas locales, se ganó la lealtad eterna de sus pueblos (la Biblia lo llama "Mesías" a pesar de ser persa), ahorrando millones en ejércitos de ocupación.', hl: true},
+          {h: 'Eficiencia', p: 'A diferencia del modelo asirio (terror), el modelo persa garantizaba impuestos constantes y paz estructural por siglos.', hl: false}
+        ],
+        timeline: [ {date: '539 a.C.', text: 'Conquista incruenta de Babilonia.', col: '#4f8ef7'}, {date: '538 a.C.', text: 'Edicto de Ciro (Cilindro).', col: '#34d399'} ]
+      },
+      quiz: {
+        question: '¿Por qué la estrategia de Tolerancia de Ciro fue económicamente superior a la tiranía tradicional antigua?',
+        options: [
+          { text: 'Porque el costo de gobernar mediante el terror constante (guarniciones militares, aplastar rebeliones) erosiona la riqueza neta del imperio. La lealtad voluntaria es barata.', correct: true, feedback: 'Excelente. Al descentralizar la cultura y la religión, Ciro bajó los costos de transacción del control imperial.' },
+          { text: 'Porque los sacerdotes babilónicos pagaban más impuestos si se les dejaba rezar en paz.', correct: false, feedback: 'Falso. No se trataba de recaudación directa de sacerdotes, sino de pacificación estratégica a escala poblacional.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si otorgar libertad y autonomía a los pueblos conquistados es tan efectivo (como demostró Ciro), ¿por qué tantos líderes prefieren micro-gestionar mediante el control autoritario y el terror?',
+        responses: [
+          'El control autoritario satisface el ego a corto plazo y parece menos riesgoso para el líder paranoico. Delegar libertad requiere una inmensa seguridad estructural e institucional.',
+          'El sesgo de ilusión de control. Los líderes débiles confunden la represión visible con el poder real, ignorando los costos hundidos masivos que exige el estado policial encubierto.'
+        ]
+      }
+    },
+    {
+      id: 'joan-arc-1429',
+      category: 'Filosofía del Poder',
+      catKey: 'purple', year: '1429', country: 'Francia', icon: '⚜️',
+      title: 'El Milagro de Juana',
+      hook: 'Eres el Delfín de Francia, acorralado por los ingleses en la Guerra de los Cien Años. Tu reino está al borde de la aniquilación. Aparece una campesina analfabeta de 17 años afirmando que Dios le habló y le ordenó liderar tu ejército en combate. Si le crees, serás el hazmerreír de Europa; si ganas, cambiarás el destino del mundo.',
+      context: 'Carlos VII no ha podido ser coronado porque Reims está bajo control enemigo. Inglaterra y Borgoña controlan casi toda Francia tras Agincourt. Orleans está sitiada y a punto de caer. Juana de Arco, guiada por "voces divinas", viaja cruzando territorio enemigo para exigir a Carlos el mando del ejército de rescate. Tus generales, la nobleza y los ingleses creen que es una locura o brujería.',
+      options: {
+        A: { label: 'Apostar por el Fervor Mesiánico: Armarla, darle un estandarte y enviarla a levantar el asedio de Orleans, aprovechando la propaganda teológica.', pct: 60 },
+        B: { label: 'Diplomacia y Cautela: Encerrarla. Intentar negociar la paz cediendo territorios a los duques de Borgoña para evitar la aniquilación inglesa.', pct: 40 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Carlos VII', choiceLabel: 'Confiar el asedio a Juana' },
+      article: {
+        metrics: [ { lbl: 'Edad de Juana', val: '17 años' }, { lbl: 'Sitio levantado', val: '9 Días' }, { lbl: 'Guerra', val: 'Cien Años' } ],
+        content: [
+          {h: 'La Victoria Psicológica', p: 'Juana no fue una genio táctica, fue el catalizador del moral. Los franceses, deprimidos y derrotistas, pasaron de la defensiva cobarde a una agresión fanática e imparable.', hl: true},
+          {h: 'La Coronación', p: 'En meses, liberó Orleans, aplastó a los ingleses en Patay y despejó el camino a Reims, logrando la coronación legítima de Carlos VII, un golpe propagandístico definitivo.', hl: false},
+          {h: 'La Traición de la Corona', p: 'Un año después, cuando fue capturada, Carlos VII no hizo ningún esfuerzo por rescatarla, permitiendo que los ingleses la quemaran en la hoguera. Su utilidad política había expirado.', hl: true}
+        ],
+        timeline: [ {date: 'May 1429', text: 'Liberación de Orleans.', col: '#4f8ef7'}, {date: 'May 1431', text: 'Juana es quemada en Rouen.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: '¿Por qué Carlos VII abandonó a Juana de Arco tras ser capturada por sus enemigos, a pesar de que ella le dio la corona?',
+        options: [
+          { text: 'Porque el poder institucional aborrece la autoridad mesiánica. Carlos ya era el Rey legal, una profeta incontrolable amenazaba la estructura burocrática del Estado.', correct: true, feedback: 'Correcto. La autoridad carismática (Max Weber) es útil para la guerra revolucionaria, pero peligrosa para gobernar un Estado en tiempos de paz.' },
+          { text: 'Porque no tenía suficiente oro en el tesoro real para pagar el rescate exigido por los borgoñones.', correct: false, feedback: 'Falso. Carlos gastó fortunas en otras cosas. Fue una decisión calculada de Realpolitik (inacción por conveniencia).' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Max Weber define tres tipos de autoridad: Tradicional, Legal-Racional y Carismática (como la de Juana). ¿Por qué los sistemas burocráticos siempre terminan destruyendo o domesticando a los líderes carismáticos?',
+        responses: [
+          'La burocracia se basa en procesos predecibles e inmutables. El líder carismático puentea las reglas alegando autoridad moral/divina inmediata. Son amenazas existenciales mutuas.',
+          'El carisma es un recurso efímero no heredable. Las instituciones requieren estabilidad generacional. Queman al profeta para fosilizar el mensaje como doctrina.'
+        ]
+      }
+    },
+    {
+      id: 'suez-crisis-1956',
+      category: 'Geopolítica',
+      catKey: 'red', year: '1956', country: 'Egipto / Reino Unido', icon: '🚢',
+      title: 'La Crisis de Suez',
+      hook: 'Eres el Primer Ministro Británico. El presidente de Egipto acaba de nacionalizar el Canal de Suez, el activo estratégico más importante del Imperio Británico, por donde pasa el petróleo de Europa. Si no haces nada, el Imperio se ve débil. Si atacas militarmente, EE.UU. te advierte de hundir tu moneda.',
+      context: 'Gamal Abdel Nasser de Egipto, enfurecido porque Occidente le negó fondos para la Presa de Asuán, nacionaliza la Compañía del Canal de Suez (propiedad británica y francesa). El Primer Ministro británico, Anthony Eden, forja un complot secreto con Francia e Israel: Israel atacará el Sinaí, y los europeos "intervendrán como pacificadores" para recuperar el canal.',
+      options: {
+        A: { label: 'Complot Militar Inmediato: Invadir en secreto junto a Francia e Israel para derrocar a Nasser y recuperar la arteria imperial.', pct: 45 },
+        B: { label: 'Renunciar al control y negociar: Aceptar que el imperialismo del siglo XIX ha muerto, y buscar garantías diplomáticas de paso libre en la ONU.', pct: 55 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Anthony Eden (Reino Unido)', choiceLabel: 'Invasión encubierta desastrosa' },
+      article: {
+        metrics: [ { lbl: 'Canal', val: 'Nacionalizado' }, { lbl: 'Imperio', val: 'Humillado' }, { lbl: 'Poder Real', val: 'Financiero (EE.UU.)' } ],
+        content: [
+          {h: 'La Ira de Washington', p: 'La invasión militar fue un éxito táctico, pero Eisenhower (EE.UU.) enfureció por no ser consultado durante la Guerra Fría. Amenazó con vender masivamente libras esterlinas y bloquear préstamos del FMI, amenazando quebrar la economía británica.', hl: true},
+          {h: 'La Retirada Humillante', p: 'Incapaz de sostener la presión financiera, Gran Bretaña colapsó. Retiraron las tropas y Eden renunció en desgracia.', hl: false},
+          {h: 'El Fin de una Era', p: 'Suez marcó el funeral oficial del Imperio Británico. Demostró que las antiguas superpotencias europeas ya no podían actuar geopolíticamente sin el permiso de Washington o Moscú.', hl: true}
+        ],
+        timeline: [ {date: 'Jul 1956', text: 'Nasser nacionaliza el canal.', col: '#f5a623'}, {date: 'Nov 1956', text: 'EE.UU. fuerza la retirada europea.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: 'La lección principal de Suez demuestra un cambio radical en la naturaleza del poder geopolítico moderno, ¿cuál fue?',
+        options: [
+          { text: 'Que las armas nucleares dejaron obsoletos a los barcos acorazados en el control marítimo.', correct: false, feedback: 'Falso. Las armas nucleares no jugaron un rol activo aquí.' },
+          { text: 'Que el control del capital financiero (FMI, reservas de dólares) supera a las cañoneras militares tradicionales.', correct: true, feedback: 'Correcto. EE.UU. no disparó una sola bala contra Gran Bretaña; hundió su moneda y la arrodilló económicamente en días.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si el poder financiero de EE.UU. doblegó al Imperio Británico en 1956 usando los bonos y la moneda, ¿son las "Sanciones Económicas" modernas el verdadero equivalente a la guerra total?',
+        responses: [
+          'Es "la militarización del sistema Swift y el dólar". Quien controla la tubería financiera global tiene derecho a veto sobre la soberanía ajena. Por eso hoy potencias rivales buscan desdolarizarse.',
+          'La trampa de las sanciones: si abusas del poder financiero confiscativo, incentivas al resto del mundo a crear sistemas paralelos, como le ocurrió al Imperio Británico con el ascenso financiero de Nueva York.'
+        ]
+      }
+    },
+    {
+      id: 'tonkin-1964',
+      category: 'Geopolítica',
+      catKey: 'red', year: '1964', country: 'EE.UU. / Vietnam', icon: '🚁',
+      title: 'El Incidente del Golfo de Tonkín',
+      hook: 'Eres el Presidente de EE.UU. Un destructor estadounidense reporta un ataque de lanchas norvietnamitas en la noche, en medio de tormentas y confusión de radares. Los generales te presentan esto como la excusa perfecta para obtener poderes bélicos del Congreso. ¿Inicias la guerra?',
+      context: '1964. Lyndon B. Johnson quiere evitar que Vietnam del Sur caiga ante el comunismo (Teoría del Dominó), pero el público rechaza una guerra. El USS Maddox reporta un confuso "segundo ataque" en el Golfo de Tonkín (años después se comprobó que los ecos de radar eran falsos). El Pentágono pide a Johnson usar el incidente para firmar una resolución que le dará poder absoluto de enviar tropas sin declarar formalmente la guerra.',
+      options: {
+        A: { label: 'Aprovechar la crisis: Impulsar la Resolución del Golfo de Tonkín, escalar los bombardeos y enviar medio millón de tropas.', pct: 75 },
+        B: { label: 'Contención escéptica: Exigir pruebas irrefutables antes de comprometer a EE.UU. a una guerra terrestre en la selva asiática.', pct: 25 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Lyndon B. Johnson', choiceLabel: 'Escalada masiva en Vietnam' },
+      article: {
+        metrics: [ { lbl: 'Bajas EE.UU.', val: '58,220' }, { lbl: 'Bombas', val: '7 Millones Tons' }, { lbl: 'Resultado', val: 'Derrota' } ],
+        content: [
+          {h: 'La Resolución Blank Check', p: 'El Congreso aprobó la resolución 416 a 0 en la Cámara y 88 a 2 en el Senado. LBJ obtuvo poder dictatorial sobre el esfuerzo militar, desatando la infame escalada de Vietnam.', hl: true},
+          {h: 'La niebla de la guerra', p: 'El propio LBJ admitió años después: "Por lo que sé, nuestra armada estaba disparando a ballenas ahí fuera". Actuaron bajo sesgo de confirmación y presión institucional.', hl: false},
+          {h: 'Costo Estructural', p: 'Vietnam destruyó la Gran Sociedad de LBJ, provocó inflación por imprimir dinero sin respaldo para pagar la guerra y rompió la confianza pública en el gobierno estadounidense para siempre.', hl: true}
+        ],
+        timeline: [ {date: 'Ago 1964', text: 'Incidente de Tonkín y Resolución.', col: '#f87171'}, {date: 'Abr 1975', text: 'Caída de Saigón.', col: '#6a6a8a'} ]
+      },
+      quiz: {
+        question: '¿Qué principio constitucional estadounidense se rompió irremediablemente a partir de la Resolución de Tonkín?',
+        options: [
+          { text: 'El monopolio del Congreso para declarar formalmente la guerra.', correct: true, feedback: 'Correcto. Desde entonces, los presidentes de EE.UU. han librado grandes guerras ejecutivas "resoluciones de fuerza" sin una declaración oficial del Congreso (Corea, Irak, Afganistán).' },
+          { text: 'El derecho al juicio por jurado de los prisioneros militares.', correct: false, feedback: 'Falso. El cambio fundamental fue la acumulación de poder bélico en el poder ejecutivo (Presidencia imperial).' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si el incidente de Tonkín fue falso o exagerado (como las Armas de Destrucción Masiva en Irak 2003), ¿son las democracias tan propensas a la manipulación bélica como las dictaduras?',
+        responses: [
+          'La burocracia militar necesita una "percha narrativa" para movilizar a la opinión pública. La excusa táctica puede ser falsa, pero la intención estratégica de intervenir ya estaba decidida meses antes.',
+          'Las democracias son más peligrosas cuando se autoconvencen de que tienen la superioridad moral. "Para salvar a la aldea tuvimos que destruirla".'
+        ]
+      }
+    },
+    {
+      id: 'zimmermann-1917',
+      category: 'Geopolítica',
+      catKey: 'red', year: '1917', country: 'Imperio Alemán / EE.UU.', icon: '✉️',
+      title: 'El Telegrama Zimmermann',
+      hook: 'Eres el Ministro de Asuntos Exteriores alemán en la Primera Guerra Mundial. Las trincheras están estancadas. Planeas reanudar la guerra submarina indiscriminada, hundiendo barcos americanos. Sabes que esto meterá a EE.UU. en la guerra. ¿Envías un telegrama secreto a México prometiéndole Texas y Arizona si atacan a EE.UU. por la espalda?',
+      context: 'Enero 1917. Arthur Zimmermann, ministro alemán, sabe que hundir barcos comerciales enojará al gigante neutral, Estados Unidos. En un movimiento diplomático de alto riesgo, envía un telegrama codificado a México proponiendo una alianza militar. La inteligencia británica (Sala 40) intercepta y descifra el cable.',
+      options: {
+        A: { label: 'Enviar el Telegrama: Intentar asegurar a México como distracción bélica, asumiendo que los británicos no pueden leer los códigos.', pct: 60 },
+        B: { label: 'No enviar nada: Iniciar los submarinos pero sin dejar un rastro diplomático suicida que una a toda la opinión pública americana.', pct: 40 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Arthur Zimmermann', choiceLabel: 'Enviar el Telegrama cifrado' },
+      article: {
+        metrics: [ { lbl: 'Interceptado por', val: 'Inglaterra' }, { lbl: 'Impacto P.P.', val: 'Enorme' }, { lbl: 'EE.UU. Entra', val: 'Abril 1917' } ],
+        content: [
+          {h: 'La Inteligencia Rompe Imperios', p: 'Los británicos filtraron estratégicamente el telegrama a EE.UU. Woodrow Wilson, que había hecho campaña prometiendo paz, usó el documento para enfurecer al público estadounidense.', hl: true},
+          {h: 'El Error No Forzado', p: 'México estaba en plena Revolución Civil y no tenía ni ejército ni interés en luchar contra EE.UU. Zimmermann apostó en una alianza inútil a cambio de un riesgo diplomático catastrófico.', hl: false},
+          {h: 'Incompetencia', p: 'Peor aún, cuando se filtró en la prensa y los pacifistas dijeron que era una falsificación británica, ¡el propio Zimmermann admitió públicamente que era real!', hl: false}
+        ],
+        timeline: [ {date: 'Ene 1917', text: 'Telegrama enviado e interceptado.', col: '#a78bfa'}, {date: 'Abr 1917', text: 'EE.UU. declara la guerra a Alemania.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: '¿Por qué la Inteligencia Británica esperó más de un mes para entregar el telegrama interceptado a EE.UU.?',
+        options: [
+          { text: 'Necesitaban inventar una tapadera de espionaje en México para no revelarle a Alemania que los británicos habían roto sus códigos criptográficos navales.', correct: true, feedback: 'Brillante. La "Fuente" es más importante que el dato. Si Alemania sabía que sus códigos estaban rotos, los habrían cambiado al día siguiente.' },
+          { text: 'El traductor principal estaba enfermo y tardaron en decodificar el mensaje.', correct: false, feedback: 'Falso. Lo descifraron casi de inmediato. Fue pura estrategia de ocultación de capacidades de inteligencia.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Zimmermann arriesgó el destino de un imperio por una ventaja diplomática microscópica (México en guerra civil). ¿Por qué los líderes brillantes cometen errores de "Riesgo Asimétrico Inverso" tan absurdos?',
+        responses: [
+          'Arrogancia tecnológica y Sesgo del Punto Ciego. Zimmermann creía que la criptografía alemana era invencible por decreto divino. La falsa seguridad en un sistema cerrado invita al cataclismo.',
+          'Ceguera del búnker: cuando estás acorralado en una guerra de trincheras, cualquier esquema elaborado parece una "jugada genial" porque tu ansiedad exige tomar acción, aunque la inacción sea matemáticamente más segura.'
+        ]
+      }
+    },
+    {
+      id: 'south-sea-1720',
+      category: 'Finanzas & Riesgo',
+      catKey: 'green', year: '1720', country: 'Inglaterra', icon: '📈',
+      title: 'Isaac Newton y la Burbuja',
+      hook: 'Eres Sir Isaac Newton, el genio científico que descubrió la gravedad. Compraste acciones de la "South Sea Company" temprano y ganaste un jugoso 100%. Vendiste con orgullo. Pero ahora ves que tus amigos y plebeyos ignorantes que no vendieron se están haciendo millonarios, porque las acciones siguen subiendo un 500% más. ¿Qué haces?',
+      context: 'La Compañía de los Mares del Sur posee el monopolio del comercio con Sudamérica, prometiendo ganancias irreales de la esclavitud y el oro (que España controla). Una histeria colectiva de especulación azota Londres en 1720. Newton era racional: vendió sus acciones temprano y embolsó £7,000. Meses después, la manía alcanzó proporciones religiosas.',
+      options: {
+        A: { label: 'Reinvertir masivamente en la cima (FOMO): Poner todos los ahorros de tu vida porque "si los tontos ganan, yo también debo ganar".', pct: 60 },
+        B: { label: 'Mantenerse alejado: Confiando en tu intelecto matemático, saber que la empresa es un esquema Ponzi que eventualmente colapsará.', pct: 40 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Isaac Newton', choiceLabel: 'Compró en el pico por FOMO' },
+      article: {
+        metrics: [ { lbl: 'Pérdida de Newton', val: '£20,000' }, { lbl: 'Equivalente Hoy', val: '> £3 Millones' }, { lbl: 'IQ del Inversor', val: 'Irrelevante' } ],
+        content: [
+          {h: 'El Genio Arruinado', p: 'Newton no soportó ver a sus contemporáneos enriquecerse. Re-compró acciones en el pico más alto. Semanas después, la burbuja estalló. Perdió casi todo su patrimonio.', hl: true},
+          {h: 'La Frase Célebre', p: '"Puedo calcular el movimiento de los cuerpos celestiales, pero no la locura de las multitudes".', hl: false},
+          {h: 'La Envidia Financiera', p: 'Charlie Munger dice: "No es la codicia lo que mueve al mundo, es la envidia". El miedo a quedarse fuera (FOMO) cortocircuita los cerebros más brillantes del planeta.', hl: true}
+        ],
+        timeline: [ {date: 'Pri 1720', text: 'Newton gana el 100% y vende.', col: '#34d399'}, {date: 'Ago 1720', text: 'Newton compra en el pico, pierde todo.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: '¿Qué lección fundamental de la psicología financiera nos enseña la ruina de Newton?',
+        options: [
+          { text: 'Que el coeficiente intelectual (IQ) alto es un requisito indispensable para ganar en la bolsa de valores.', correct: false, feedback: 'Totalmente falso. Si el hombre más inteligente del mundo perdió todo, demuestra que el intelecto bruto no sirve sin control emocional.' },
+          { text: 'Que el control emocional (Temperamento) y la paciencia son exponencialmente más importantes que la inteligencia pura en las finanzas.', correct: true, feedback: 'Correcto. Warren Buffett insiste en que las inversiones no son un juego de IQ de 160, sino de estabilidad emocional extrema y control del ego.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si la envidia es más potente que la gravedad, ¿cómo diseñarías tus rutinas de inversión para protegerte de la histeria colectiva de "Cripto" o "Inteligencia Artificial"?',
+        responses: [
+          'Automatizar el comportamiento, aislar la exposición a medios financieros y negarse a discutir ganancias con amigos. La inversión aburrida (DCA en índices) sobrevive al FOMO porque elimina la dopamina social.',
+          'Adoptar el concepto del "Dinero Tonto". Asumir que toda histeria exponencial termina en colapso fractal, y conformarse con ser el hombre más aburrido y seguro de la habitación.'
+        ]
+      }
+    },
+    {
+      id: 'barings-1995',
+      category: 'Finanzas & Riesgo',
+      catKey: 'green', year: '1995', country: 'Reino Unido / Singapur', icon: '🎰',
+      title: 'El Ladrón de Barings Bank',
+      hook: 'Eres un joven operador estrella en Singapur. Has acumulado secretamente una pérdida de $200 millones en operaciones de derivados apostando en la cuenta oculta "88888". De repente, ocurre un terremoto masivo en Japón que hunde los mercados, arruinando tus posiciones. ¿Qué haces?',
+      context: 'Nick Leeson opera arbitraje para Barings Bank (el banco más antiguo de Inglaterra, financiero de la Reina). Descubrió cómo ocultar sus pérdidas masivas en una cuenta de errores (88888) porque él mismo controlaba tanto la sala de operaciones como el área contable (ausencia de control interno). El terremoto de Kobe de 1995 desplomó el índice Nikkei donde Leeson tenía posiciones apostando a que subiría.',
+      options: {
+        A: { label: 'Redoblar la Apuesta (Doble o Nada): Usar el prestigio del banco para comprar cantidades astronómicas de futuros, apostando a que el mercado rebotará rápidamente.', pct: 85 },
+        B: { label: 'Confesar: Detener las pérdidas, admitir el fraude a los directivos en Londres e ir a prisión de inmediato.', pct: 15 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Nick Leeson', choiceLabel: 'Doblar la apuesta hasta quebrar el banco' },
+      article: {
+        metrics: [ { lbl: 'Pérdidas Finales', val: '$1.4 Billones' }, { lbl: 'Costo del Banco', val: 'Vendido por £1' }, { lbl: 'Sentencia', val: '6 años prisión' } ],
+        content: [
+          {h: 'La Fuga hacia Adelante', p: 'Presa de la "Falacia del Costo Hundido" y el miedo, Leeson apostó sumas insanas de dinero marginado buscando recuperar la pérdida oculta. Sus posiciones se volvieron tan grandes que él era el mercado.', hl: true},
+          {h: 'Bancarrota Centenaria', p: 'Perdió el doble del capital total disponible del banco. El Barings Bank, que había sobrevivido a Napoleón y dos guerras mundiales, quebró en un fin de semana por culpa de un empleado de 28 años.', hl: false},
+          {h: 'Falla Estructural', p: 'El verdadero culpable fue el consejo directivo en Londres que premiaba sus ganancias exorbitantes sin auditar cómo las obtenía (Falta de separación de funciones).', hl: false}
+        ],
+        timeline: [ {date: 'Ene 1995', text: 'Terremoto de Kobe, Leeson dobla apuestas.', col: '#f87171'}, {date: 'Feb 1995', text: 'Barings Bank declara bancarrota.', col: '#6a6a8a'} ]
+      },
+      quiz: {
+        question: '¿Qué principio crítico de auditoría violó el Barings Bank al organizar la sucursal en Singapur?',
+        options: [
+          { text: 'Segregación de funciones (Separation of Duties). Leeson era jefe de "Front office" (trading) y "Back office" (contabilidad) al mismo tiempo.', correct: true, feedback: 'Exacto. Es la regla número uno: quien autoriza el dinero no puede ser el mismo que lo audita o concilia. Él mismo sellaba sus propios reportes falsos.' },
+          { text: 'Limitar la inversión especulativa al 10% del capital del banco.', correct: false, feedback: 'Aunque es prudente, la falla legal y operativa fundamental fue permitirle a un solo hombre controlar ambos extremos del libro contable.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si Leeson generaba aparentemente millones en beneficios, y por eso sus jefes nunca investigaron la cuenta 88888, ¿es el éxito financiero el mayor ciego para la moral corporativa?',
+        responses: [
+          'Totalmente. Ley de Goodhart en acción: el bono millonario de fin de año de los directivos dependía de los rendimientos de Leeson. Hay un desincentivo estructural para auditar a la "gallina de los huevos de oro".',
+          'Los fraudes piramidales (como Madoff o FTX) prosperan exactamente bajo este mismo escudo sociológico. "Si somos ricos, debe significar que somos genios, no averigües mucho".'
+        ]
+      }
+    },
+    {
+      id: 'livermore-1929',
+      category: 'Finanzas & Riesgo',
+      catKey: 'green', year: '1929', country: 'Wall Street', icon: '🐻',
+      title: 'El Gran Oso de Wall Street',
+      hook: 'Es el boom de los locos años 20. Todo el mundo, desde el betunero hasta los grandes banqueros, está haciéndose rico comprando acciones con dinero prestado. Tú notas señales de agotamiento en el mercado. ¿Te atreves a vender en corto apostando en contra de la mayor expansión económica de la historia?',
+      context: 'Jesse Livermore es el especulador solitario más famoso de su época. Usa análisis técnico ("leer la cinta"). Mientras el consenso es "el mercado ha alcanzado una meseta permanentemente alta", Livermore observa debilidad secreta. Sabe que si se equivoca vendiendo en corto, perderá todo su capital a manos de una masa irracional.',
+      options: {
+        A: { label: 'Apostar contra América (Short): Abrir posiciones cortas masivas en secreto a lo largo del mercado antes del colapso.', pct: 80 },
+        B: { label: 'Bailar con la multitud: Comprar las acciones punteras y poner topes de pérdida, para aprovechar la irracionalidad alcista sin tanto riesgo.', pct: 20 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Jesse Livermore', choiceLabel: 'Venta en corto masiva (El Crash)' },
+      article: {
+        metrics: [ { lbl: 'Ganancia 1929', val: '$100 Millones' }, { lbl: 'Equivalente', val: '$1.5 Billones' }, { lbl: 'Final de Jesse', val: 'Suicidio (1940)' } ],
+        content: [
+          {h: 'La Jugada Maestra', p: 'Livermore vendió en corto silenciosamente usando docenas de brokers para ocultar sus rastros. Cuando el Jueves y el Martes Negro destruyeron Wall Street, él ganó $100 millones en efectivo en una semana.', hl: true},
+          {h: 'El Odio Público', p: 'Al ser reveladas sus ganancias en los periódicos mientras la gente saltaba por las ventanas, recibió amenazas de muerte masivas, convirtiéndose en el hombre más odiado de América.', hl: false},
+          {h: 'La Tragedia Psicológica', p: 'A pesar de ser un genio del mercado, carecía de contención en su vida personal y gestión de riesgo posterior. Perdió la fortuna ganada en 1929 durante los años 30s y terminó suicidándose en un hotel.', hl: true}
+        ],
+        timeline: [ {date: 'Oct 1929', text: 'Crash del 29, Livermore se hace billonario.', col: '#34d399'}, {date: 'Nov 1940', text: 'Bancarrota total y muerte trágica.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: '¿Por qué las "ventas en corto" (short selling) generan pérdidas infinitas en teoría, a diferencia de comprar acciones?',
+        options: [
+          { text: 'Porque al comprar una acción, lo máximo que puedes perder es el 100% de lo invertido. Al vender en corto, si la acción sube de precio indefinidamente, tu pérdida es teóricamente infinita.', correct: true, feedback: 'Exacto. El Short Squeeze (como GameStop en 2021) destruye a los vendedores en corto porque no hay techo para el precio de una acción.' },
+          { text: 'Porque los bancos cobran comisiones más altas a los apostadores bajistas.', correct: false, feedback: 'Falso. Es un tema puramente matemático de exposición al riesgo al estar "pidiendo prestado" un activo que sube de valor.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Livermore ganó 100 millones demostrando un temple inhumano contra el consenso, pero luego perdió la misma fortuna apostando mal años después. ¿El éxito extremo en la especulación destruye irreversiblemente el instinto de riesgo del cerebro?',
+        responses: [
+          'Es el Efecto Dios. Superar un evento de cisne negro (1929) inyecta una dosis de soberbia fatal; el especulador empieza a creer que no lee el mercado, sino que *es* el mercado. Pierde la paranoia que lo hizo exitoso.',
+          'La gestión del capital requiere reglas matemáticas estrictas (Criterio de Kelly). Livermore confió en su genio improvisado; cuando la adrenalina de ganar dictaba sus jugadas de revancha, la matemática implacable lo destruyó.'
+        ]
+      }
+    },
+    {
+      id: 'milgram-1961',
+      category: 'Psicología & Sesgos',
+      catKey: 'purple', year: '1961', country: 'Estados Unidos', icon: '⚡',
+      title: 'El Experimento de Milgram',
+      hook: 'Eres un ciudadano común en la Universidad de Yale para un experimento. Un investigador con bata blanca te ordena administrar descargas eléctricas dolorosas a otra persona (que grita de agonía) cada vez que se equivoca en una palabra. Sientes culpa extrema. ¿Detienes el experimento o sigues obedeciendo a la autoridad?',
+      context: 'Stanley Milgram busca entender el Holocausto nazi: ¿Eran monstruos o simplemente obedecían órdenes? El "estudiante" que recibe las descargas es un actor; no hay dolor real. Pero el sujeto (tú) cree que es real. A medida que las descargas suben hasta un umbral letal (450 voltios), el actor grita, ruega por su vida y luego queda en un silencio aterrador. El científico solo te dice con voz firme: "El experimento requiere que usted continúe".',
+      options: {
+        A: { label: 'Desobediencia Moral: Levantarme, negarme a lastimar a otro ser humano bajo ninguna circunstancia, y sabotear la máquina.', pct: 35 },
+        B: { label: 'Obediencia a la Autoridad: Sucumbir a la presión institucional, confiar en que el experto asume la responsabilidad y aplicar la descarga final.', pct: 65 }
+      },
+      revelation: { historicalChoice: 'B', actor: 'El 65% de los ciudadanos ordinarios', choiceLabel: 'Aplicar la descarga letal (450v)' },
+      article: {
+        metrics: [ { lbl: 'Voltaje Máximo', val: '450v' }, { lbl: 'Tasa de Obediencia', val: '65%' }, { lbl: 'Predicción Previa', val: '1.2%' } ],
+        content: [
+          {h: 'La Banalidad del Mal', p: 'Antes del estudio, psiquiatras predijeron que solo un 1% (psicópatas) llegaría al final. En la realidad, el 65% de la gente común (profesores, obreros, oficinistas) aplicaron la descarga máxima a pesar del estrés extremo, temblores y lágrimas.', hl: true},
+          {h: 'Delegación de Responsabilidad', p: 'La clave del horror: los sujetos preguntaban "¿quién es responsable si él muere?". Cuando el científico (bata blanca, institución prestigiosa) respondía "Yo asumo la responsabilidad", los sujetos continuaban apretando el botón.', hl: false},
+          {h: 'Lección Oscura', p: 'El ser humano es evolutivamente sumiso a la jerarquía del grupo. La moralidad individual colapsa fácilmente frente a la autoridad estructural legítima.', hl: true}
+        ],
+        timeline: [ {date: '1961', text: 'Milgram inicia el experimento.', col: '#a78bfa'}, {date: '1963', text: 'Publicación del estremecedor estudio.', col: '#6a6a8a'} ]
+      },
+      quiz: {
+        question: 'De las variantes posteriores del experimento, ¿qué factor reducía dramáticamente la obediencia letal de los sujetos (del 65% al 10%)?',
+        options: [
+          { text: 'Ver a OTRO sujeto (un actor cómplice) negarse a aplicar la descarga e irse del cuarto.', correct: true, feedback: 'Correcto. La disidencia es contagiosa. Cuando se rompe el monopolio de la autoridad por el ejemplo de un solo rebelde, la resistencia moral del grupo se desploma a favor del bien.' },
+          { text: 'Sustituir al científico de bata blanca por un policía de uniforme.', correct: false, feedback: 'Cualquier figura de autoridad dura mantenía altas tasas de obediencia. Fue la rebelión social la que rompió el hechizo.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si el 65% de nosotros torturaría a un inocente por orden institucional, ¿son "malos" los soldados que cometen atrocidades, o es un fallo sistémico de la maquinaria humana?',
+        responses: [
+          'Es el principio de Hannah Arendt de la Banalidad del Mal (Eichmann en Jerusalén). Los mayores crímenes no son cometidos por demonios con cuernos, sino por burócratas aplicados intentando hacer su "trabajo" de 9 a 5.',
+          'La obediencia ciega no exime la responsabilidad moral personal en el derecho internacional moderno (Juicios de Núremberg), pero expone que el libre albedrío es un lujo frágil frente a la ingeniería de autoridad.'
+        ]
+      }
+    },
+    {
+      id: 'dunning-kruger-1999',
+      category: 'Psicología & Sesgos',
+      catKey: 'purple', year: '1995', country: 'Estados Unidos', icon: '🍋',
+      title: 'El Atraco con Jugo de Limón',
+      hook: 'Eres McArthur Wheeler. Has leído que el jugo de limón se usa como tinta invisible. Concluyes, lógicamente, que si te untas jugo de limón en toda la cara, serás invisible para las cámaras de seguridad. A plena luz del día, asaltas dos bancos sin máscara. Horas después, la policía toca a tu puerta. ¿Qué crees que falló?',
+      context: 'En 1995, Wheeler robó bancos frotándose limón. No estaba bajo efecto de drogas ni loco, simplemente probó que una Polaroid defectuosa "no le sacó la cara" y asumió su invencibilidad científica. David Dunning y Justin Kruger leyeron la noticia y se preguntaron: "¿Es posible que las personas incompetentes sean demasiado incompetentes para darse cuenta de lo incompetentes que son?".',
+      options: {
+        A: { label: 'Conclusión Científica: Wheeler era un caso aislado de estupidez extrema, sin relevancia para la población general.', pct: 15 },
+        B: { label: 'Conclusión Científica: Este déficit cognitivo está en todos los humanos; a menor habilidad, mayor confianza irreal en nosotros mismos.', pct: 85 }
+      },
+      revelation: { historicalChoice: 'B', actor: 'Dunning y Kruger', choiceLabel: 'Demostrar el sesgo en todos los humanos' },
+      article: {
+        metrics: [ { lbl: 'Peor 12% se cree', val: 'En el top 62%' }, { lbl: 'Estudio original', val: '1999' }, { lbl: 'Paradoja', val: 'Ignorancia Ciega' } ],
+        content: [
+          {h: 'La Paradoja de la Ignorancia', p: 'El estudio demostró que las habilidades necesarias para ser competente en algo son *las mismas* habilidades necesarias para evaluar la propia competencia. Si eres pésimo en lógica gramatical, no tienes la lógica gramatical para darte cuenta.', hl: true},
+          {h: 'El "Monte de la Estupidez"', p: 'En la curva del efecto, un principiante con poco conocimiento sufre una explosión de sobreconfianza (el monte), seguido por el "Valle de la Desesperación" a medida que aprende lo vasto del tema y comprende su ignorancia.', hl: false},
+          {h: 'El Síndrome del Impostor Inverso', p: 'Irónicamente, los verdaderos expertos tienden a subestimar su capacidad (creen que si algo es fácil para ellos, también lo es para el resto).', hl: true}
+        ],
+        timeline: [ {date: '1995', text: 'Wheeler asalta el banco con limón.', col: '#a78bfa'}, {date: '1999', text: 'Se publica el Efecto Dunning-Kruger.', col: '#6a6a8a'} ]
+      },
+      quiz: {
+        question: 'En el contexto moderno de Internet, ¿cómo se manifiesta exponencialmente el efecto Dunning-Kruger?',
+        options: [
+          { text: 'Personas leyendo un hilo de 10 minutos y asumiendo que saben más que un virólogo o economista con décadas de experiencia.', correct: true, feedback: 'Exactamente. La "Ilusión de Conocimiento Profundo". Internet da el barniz de la respuesta rápida, inyectando confianza sin el marco crítico para evaluar.' },
+          { text: 'Usuarios perdiendo dinero en apuestas online creyendo que el sistema falló.', correct: false, feedback: 'Ese es un sesgo de atribución egoísta (culpar al exterior por fracasos propios), aunque relacionado, no es el Dunning-Kruger central.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si somos biológicamente ciegos a nuestra propia incompetencia en áreas donde somos novatos, ¿qué regla heurística debes auto-imponerte al entrar a una nueva disciplina o negocio?',
+        responses: [
+          'La regla epistemológica de Sócrates: "Sólo sé que no sé nada". Asumir por defecto un escepticismo radical hacia las propias conclusiones rápidas durante los primeros años en cualquier dominio complejo.',
+          'Buscar agresivamente retroalimentación (feedback) externa y dolorosa de mentores calificados, en vez de validación social. El choque contra la realidad objetiva rompe la burbuja de confianza imaginaria.'
+        ]
+      }
+    },
+    {
+      id: 'jobs-sculley-1985',
+      category: 'Estrategia & Negocios',
+      catKey: 'green', year: '1985', country: 'Estados Unidos (Apple)', icon: '💻',
+      title: 'El Exilio de Steve Jobs',
+      hook: 'Eres la Junta Directiva de Apple en 1985. La empresa está perdiendo dinero. El visionario cofundador Steve Jobs ha construido el Macintosh, brillante pero carísimo y de ventas decepcionantes. Su comportamiento es tiránico y desestabiliza a todos. Por otro lado, el CEO John Sculley exige imponer orden corporativo y eficiencia ejecutiva cortando proyectos de Jobs. ¿A quién le das las llaves de la empresa?',
+      context: 'Jobs reclutó a Sculley desde Pepsi ("¿Quieres vender agua azucarada o cambiar el mundo?"). Pero la división Macintosh no vende suficiente frente al dominio aburrido pero eficiente del IBM PC. Jobs siembra el caos interno, aliena ingenieros e insiste en hardware cerrado y perfecto sin pensar en costos. Sculley pide a la junta remover a Jobs del control operativo de la división Mac.',
+      options: {
+        A: { label: 'Orden y Eficiencia (Sculley): Apartar a Steve Jobs de todo poder ejecutivo para salvar a la empresa de la bancarrota inmediata.', pct: 75 },
+        B: { label: 'Caos y Visión (Jobs): Echar al CEO estructurado y dejar que la visión fanática y caprichosa del creador imponga el curso a largo plazo.', pct: 25 }
+      },
+      revelation: { historicalChoice: 'A', actor: 'Junta de Apple', choiceLabel: 'Despojar a Steve Jobs de todo poder (Exilio)' },
+      article: {
+        metrics: [ { lbl: 'Jobs Fuera', val: '12 Años' }, { lbl: 'Apple en 1997', val: 'Casi en quiebra' }, { lbl: 'Retorno de Jobs', val: 'NeXT (1997)' } ],
+        content: [
+          {h: 'La Victoria de los "Suits"', p: 'Sculley impuso la lógica de MBA: optimizó ganancias a corto plazo vendiendo clones grises y bajando innovación. Apple explotó en ganancias iniciales, dándole la razón a la junta al principio.', hl: true},
+          {h: 'La Erosión del Alma', p: 'Sin Jobs para forzar la perfección de producto y crear mercados que la gente "no sabía que quería", Apple perdió su rumbo tecnológico en los 90s, rozando la bancarrota frente a Microsoft (Windows 95).', hl: false},
+          {h: 'La Lección Tesis-Antítesis', p: 'La expulsión fue necesaria. Jobs fundó NeXT y Pixar, aprendiendo el rigor empresarial (control de inventario y paciencia) que le faltaba a los 28 años. Volvió como un líder maduro (Síntesis) y construyó el iPod y el iPhone.', hl: true}
+        ],
+        timeline: [ {date: '1985', text: 'Junta retira a Jobs. Él renuncia.', col: '#f87171'}, {date: '1997', text: 'Jobs retorna y salva Apple.', col: '#34d399'} ]
+      },
+      quiz: {
+        question: 'En términos de cultura corporativa, ¿qué representa la advertencia de Jobs de que "cuando las empresas monopolizan, los comerciales (ventas) toman el control y los de producto son expulsados"?',
+        options: [
+          { text: 'Significa que si ganas por monopolio (como Pepsi o IBM), el enfoque cambia de "hacer cosas grandes" a "maximizar el centavo". La innovación muere ahogada por la burocracia comercial.', correct: true, feedback: 'Correcto. Cuando el producto ya no necesita defenderse con calidad porque es un monopolio, la empresa asciende a los contables y vendedores, perdiendo a sus ingenieros visionarios.' },
+          { text: 'Significa que los comerciales siempre son personas menos inteligentes que los desarrolladores de producto.', correct: false, feedback: 'Es un problema de incentivos corporativos, no de inteligencia de las personas en los departamentos.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si la junta tenía toda la razón fiscal en 1985 al expulsar el caos de Jobs para no quebrar, pero rozó la quiebra en 1997 por falta de innovación, ¿es posible que una junta administrativa dirija con éxito una compañía tecnológica pura?',
+        responses: [
+          'El dilema del comité. Una junta directiva toma decisiones optimizando el riesgo y promediando opiniones (consenso). La disrupción tecnológica verdadera requiere un dictador ilustrado tomando riesgos asimétricos suicidas.',
+          'El error es medir tecnología como quien vende azúcar. En bienes de consumo estáticos, el margen de ganancia gana. En tecnología de punta, el que define el ecosistema del futuro (producto) controla la supervivencia.'
+        ]
+      }
+    },
+    {
+      id: 'sony-betamax-1980',
+      category: 'Estrategia & Negocios',
+      catKey: 'green', year: '1975', country: 'Japón / Global', icon: '📼',
+      title: 'La Guerra de Formatos (Betamax vs VHS)',
+      hook: 'Has inventado la mejor tecnología para grabar video en casa (Betamax). Tu calidad de imagen y sonido es indiscutiblemente superior a la de la competencia. Tu modelo de negocio es mantener la patente cerrada: solo tú fabricas los aparatos y dictas las reglas. De pronto, un competidor con tecnología ligeramente peor (JVC con VHS) empieza a regalar sus licencias de fabricación a docenas de otras marcas. ¿Qué haces?',
+      context: 'En los años 70, el video hogareño es una mina de oro virgen. Sony lanza Betamax: cintas pequeñas, calidad premium, un máximo de 1 hora de grabación. Su estrategia es de monopolio propietario. JVC inventa VHS: cintas más grandes, calidad inferior, pero graban 2 horas (suficiente para una película entera de Hollywood o un partido de fútbol). JVC decide licenciar su tecnología a Panasonic, Hitachi y Sharp para crear un ejército de fabricantes aliados.',
+      options: {
+        A: { label: 'Modelo Cerrado (Sony): Confiar ciegamente en que el consumidor siempre preferirá y pagará más por la mayor calidad técnica e ingeniería premium.', pct: 20 },
+        B: { label: 'Modelo Abierto y Ecosistema (JVC): Licenciar la tecnología a todo el mercado y priorizar la duración (contenido) sobre la calidad pura.', pct: 80 }
+      },
+      revelation: { historicalChoice: 'B', actor: 'El Mercado Global', choiceLabel: 'VHS aplasta a Betamax por efecto de red' },
+      article: {
+        metrics: [ { lbl: 'Fin de la Guerra', val: '1988 (Sony se rinde)' }, { lbl: 'Licencias VHS', val: '> 40 fabricantes' }, { lbl: 'Factor Clave', val: 'Tiempo de grabación' } ],
+        content: [
+          {h: 'La Derrota de la Excelencia', p: 'A pesar de tener mejor resolución de líneas, Sony cometió el error letal de ignorar lo que la gente *hacía* con el producto. La gente quería grabar partidos de 2 horas o alquilar películas completas. La cinta Betamax de 1 hora era un defecto fatal.', hl: true},
+          {h: 'El Efecto Red (Network Effect)', p: 'Como JVC permitió que cualquiera fabricara reproductores VHS, estos bajaron de precio rápidamente. Como había más reproductores VHS, los videoclubes (Blockbuster) solo compraban películas en VHS, creando un bucle infinito que mató a Sony.', hl: false},
+          {h: 'El Consuelo de los Profesionales', p: 'Betamax no desapareció del todo; por su altísima calidad técnica, se convirtió en el estándar para los estudios de televisión (Betacam) durante décadas, pero perdió la guerra en las salas de estar.', hl: true}
+        ],
+        timeline: [ {date: '1975-76', text: 'Sony y JVC lanzan sus formatos.', col: '#4f8ef7'}, {date: '1988', text: 'Sony traga su orgullo y fabrica VHS.', col: '#f87171'} ]
+      },
+      quiz: {
+        question: '¿Qué principio de la economía de plataformas tecnológicas dictó la victoria de VHS y la derrota de Betamax?',
+        options: [
+          { text: 'La adopción del mercado de doble cara (Two-sided market) donde el contenido (películas) y la plataforma (reproductores) se retroalimentan.', correct: true, feedback: 'Correcto. Nadie compra una consola sin juegos. Los videoclubes dictaron el mercado al estandarizar el VHS.' },
+          { text: 'Que las marcas baratas siempre quiebran a las marcas japonesas premium.', correct: false, feedback: 'Falso, ambos eran gigantes japoneses. La diferencia fue la decisión de abrir la patente vs cerrarla.' }
+        ], xp: 10
+      },
+      chat: {
+        starter: 'Si el modelo cerrado fracasó tan brutalmente para Sony, ¿cómo es que el ecosistema "completamente cerrado" de Apple (iPhone, iOS) logró aplastar al mercado premium 30 años después?',
+        responses: [
+          'El iPhone de Jobs tenía la App Store (ecosistema de desarrolladores terceros), permitiendo los efectos de red del software sin sacrificar el control de hardware y diseño premium.',
+          'Además, en los años 70 el hardware dominaba. Hoy en día, si controlas la plataforma de distribución de software (la tienda), monopolizas a tu conveniencia sin licenciar patentes de hardware de la fábrica.'
         ]
       }
     }
