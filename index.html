@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <title>Dopaminapp Mastery — Microaprendizaje Histórico</title>
   <meta name="description" content="Dopaminapp Mastery: 8 dilemas históricos interactivos con IA socrática, glosario, quiz XP y perfil intelectual."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,8 +14,9 @@
   <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:#080810;color:#d8d8ec;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;width:100%;max-width:100vw;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+body{font-family:'Inter',system-ui,sans-serif;background:#080810;color:#d8d8ec;min-height:100vh;width:100%;max-width:100vw;overflow-x:hidden;-webkit-font-smoothing:antialiased;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+@media(max-width:640px){input,textarea,select{font-size:16px!important}}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 45% at 50% -5%,rgba(79,142,247,.13) 0%,transparent 60%),linear-gradient(180deg,#080810 0%,#06060d 100%)}
 body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(79,142,247,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,.025) 1px,transparent 1px);background-size:52px 52px}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#252535;border-radius:4px}
@@ -1017,9 +1020,41 @@ const Render={
     const nativeAll = all.filter(d => !d._generated);
     const nextUncompleted = nativeAll.find(d => !State.isDone(d.id)) || nativeAll[0];
     const nextIdx = all.indexOf(nextUncompleted);
-
     const colors = ['#4f8ef7', '#a78bfa', '#f87171', '#34d399', '#c4b5fd', '#6ee7b7', '#fcd34d'];
 
+    // XP Rank system
+    function getRank(xp) {
+      if (xp >= 120) return { name: 'Gran Canciller', icon: '👑', col: '#fcd34d' };
+      if (xp >= 70)  return { name: 'Estratega de Gabinete', icon: '🎖️', col: '#a78bfa' };
+      if (xp >= 30)  return { name: 'Analista Táctico', icon: '🔭', col: '#4f8ef7' };
+      return { name: 'Iniciado Curioso', icon: '🌱', col: '#34d399' };
+    }
+    const rank = getRank(xp);
+
+    // Weekly streak tracker (Lu–Do)
+    const DAY_LABELS = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
+    const today = new Date();
+    const todayDow = (today.getDay() + 6) % 7; // Mon=0, Sun=6
+    let weekDaysHtml = '';
+    DAY_LABELS.forEach((lbl, i) => {
+      const isPast = i < todayDow;
+      const isToday = i === todayDow;
+      // Approximate: if streak count covers this day
+      const streakCovers = state.streak.count > (todayDow - i);
+      const filled = isPast && streakCovers;
+      weekDaysHtml +=
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">' +
+          '<div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;' +
+            (isToday ? 'background:rgba(245,166,35,.2);border:2px solid rgba(245,166,35,.5);' :
+             filled   ? 'background:rgba(52,211,153,.15);border:2px solid rgba(52,211,153,.4);' :
+                        'background:#0c0c18;border:2px solid #1e1e30;') + '">' +
+            (isToday ? '🔥' : filled ? '<span style="color:#34d399;font-size:13px">✓</span>' : '<span style="color:#252535;font-size:10px">·</span>') +
+          '</div>' +
+          '<span style="font-size:10px;color:' + (isToday ? '#f5a623' : filled ? '#34d399' : '#2a2a40') + ';font-weight:600">' + lbl + '</span>' +
+        '</div>';
+    });
+
+    // Category cards
     let catCardsHtml = '';
     cats.forEach((c, i) => {
       const nativeInCat = DB.dilemmas.filter(c.match);
@@ -1027,48 +1062,65 @@ const Render={
       const done = nativeInCat.filter(d => State.isDone(d.id)).length;
       const pct = total ? Math.round((done / total) * 100) : 0;
       const col = colors[i % colors.length];
-
-      catCardsHtml += '<div class="cat-card" onclick="App.setFilter(\'' + c.key + '\');App.showGame()">' +
-        '<div style="font-weight:600;font-size:14px;color:#e0e0f0;margin-bottom:4px">' + c.label + '</div>' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#6a6a8a">' +
-          '<span>' + done + '/' + total + ' dominados</span>' +
-          '<span style="color:' + col + '">' + pct + '%</span>' +
-        '</div>' +
-        '<div style="width:100%;height:3px;background:#1a1a28;border-radius:2px;margin-top:8px;overflow:hidden">' +
-          '<div style="width:' + pct + '%;height:100%;background:' + col + '"></div>' +
-        '</div>' +
-      '</div>';
+      catCardsHtml +=
+        '<div class="cat-card" onclick="App.setFilter(\'' + c.key + '\');App.showGame()">' +
+          '<div style="font-weight:600;font-size:13px;color:#e0e0f0;margin-bottom:6px">' + c.label + '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#6a6a8a">' +
+            '<span>' + done + '/' + total + '</span>' +
+            '<span style="color:' + col + ';font-weight:700">' + pct + '%</span>' +
+          '</div>' +
+          '<div style="width:100%;height:3px;background:#1a1a28;border-radius:2px;margin-top:6px;overflow:hidden">' +
+            '<div style="width:' + pct + '%;height:100%;background:' + col + ';transition:width .6s ease"></div>' +
+          '</div>' +
+        '</div>';
     });
 
     const archetypeName = prof ? prof.archetype.name : 'Principiante';
 
-    document.getElementById('hub-view').innerHTML = 
-      '<div style="margin-bottom:24px">' +
-        '<h1 style="font-size:28px;font-weight:800;color:white;letter-spacing:-1px;margin-bottom:8px">Entrena tu criterio</h1>' +
-        '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
-          '<div style="display:flex;align-items:center;gap:5px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);color:#f5a623;padding:4px 10px;border-radius:8px;font-size:13px;font-weight:700">🔥 Racha: ' + state.streak.count + ' días</div>' +
-          '<div style="display:flex;align-items:center;gap:5px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:#34d399;padding:4px 10px;border-radius:8px;font-size:13px;font-weight:700">⚡ ' + xp + ' XP</div>' +
-          '<div style="display:flex;align-items:center;gap:5px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);color:#4f8ef7;padding:4px 10px;border-radius:8px;font-size:13px;font-weight:700">👤 ' + archetypeName + '</div>' +
+    document.getElementById('hub-view').innerHTML =
+      // — Welcome banner
+      '<div style="margin-bottom:20px">' +
+        '<h1 style="font-size:26px;font-weight:800;color:white;letter-spacing:-1px;margin-bottom:10px">Entrena tu criterio</h1>' +
+        '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+          '<div style="display:flex;align-items:center;gap:5px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);color:#f5a623;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700">🔥 ' + state.streak.count + ' días</div>' +
+          '<div style="display:flex;align-items:center;gap:5px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:#34d399;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700">⚡ ' + xp + ' XP</div>' +
+          '<div style="display:flex;align-items:center;gap:5px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);color:#4f8ef7;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700">👤 ' + archetypeName + '</div>' +
+          '<div style="display:flex;align-items:center;gap:5px;background:rgba(' + (rank.col === '#fcd34d' ? '252,211,77' : rank.col === '#a78bfa' ? '167,139,250' : rank.col === '#4f8ef7' ? '79,142,247' : '52,211,153') + ',.1);border:1px solid rgba(' + (rank.col === '#fcd34d' ? '252,211,77' : rank.col === '#a78bfa' ? '167,139,250' : rank.col === '#4f8ef7' ? '79,142,247' : '52,211,153') + ',.2);color:' + rank.col + ';padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700">' + rank.icon + ' ' + rank.name + '</div>' +
         '</div>' +
       '</div>' +
-      '<div style="background:linear-gradient(135deg,rgba(79,142,247,.15),rgba(124,58,237,.15));border:1px solid rgba(79,142,247,.3);border-radius:16px;padding:24px;margin-bottom:24px;text-align:center;position:relative;overflow:hidden">' +
-        '<h2 style="font-size:20px;font-weight:700;color:white;margin-bottom:6px">Dilema del Día</h2>' +
-        '<p style="color:#a0a0c0;font-size:14px;margin-bottom:16px;max-width:400px;margin-left:auto;margin-right:auto">' + nextUncompleted.title + '</p>' +
-        '<button onclick="App.goTo(' + nextIdx + ');App.showGame()" style="background:white;color:black;border:none;padding:12px 24px;border-radius:99px;font-weight:700;font-size:15px;cursor:pointer">Jugar Ahora</button>' +
+
+      // — Weekly streak card
+      '<div style="background:#0c0c18;border:1px solid #1e1e30;border-radius:14px;padding:16px 18px;margin-bottom:20px">' +
+        '<p style="font-size:11px;font-weight:700;color:#2a2a40;letter-spacing:.08em;text-transform:uppercase;font-family:\'JetBrains Mono\',monospace;margin-bottom:12px">📅 Semana Activa</p>' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start">' +
+          weekDaysHtml +
+        '</div>' +
       '</div>' +
-      '<h3 style="font-size:16px;font-weight:600;color:#c0c0e0;margin-bottom:12px">Explorar Categorías</h3>' +
+
+      // — Hero CTA
+      '<div style="background:linear-gradient(135deg,rgba(79,142,247,.15),rgba(124,58,237,.15));border:1px solid rgba(79,142,247,.3);border-radius:16px;padding:22px 24px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden">' +
+        '<div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(124,58,237,.25) 0%,transparent 70%);border-radius:50%"></div>' +
+        '<h2 style="font-size:18px;font-weight:700;color:white;margin-bottom:6px">Dilema del Día</h2>' +
+        '<p style="color:#a0a0c0;font-size:13px;margin-bottom:14px">' + nextUncompleted.title + '</p>' +
+        '<button onclick="App.goTo(' + nextIdx + ');App.showGame()" style="background:white;color:black;border:none;padding:11px 24px;border-radius:99px;font-weight:700;font-size:14px;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'scale(1)\'">Jugar Ahora →</button>' +
+      '</div>' +
+
+      // — Category grid
+      '<h3 style="font-size:14px;font-weight:700;color:#c0c0e0;margin-bottom:10px;letter-spacing:.02em">Explorar Categorías</h3>' +
       '<div class="hub-grid">' + catCardsHtml + '</div>' +
-      '<h3 style="font-size:16px;font-weight:600;color:#c0c0e0;margin-bottom:12px;margin-top:24px">Gimnasio Mental</h3>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
+
+      // — Gym section
+      '<h3 style="font-size:14px;font-weight:700;color:#c0c0e0;margin-bottom:10px;margin-top:20px;letter-spacing:.02em">Gimnasio Mental</h3>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
         '<div class="hub-card" onclick="App.openProfile()">' +
-          '<span style="font-size:24px;margin-bottom:8px">🧠</span>' +
-          '<h4 style="font-weight:600;font-size:14px;color:#e0e0f0">Flashcards</h4>' +
-          '<p style="font-size:12px;color:#6a6a8a;margin-top:4px">Repasa los modelos mentales desbloqueados</p>' +
+          '<span style="font-size:22px;display:block;margin-bottom:8px">🧠</span>' +
+          '<h4 style="font-weight:700;font-size:13px;color:#e0e0f0">Flashcards</h4>' +
+          '<p style="font-size:11px;color:#6a6a8a;margin-top:4px;line-height:1.4">Repasa los modelos mentales desbloqueados</p>' +
         '</div>' +
         '<div class="hub-card" onclick="App.openGenerator()">' +
-          '<span style="font-size:24px;margin-bottom:8px">✦</span>' +
-          '<h4 style="font-weight:600;font-size:14px;color:#e0e0f0">Generar con IA</h4>' +
-          '<p style="font-size:12px;color:#6a6a8a;margin-top:4px">Crea dilemas infinitos a la carta</p>' +
+          '<span style="font-size:22px;display:block;margin-bottom:8px">✦</span>' +
+          '<h4 style="font-weight:700;font-size:13px;color:#e0e0f0">Generar con IA</h4>' +
+          '<p style="font-size:11px;color:#6a6a8a;margin-top:4px;line-height:1.4">Crea dilemas infinitos a la carta</p>' +
         '</div>' +
       '</div>';
   },
@@ -1355,6 +1407,14 @@ const Render={
           <p style="color:${archetype.color};font-weight:700;font-size:18px;margin-bottom:6px">${archetype.name}</p>
           <p style="color:#5a5a7a;font-size:13px;line-height:1.6">${archetype.desc}</p>
           ${xp>0?`<div class="xp-badge" style="margin:12px auto 0;display:inline-flex">⚡ ${xp} XP acumulados</div>`:''}
+          ${(()=>{
+            let rankName,rankIcon,rankCol;
+            if(xp>=120){rankName='Gran Canciller';rankIcon='👑';rankCol='#fcd34d';}
+            else if(xp>=70){rankName='Estratega de Gabinete';rankIcon='🎖️';rankCol='#a78bfa';}
+            else if(xp>=30){rankName='Analista Táctico';rankIcon='🔭';rankCol='#4f8ef7';}
+            else{rankName='Iniciado Curioso';rankIcon='🌱';rankCol='#34d399';}
+            return `<div style="margin:8px auto 0;display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;border:1px solid ${rankCol}30;background:${rankCol}10;color:${rankCol};font-size:12px;font-weight:700">${rankIcon} ${rankName}</div>`;
+          })()}
         </div>
         <!-- Stats Grid -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
